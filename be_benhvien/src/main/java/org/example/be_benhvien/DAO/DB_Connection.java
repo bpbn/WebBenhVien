@@ -5,7 +5,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import java.sql.*;
 public class DB_Connection {
     public Connection connect() {
-        String server ="DESKTOP-QKV3AJV\\SQLEXPRESS";
+        String server ="BPBN\\SQLEXPRESS";
         String user ="sa";
         String password ="123";
         String db = "QL_BENHVIEN";
