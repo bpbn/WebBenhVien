@@ -12,7 +12,7 @@ public class DB_Connection {
         int port = 1433;
 
         SQLServerDataSource ds = new SQLServerDataSource();
-        ds.setTrustServerCertificate(true);
+//        ds.setTrustServerCertificate(true);
         ds.setServerName(server);
         ds.setUser(user);
         ds.setPassword(password);

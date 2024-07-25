@@ -5,6 +5,7 @@ import java.util.List;
 public class BacSiPOJO {
     private String MaBacSi;
     private String TenBacSi;
+
     private String ChucVu;
     private String HocHam;
     private String GioiThieu;
