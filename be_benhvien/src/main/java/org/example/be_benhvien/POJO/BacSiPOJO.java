@@ -5,6 +5,7 @@ import java.util.List;
 public class BacSiPOJO {
     private String MaBacSi;
     private String TenBacSi;
+
     private String ChucVu;
     private String HocHam;
     private String GioiThieu;
@@ -15,6 +16,7 @@ public class BacSiPOJO {
     public static class HocVi{
         private String MaHocVi;
         private String TenHocVi;
+        private Integer BacHocVi;
 
         public  HocVi(){}
 
@@ -32,6 +34,14 @@ public class BacSiPOJO {
 
         public void setTenHocVi(String tenHocVi) {
             TenHocVi = tenHocVi;
+        }
+
+        public Integer getBacHocVi() {
+            return BacHocVi;
+        }
+
+        public void setBacHocVi(Integer bacHocVi) {
+            BacHocVi = bacHocVi;
         }
     }
 
