@@ -21,6 +21,4 @@ public class PhieuHenController {
     public void themPhieuHen(@RequestBody PhieuHenPOJO phieuHenPOJO) {
         phieuHenDAO.themPhieuHen(phieuHenPOJO);
     }
-
-
 }
