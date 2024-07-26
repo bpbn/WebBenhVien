@@ -26,7 +26,7 @@ public class BacSiDAO {
     public List<BacSiPOJO> layDanhSachBacSi(){
         List<BacSiPOJO> ds = new ArrayList<BacSiPOJO>();
         try {
-            String sql = "select * from BacSi";
+            String sql = "SELECT * FROM THONGTINBACSI T JOIN NHANVIEN N ON T.MANHANVIEN = N.MANHANVIEN";
             return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BacSiPOJO.class));
         } catch (Exception e) {
             System.out.println((e.getMessage()));
@@ -34,11 +34,11 @@ public class BacSiDAO {
         return ds;
     }
 
-    public List<BacSiPOJO> layDanhSachHocVi(){
-        List<BacSiPOJO> ds = new ArrayList<BacSiPOJO>();
+    public List<BacSiPOJO.HocVi> layDanhSachHocVi(){
+        List<BacSiPOJO.HocVi> ds = new ArrayList<BacSiPOJO.HocVi>();
         try {
             String sql = "select * from HocVi";
-            return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BacSiPOJO.class));
+            return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BacSiPOJO.HocVi.class));
         } catch (Exception e) {
             System.out.println((e.getMessage()));
         }
@@ -48,7 +48,7 @@ public class BacSiDAO {
     public List<BacSiPOJO.HocVi> layDanhSachHocViCuaBacSi(String MaBacSi){
         List<BacSiPOJO.HocVi> ds = new ArrayList<BacSiPOJO.HocVi>();
         try {
-            String sql = "SELECT h.MAHOCVI, h.TENHOCVI, h.BACHOCVI FROM CHITIETHOCVI ct INNER JOIN HOCVI h ON ct.MAHOCVI = h.MAHOCVI WHERE ct.MABACSI = ?";
+            String sql = "SELECT h.MAHOCVI, h.TENHOCVI, h.BACHOCVI FROM CHITIETHOCVI ct INNER JOIN HOCVI h ON ct.MAHOCVI = h.MAHOCVI WHERE ct.MANHANVIEN = ?";
             Object[] args = {MaBacSi};
             return jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(BacSiPOJO.HocVi.class));
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class BacSiDAO {
         BacSiPOJO bacSi = null;
         List<BacSiPOJO> ds = layDanhSachBacSi();
         for(BacSiPOJO bs : ds){
-            if(MaBacSi.equals(bs.getMaBacSi())){
+            if(MaBacSi.equals(bs.getMaNhanVien())){
                 bacSi = bs;
             }
         }
@@ -80,18 +80,18 @@ public class BacSiDAO {
         }
 
         List<BacSiPOJO.HocVi> ds = layDanhSachHocViCuaBacSi(MaBacSi);
-        //int hightest = 1;
+
         for (int hightest = 1; hightest <= 6; hightest++) {
             for (BacSiPOJO.HocVi h : ds) {
                 if (h.getBacHocVi() == hightest) {
                     danhHieu.append(".").append(h.getMaHocVi());
                 }
             }
-            //hightest++;
         }
 
-        if(bs.getHocHam() == null)
+        if (danhHieu.charAt(0) =='.') {
             danhHieu.deleteCharAt(0);
+        }
 
         return danhHieu.toString();
     }

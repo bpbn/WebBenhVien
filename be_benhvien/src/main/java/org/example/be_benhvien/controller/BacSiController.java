@@ -26,6 +26,12 @@ public class BacSiController {
         return new ResponseEntity<>(danhSachBacSi, HttpStatus.OK);
     }
 
+    @GetMapping("/danhsachhv")
+    public ResponseEntity dsHV(Model model) {
+        List<BacSiPOJO.HocVi> danhSachHocVi = bacSiDAO.layDanhSachHocVi();
+        return new ResponseEntity<>(danhSachHocVi, HttpStatus.OK);
+    }
+
     @GetMapping("/hocvi/{id}")
     public ResponseEntity dsHVcuaBS(@PathVariable String id) {
         List<BacSiPOJO.HocVi> dsHocVi = bacSiDAO.layDanhSachHocViCuaBacSi(id);

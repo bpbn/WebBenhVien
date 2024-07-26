@@ -3,15 +3,30 @@ package org.example.be_benhvien.POJO;
 import java.util.List;
 
 public class BacSiPOJO {
-    private String MaBacSi;
-    private String TenBacSi;
-
+    private String MaNhanVien;
+    private String TenNhanVien;
     private String ChucVu;
     private String HocHam;
     private String GioiThieu;
     private String GioiTinh;
     private String HinhAnh;
     private List<HocVi> HocVi;
+
+    public String getMaNhanVien() {
+        return MaNhanVien;
+    }
+
+    public void setMaNhanVien(String maNhanVien) {
+        MaNhanVien = maNhanVien;
+    }
+
+    public String getTenNhanVien() {
+        return TenNhanVien;
+    }
+
+    public void setTenNhanVien(String tenNhanVien) {
+        TenNhanVien = tenNhanVien;
+    }
 
     public static class HocVi{
         private String MaHocVi;
@@ -46,22 +61,6 @@ public class BacSiPOJO {
     }
 
     public BacSiPOJO(){}
-
-    public String getMaBacSi() {
-        return MaBacSi;
-    }
-
-    public void setMaBacSi(String maBacSi) {
-        MaBacSi = maBacSi;
-    }
-
-    public String getTenBacSi() {
-        return TenBacSi;
-    }
-
-    public void setTenBacSi(String tenBacSi) {
-        TenBacSi = tenBacSi;
-    }
 
     public String getChucVu() {
         return ChucVu;
