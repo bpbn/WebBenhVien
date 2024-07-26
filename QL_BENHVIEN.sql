@@ -3,16 +3,14 @@ GO
 USE QL_BENHVIEN
 GO
 
-CREATE TABLE BACSI(
+CREATE TABLE CHITIETBACSI(
 	MABACSI			VARCHAR(10) NOT NULL,
-	TENBACSI		NVARCHAR(50),
-	CHUCVU			NVARCHAR(50),
 	HOCHAM			NVARCHAR(50),
 	GIOITHIEU		NVARCHAR(MAX),
 	GIOITINH		NVARCHAR(3),
 	HINHANH			VARCHAR(MAX),
 
-	CONSTRAINT P_BACSI PRIMARY KEY(MABACSI)
+	CONSTRAINT P_CHITIETBACSI PRIMARY KEY(MABACSI)
 )
 
 CREATE TABLE HOCVI(
@@ -44,7 +42,7 @@ CREATE TABLE PHIEUHEN(
 	MAPHIEUHEN		VARCHAR(10) NOT NULL,
 	NGAYKHAM		DATE,
 	KHUNGGIOKHAM	NVARCHAR(5),
-	MABACSI			VARCHAR(10),
+	MANHANVIEN		VARCHAR(10),
 	VANDESUCKHOE	NVARCHAR(MAX),
 	TENBENHNHAN		NVARCHAR(30),
 	NGAYSINH		DATE,
@@ -59,6 +57,7 @@ CREATE TABLE NHANVIEN(
 	MANHANVIEN		VARCHAR(10) NOT NULL,
 	TENNHANVIEN		NVARCHAR(30),
 	CHUCVU			NVARCHAR(20),
+	MATAIKHOAN		VARCHAR(10),
 
 	CONSTRAINT P_NHANVIEN PRIMARY KEY(MANHANVIEN)
 )
@@ -105,7 +104,7 @@ CREATE TABLE PHIEUKHAM(
 CREATE TABLE TOATHUOC(
 	MATOATHUOC		VARCHAR(10) NOT NULL,
 	MAPHIEUKHAM		VARCHAR(10),
-	MABACSI			VARCHAR(10),
+	MANHANVIEN			VARCHAR(10),
 	NGAYLAP			DATE,
 	TONGTIEN		INT,
 	LOIDAN			NVARCHAR(100),
@@ -132,11 +131,12 @@ CREATE TABLE CHITIETTOATHUOC(
 )
 
 CREATE TABLE TAIKHOAN(
+	MATAIKHOAN		VARCHAR(10) NOT NULL,
 	TENTAIKHOAN		VARCHAR(20) NOT NULL,
 	MATKHAU			VARCHAR(20),
 	LOAITAIKHOAN    NVARCHAR(10),
 
-	CONSTRAINT P_TAIKHOAN PRIMARY KEY(TENTAIKHOAN)
+	CONSTRAINT P_TAIKHOAN PRIMARY KEY(MATAIKHOAN)
 )
 
 CREATE TABLE LICHLAMVIEC(
@@ -150,13 +150,16 @@ CREATE TABLE LICHLAMVIEC(
 )
 go
 
+ALTER TABLE NHANVIEN
+ADD CONSTRAINT F_NV_TK FOREIGN KEY(MATAIKHOAN) REFERENCES TAIKHOAN(MATAIKHOAN)
+
 ALTER TABLE CHITIETHOCVI
-ADD CONSTRAINT F_CTHV_BS FOREIGN KEY(MABACSI) REFERENCES BACSI(MABACSI);
+ADD CONSTRAINT F_CTHV_BS FOREIGN KEY(MABACSI) REFERENCES CHITIETBACSI(MABACSI);
 ALTER TABLE CHITIETHOCVI
 ADD CONSTRAINT F_CTHV_HV FOREIGN KEY(MAHOCVI) REFERENCES HOCVI(MAHOCVI);
 
 ALTER TABLE PHIEUHEN
-ADD CONSTRAINT F_PHIEUHEN_BS FOREIGN KEY(MABACSI) REFERENCES BACSI(MABACSI);
+ADD CONSTRAINT F_PHIEUHEN_BS FOREIGN KEY(MANHANVIEN) REFERENCES NHANVIEN(MANHANVIEN);
 
 ALTER TABLE PHIEUKHAM
 ADD CONSTRAINT F_PHIEUKHAM_PHONG FOREIGN KEY(MAPHONG) REFERENCES PHONGKHAM(MAPHONG);
@@ -166,7 +169,7 @@ ALTER TABLE PHIEUKHAM
 ADD CONSTRAINT F_PHIEUKHAM_BN FOREIGN KEY(MABENHNHAN) REFERENCES BENHNHAN(MABENHNHAN);
 
 ALTER TABLE TOATHUOC
-ADD CONSTRAINT F_TT_BS FOREIGN KEY(MABACSI) REFERENCES BACSI(MABACSI);
+ADD CONSTRAINT F_TT_BS FOREIGN KEY(MANHANVIEN) REFERENCES NHANVIEN(MANHANVIEN);
 ALTER TABLE TOATHUOC
 ADD CONSTRAINT F_TT_PK FOREIGN KEY(MAPHIEUKHAM) REFERENCES PHIEUKHAM(MAPHIEUKHAM);
 
@@ -184,406 +187,306 @@ ALTER TABLE LICHLAMVIEC
 ADD CONSTRAINT F_LICH_BS FOREIGN KEY(MABACSI) REFERENCES BACSI(MABACSI);
 
 
-INSERT INTO BACSI VALUES (
+INSERT INTO CHITIETBACSI VALUES (
         'BS0001',
-        N'Triệu Triều Dương', 
-        N'Giám đốc', 
         N'Phó giáo sư', 
         N'TTƯT.PGS.TS Triệu Triều Dương là chuyên gia hàng đầu ngành phẫu thuật tiêu hóa: phẫu thuật thực quản, dạ dày, ruột, gan mật tụy, đại trực tràng, hậu môn, sàn chậu…. \nSau khi tốt nghiệp bác sĩ đa khoa tại Học viện Quân Y năm 1985, bác sĩ Triều Dương tiếp tục tham gia các khóa đào tạo sau đại học tại Học viện Quân Y (1989), nghiên cứu sinh năm 1996 và đào tạo chuyên sâu về Phẫu thuật nội soi tại Bệnh viện Việt Đức (1992), tại Thái Lan (1996), tại Hàn Quốc, Pháp (2004), tại Singapore (2007); Đào tạo phẫu thuật lạnh tại Ucraina (2007) và Đào tạo ghép gan – tụy tại Hàn Quốc (2017)…\nPGS Dương thường xuyên tham dự các hội nghị hội thảo, tập huấn ngắn hạn trong nước và quốc tế về phẫu thuật ung thư đường tiêu hóa, phẫu thuật nội soi nâng cao. PGS Triệu Triều Dương có gần 40 năm kinh nghiệm trong lĩnh vực nội soi và phẫu thuật ổ bụng. “Bàn tay vàng” của ông đã giúp hàng nghìn người cải thiện sức khỏe và chất lượng sống. Với những cống hiến to lớn cho nền y học nước nhà, PGS.TS.BSCC Triệu Triều Dương nhận được nhiều Bằng khen của Thủ tướng Chính phủ, Bộ trưởng Bộ Y tế, Bộ trưởng Bộ Quốc phòng, đạt danh hiệu Chiến sĩ thi đua cấp Bộ, cấp viện nhiều năm liên tục, Bằng khen tuổi trẻ sáng tạo thủ đô, Kỷ niệm chương “Vì sự nghiệp Khoa học và Công nghệ”… \nĐặc biệt, TTƯT.PGS.TS Triệu Triều Dương vinh dự được Chủ tịch nước tặng Huân chương chiến công hạng Nhất (2004), Huân chương Quân kỳ quyết thắng (2014), Huân chương bảo vệ tổ quốc hạng Nhì (2022), Thầy thuốc ưu tú (2007). Trong suốt chặng đường sự nghiệp vinh quang của mình, PGS Triệu Triều Dương giữ nhiều chức vụ quan trọng: Chủ nhiệm khoa Ngoại nhân dân (2000), Chủ nhiệm khoa Ngoại Tổng hợp (B15) (2003), Viện trưởng Viện phẫu thuật tiêu hóa kiêm chủ nhiệm khoa gan mật tụy (2016), chủ nhiệm khoa phẫu thuật hậu môn trực tràng và sàn chậu (B3C). Phó chủ bộ môn Ngoại tiêu hóa, Giảng viên bộ môn Ngoại tiêu hóa, Chuyên viên Kỹ thuật Cục Quân Y – chuyên ngành Phẫu thuật Tiêu hóa, Bệnh viện Trung ương Quân đội 108…\nHiện nay, với vai trò là Giám đốc khối Ngoại, TTƯT.PGS.TS Triệu Triều Dương tiếp tục cùng đội ngũ chuyên gia hàng đầu tại Bệnh viện Đa khoa Tâm Anh Hà Nội góp phần mang đến chất lượng thăm khám và điều trị hiệu quả cho người bệnh.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2023/07/bs-trieu-trieu-duong.png');
-INSERT INTO BACSI VALUES (
+        N'BS0001.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0002',
-        N'Trần Văn Hinh', 
-        N'Trưởng khoa', 
         N'Phó giáo sư', 
         N'PGS.TS.BS.CKII Trần Văn Hinh được biết đến là một trong những chuyên gia hàng đầu trong lĩnh vực tiết niệu và ghép thận tại Việt Nam. Với hơn 30 năm kinh nghiệm trong ngành Y, PGS Hinh cập nhật và làm chủ các kỹ thuật cao trong điều trị. Ông đã thực hiện thành công trên 1000 trường hợp với các kỹ thuật: ghép thận, tán sỏi thận qua da, tán sỏi niệu quản ngược dòng, nội soi cắt u tuyến tiền liệt, nội soi ổ bụng cắt thận và cắt u tuyến thượng thận…\nSau khi tốt nghiệp Bác sĩ Nội trú Ngoại khoa tại Học viện Quân Y, bác sĩ Trần Văn Hinh tham gia nghiên cứu sinh tiến sĩ Ngoại khoa. Ông tiếp tục con đường nâng cao năng lực chuyên môn, cập nhật các kỹ thuật cao trong điều trị cho người bệnh như kỹ thuật tán sỏi qua da, nội soi lưỡng cực, các tiến bộ trong chẩn đoán và điều trị bệnh lý Nam khoa tại các cơ sở y học lớn trong nước và quốc tế như: Mayo Clinic (Hoa Kỳ), Trung tâm đào tạo phẫu thuật nội soi IRCAD (Đài Loan), Lisbon (Bồ Đào Nha), trường Đại học Y Hà Nội…\nBên cạnh công tác thăm khám điều trị cho người bệnh, PGS Trần Văn Hinh dành thời gian và tâm huyết thực hiện nhiều nghiên cứu khoa học như: một số yếu tố nguy cơ và ứng dụng kỹ thuật cao trong điều trị bệnh sỏi tiết niệu, ứng dụng kỹ thuật cắt lưỡng cực, bốc hơi tổ chức và laser điều trị bệnh u lành tuyến tiền liệt, ung thư bàng quang. Ngoài ra, ông còn xuất bản nhiều đầu sách, giáo trình trong lĩnh vực tiết niệu thận học như Bệnh sỏi đường tiết niệu, Nhiễm khuẩn niệu, Chẩn đoán và điều trị bệnh sỏi đường tiết niệu, Triệu chứng bệnh học ngoại tiết niệu…\nVới những nỗ lực không ngừng nghỉ trong sự nghiệp chữa bệnh cứu người của mình, PGS.TS.BS.CKII Trần Văn Hinh vinh dự nhận được nhiều Bằng khen của Thủ tướng Chính phủ, Bộ Quốc phòng, Bộ Y tế, Trung ương Đoàn, UBND tỉnh…\nHiện nay, PGS.TS.BS.CKII Trần Văn Hinh với vai trò là Trưởng khoa Tiết niệu – Nam học, Bệnh viện Đa khoa Tâm Anh Hà Nội, đồng thời là Phó Chủ tịch kiêm Tổng Thư ký Hội Tiết niệu – Thận học Việt Nam, luôn dành thời gian và tâm sức giúp người bệnh khỏe mạnh, nâng cao chất lượng sống nhờ phát hiện chính xác và điều trị bằng các kỹ thuật hiện đại, ít xâm lấn.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2023/09/bs-tran-van-hinh.png');
-INSERT INTO BACSI VALUES (
+        N'BS0002.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0003',
-        N'Nguyễn Văn Nghĩa', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Đam mê bộ môn sinh học và nghiên cứu cấu tạo cơ thể người từ lúc nhỏ, cùng tấm lòng thích giúp đỡ mọi người, chàng thanh niên Nguyễn Văn Nghĩa khi ấy ấp ủ ước mơ theo đuổi sự nghiệp thầy thuốc chữa bệnh cứu người.\nƯớc mơ đã trở thành hiện thực khi Nguyễn Văn Nghĩa đậu trường Đại học Y Dược Cần Thơ. Những tháng ngày gắn bó với giảng đường đại học, sinh viên Nguyễn Văn Nghĩa miệt mài học tập, nghiên cứu, rèn luyện, trau dồi kiến thức và kỹ năng chuyên môn. Sau khi tốt nghiệp bác sĩ đa khoa năm 2020, bác sĩ Nghĩa học tiếp chương trình bác sĩ nội trú tại Đại học Y Dược Cần Thơ rồi xuất sắc nhận cùng lúc hai tấm bằng thạc sĩ y khoa và bác sĩ chuyên khoa I năm 2023.\nTrong quãng thời gian học tập, ThS.BS.CKI Nguyễn Văn Nghĩa có cơ hội tiếp xúc với nhiều chuyên khoa khác nhau. Nhờ đó, bác sĩ bén duyên với ngành Tiết niệu. Bác sĩ Nguyễn Văn Nghĩa chia sẻ: “Các bệnh tiết niệu thường phát triển âm thầm, khó phát hiện, nhiều người không có điều kiện tầm soát bệnh sớm nên bệnh dễ bị bỏ quên, đến khi phát hiện thì bệnh đã trở nặng, ảnh hưởng nghiêm trọng chất lượng cuộc sống”. Càng nghiên cứu, học tập và tiếp xúc với nhiều người bệnh, bác sĩ càng nhiệt huyết với lĩnh vực này.\nBên cạnh thế mạnh điều trị các bệnh niệu nữ và niệu học chức năng như bàng quang thần kinh, tiểu không tự chủ, các triệu chứng đường tiểu dưới, sa tạng chậu ở phụ nữ, bế tắc đường ra của bàng quang…; bác sĩ Nguyễn Văn Nghĩa còn thành thạo các kỹ thuật điều trị trị sỏi tiết niệu như tán sỏi ngoài cơ thể, tán sỏi nội soi…\nKhông chỉ đặt tâm huyết trong điều trị bệnh, bác sĩ Nguyễn Văn Nghĩa còn năng nổ trong công tác nghiên cứu khoa học. Chính nỗ lực này đã giúp bác sĩ vinh dự đạt giải thưởng Báo cáo viên triển vọng của Hội Y học giới tính Việt Nam năm 2023.\nHiện, bác sĩ Nguyễn Văn Nghĩa đang sát cánh cùng đội ngũ bác sĩ, chuyên gia tại Đơn vị Niệu Nữ, khoa Tiết niệu, Trung tâm Tiết niệu – Thận học – Nam khoa, Bệnh viện Đa khoa Tâm Anh TP.HCM, giúp người bệnh không chỉ vượt qua các vấn đề sức khỏe mà còn giúp họ cải thiện chất lượng cuộc sống.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2024/07/ths-bs-nguyen-van-nghia.png');
-INSERT INTO BACSI VALUES (
+        N'BS0003.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0004',
-        N'Tống Văn Khả', 
-        N'Dược sĩ', 
-        NULL, 
+        N'Null', 
         N'Dược sĩ Tống Văn Khải tốt nghiệp Dược sĩ tại Đại học Miền Đông. Vào năm 2017, Dược sĩ Tống Văn Khải tiếp tục hoàn thành khóa đào tạo chuyên sâu Định hướng chuyên khoa kiểm soát nhiễm khuẩn tại Đại học Y khoa Phạm Ngọc Thạch.\nVới sự nỗ lực, cống hiến không ngừng nghỉ trong lĩnh vực triển khai, quản lý, giám sát công tác kiểm soát nhiễm khuẩn bệnh viện, vào năm 2018, Dược sĩ Tống Văn Khải được Bộ trưởng Bộ Y tế tặng bằng khen vì có thành tích trong công tác kiểm soát nhiễm khuẩn.\nDược sĩ Tống Văn Khải từng đảm trách nhiều vai trò quan trọng như Phó Trưởng khoa Kiểm soát nhiễm khuẩn tại Bệnh viện Đa khoa Thống Nhất, Trưởng khoa Kiểm soát nhiễm khuẩn tại Bệnh viện Đa khoa Thống Nhất, đóng góp cho hoạt động kiểm soát nhiễm khuẩn noi chung tại bệnh viện.', 
         N'Nam', 
-        'https://tamanhhospital.vn/chuyen-gia/tong-van-khai/');
-INSERT INTO BACSI VALUES (
+        N'BS0004.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0005',
-        N'Đỗ Thanh Thư', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Với mong muốn được giúp đỡ, chăm sóc sức khỏe cho nhiều người, bác sĩ Đỗ Thanh Thư chọn ngành Y để theo đuổi và phát triển sự nghiệp. Bác sĩ Thanh Thư luôn tâm niệm: “Chữa trị cho người bệnh như chính người nhà của mình”.\nTốt nghiệp ngành Bác sĩ Đa khoa Trường Đại học Y khoa Phạm Ngọc Thạch, bác sĩ Thanh Thư tiếp tục theo học bác sĩ nội trú chuyên ngành Tai Mũi Họng tại chính ngôi trường này. Trong quá trình học bác sĩ nội trú, bác sĩ Thanh Thư có nhiều cơ hội thực hành và học hỏi kinh nghiệm tại các bệnh viện lớn như: Bệnh viện Tai Mũi Họng TP.HCM, Bệnh viện Thống Nhất, Bệnh viện Nhi Đồng 1, Bệnh viện Nhân Dân Gia Định.Suốt thời gian học tập và làm việc, bác sĩ Thanh Thư luôn tìm tòi, học hỏi để phát triển chuyên môn, cập nhật nhiều kiến thức mới; tham gia các khóa học đào tạo chuyên sâu về tai mũi họng, tham gia hỗ trợ giảng dạy kỹ năng thực hành lâm sàng tai mũi họng cho sinh viên y trường Đại học Y khoa Phạm Ngọc Thạch.\nBác sĩ Thanh Thư từng có kinh nghiệm làm việc với vai trò bác sĩ điều trị tai mũi họng tại Bệnh viện Nhân Dân 115. Từ tháng 04.2024, bác sĩ Thanh Thư công tác tại Bệnh viện Đa khoa Tâm Anh TP.HCM với vai trò bác sĩ điều trị tai mũi họng.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2024/06/bs-do-thanh-thu.png');
-INSERT INTO BACSI VALUES (
+        N'BS0005.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0006',
-        N'Huỳnh Thị Thanh Trang', 
-        N'Phó khoa', 
-        NULL, 
+        N'Null', 
         N'Năm 1993, THS.BS.CKII Huỳnh Thị Thanh Trang tốt nghiệp Bác sĩ đa khoa tại Đại học Y dược TP.HCM. Sau đó, Bác sĩ Thanh Trang tiếp tục hoàn thành văn bằng Thạc sĩ Y học chuyên ngành Huyết học tại Đại học Y dược TP.HCM vào năm 2002 và tốt nghiệp Bác sĩ chuyên khoa II chuyên ngành Quản lý y tế tại Đại học Y dược Cần Thơ, vào năm 2013.\nTrong suốt quá trình công tác. với tinh thần không ngừng nâng cao trình độ chuyên môn, Thạc sĩ, Bác sĩ Chuyên khoa 2 Thanh Trang tiếp tục tham gia nhiều khóa đào tạo chuyên ngành như: Hướng dẫn triển khai hoạt động An toàn người bệnh tại bệnh viện, Tổng quan về Quản lý chất lượng bệnh viện, Đánh giá viên đánh giá chất lượng bệnh viện, Kiểm soát nhiễm khuẩn cơ bản…\nSau hơn 30 năm công tác, ThS.BS.CKII Huỳnh Thị Thanh Trang đã nhận được nhiều bằng khen, danh hiệu uy tín như Danh hiệu Thầy Thuốc Ưu Tú vào năm 2014, Bằng khen do Ủy ban Nhân dân TP.HCM trao tặng vào các năm 2012, 2014, 2016, 2018, 2020, đạt giải 2 Hội thi Sáng tạo kỹ thuật TP.HCM năm 2019. Bên cạnh đó, ThS.BS.CKII Thanh Trang còn có nhiều công trình nghiên cứu, khảo sát, bài báo được đăng trên các tạp chí, tập san Y học.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/chuyen-gia/huynh-thi-thanh-trang/');
-INSERT INTO BACSI VALUES (
+        N'BS0006.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0007',
-        N'Trần Kim Oanh', 
-        N'Bác si', 
-        NULL, 
+        N'Null', 
         N'Tốt nghiệp trường Đại học Y Hà Nội, bác sĩ Trần Kim Oanh nguyên là Trưởng khoa Tim mạch và Rối loạn chuyển hóa bệnh viện Nội tiết Trung Ương. Với trên 30 năm kinh nghiệm khám chữa bệnh, bác sĩ Oanh được coi là chuyên gia trong chuyên ngành Nội tiết – Đái tháo đường, chuyên điều trị các bệnh về tim mạch liên quan đến Rối loạn chuyển hóa. \nSong song với công tác khám chữa bệnh, Bác sĩ Oanh còn tham gia vào công tác đào tạo khi nhận nhiệm vụ giảng dạy đại học và sau đại học tại bệnh viện Nội tiết Trung ương. Bác sĩ Trần Kim Oanh từng tham gia đề tài Nghiên cứu khoa học cấp nhà nước đề tài KC10 và chủ nhiệm đề tài cấp cơ sở. Bác sĩ Trần Kim Oanh đã 2 lần vinh dự nhận bằng khen của Bộ trưởng bộ Y Tế và là chiến sĩ thi đua cấp cơ sở. Hiện tại BSCKII Trần Kim Oanh là bác sĩ khoa Nội tiết – Đái tháo đường Bệnh viện đa khoa Tâm Anh Hà Nội. ', 
         N'Nữ ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2023/04/bs-ckii-tran-kim-oanh.png');
-INSERT INTO BACSI VALUES (
+        N'BS0007.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0008',
-        N'Trần Đức Minh', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'ThS.BS Trần Đức Minh là một bác sĩ đã có nhiều năm kinh nghiệm trong nghề với chuyên môn về khám, điều trị và can thiệp các bệnh lý Tim mạch.\nThS.BS Trần Đức Minh không ngừng học hỏi và áp dụng những kỹ thuật, phương pháp trị liệu mới giúp cho bệnh nhân bảo vệ sức khỏe của mình trước những nguy hiểm của bệnh tim mạch. Không chỉ là bác sĩ giỏi chuyên môn, đam mê sáng tạo và có tinh thần trách nhiệm, bác sĩ Minh còn tích cực tham gia công tác tư vấn khám chữa cho bệnh nhân. \nBác sĩ Minh hiện được rất nhiều bệnh nhân và đồng nghiệp tin tưởng. Hiện tại Bác sĩ Minh đang công tác tại Khoa Tim mạch, Bệnh viện Đa khoa Tâm Anh Hà Nội.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2023/04/tran-duc-minh-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0008.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0009',
-        N'Võ Thị Tường Duy', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'“Giúp bệnh nhân khỏi bệnh, lấy lại sự tự tin về ngoại hình, cải thiện chất lượng sống luôn là mục tiêu tôi hướng tới”, bác sĩ CKI Võ Thị Tường Duy chia sẻ về điều bản thân tâm huyết nhất trong cuộc đời làm nghề y.\nTừ lý tưởng đi đến hành động\nSinh ra trong gia đình có truyền thống hành nghề Y – Dược, chị đã ý thức được “làm thầy thuốc để cứu người”. Từ nhỏ, bác sĩ Võ Thị Tường Duy sớm nuôi ước mơ trở thành thầy thuốc, tự nhủ bản thân cố gắng học giỏi để theo đuổi ngành Y. Mọi nỗ lực được đền đáp khi chị trúng tuyển vào ngành Y đa khoa – Đại học Y Dược TPHCM và tốt nghiệp vào năm 2016.\nNgay từ lúc ngồi trên ghế giảng đường, bác sĩ Duy được tiếp cận chuyên ngành Da liễu. Trong quá trình thực hành lâm sàng, bác sĩ gặp nhiều trường hợp mắc các bệnh mạn tính về da: vảy nến, lupus, bạch biến… Người mắc những bệnh này chịu những nỗi đau cả thể xác lẫn tinh thần, luôn co cụm, tự ti, hạn chế tiếp xúc với những người xung quanh. Những hình ảnh đó cứ thôi thúc bác sĩ Duy quyết định học chuyên sâu về lĩnh vực Da liễu – Thẩm mỹ Da để giúp người bệnh nhiều hơn.\nTrong quá trình làm việc, gặp nhiều ca bệnh khó, bác sĩ Duy chưa bao giờ đầu hàng mà luôn kiên nhẫn với những thử thách, tận tâm trong công tác điều trị. Thậm chí, có những ca bệnh nhiều nơi không phát hiện ra nhưng chị đã giúp người bệnh hồi phục. Điển hình như trường hợp bệnh nhân nam mắc viêm gan siêu vi B có triệu chứng đau nhức các khớp trên toàn bộ tứ chi, 2 chi dưới xuất hiện nhiều vết ban đỏ. Người bệnh đã đi điều trị ở nhiều nơi, ghé đến hầu như tất cả các khoa về xương khớp, thần kinh tại TPHCM, tuy nhiên bệnh vẫn không được cải thiện. Người bệnh có cơ duyên khi đăng ký khám với bác sĩ Duy, chị nhận thấy đây là một ca hồng ban nút trên bệnh nhân viêm gan siêu vi B. Sau khi được điều chỉnh đơn thuốc, người bệnh nhanh chóng hồi phục sức khỏe.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2023/03/vo-thi-tuong-duy-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0009.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0010',
-        N'Cam Ngọc Phượng', 
-        N'Giám đốc trung tâm', 
-        NULL, 
+        N'Null', 
         N'Với sự kỳ diệu của y học hiện đại, bằng tình yêu thương vô bờ bến và tâm huyết cống hiến với nghề, suốt hơn 30 qua, TS.BS Cam Ngọc Phượng không nhớ mình đã dốc sức chăm sóc, ôm ấp, vỗ về, yêu thương và trao tặng cuộc sống kỳ diệu cho bao nhiêu trẻ sinh non, trong đó có những thiên thần chào đời chỉ bằng một gang tay.\nMỗi ngày chứng kiến những thiên thần chưa đủ ngày, đủ tháng phải trải qua những ngày đầu tiên của cuộc đời trong lồng kính, từng phút đấu tranh chênh vênh giữa mong manh hai bờ sinh – tử, bác sĩ Ngọc Phượng luôn trăn trở, nghiên cứu và học tập với tâm niệm, làm thế nào để phát hiện và xử trí bệnh lý bẩm sinh sớm nhất, áp dụng phương pháp chăm sóc và điều trị tối ưu nhất để các em sớm trở về bên vòng tay bố mẹ thật khỏe mạnh, thông minh.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2021/03/bs-cam-ngoc-phuong.png');
-INSERT INTO BACSI VALUES (
+        N'BS0010.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0011',
-        N'Trần Ngọc Hứu', 
-        N'Bác sĩ', 
         N'Phó giáo sư', 
         N'Phó Giáo sư, Tiến sĩ, Bác sĩ Trần Ngọc Hữu tốt nghiệp Bác sĩ Y khoa tại Trường Đại học Y Dược TP.HCM (1) từ năm 1979. Sau đó, PGS Ngọc Hữu hoàn thành chương trình đào tạo Thạc sĩ chuyên ngành Quản lý Chăm sóc sức khỏe ban đầu tại trường Đại học Mahidol, Thái Lan vào năm 1997, và chương trình đào tạo Tiến sĩ chuyên ngành Vệ sinh học Xã hội và Tổ chức Y tế tại Viện Vệ sinh Dịch tễ Trung ương vào năm 2002. Năm 2012, Tiến sĩ, Bác sĩ Ngọc Hữu chính thức được bổ nhiệm chức danh Phó Giáo sư.\nTrong suốt quá trình nghiên cứu và công tác từ năm 1979 đến hiện nay, PGS.TS.BS Trần Ngọc Hữu đã có nhiều đóng góp to lớn cho nền y học nước nhà, đặc biệt là lĩnh vực y tế dự phòng, vắc xin. Phó giáo sư Ngọc Hữu đã triển khai nhiều đề tài, công trình nghiên cứu khoa học trong và ngoài nước có giá trị. Các đề tài nghiên cứu khoa học điển hình như: “Nghiên cứu đặc điểm dịch tễ học, lâm sàng và vi rút học của Cúm A/H1N1 đại dịch 2009 đề xuất biện pháp phòng chống”, “Đánh giá tính an toàn của vắc xin AgrippalTM S1 phòng cúm trên người Việt Nam tình nguyện”, “Hiệu quả và an toàn của vắc xin mới ngừa sốt xuất huyết bốn týp trên trẻ em khỏe mạnh từ 2 đến 14 tuổi ở châu Á thực hiện tại Mỹ Tho và Long Xuyên”, “Đánh giá các liệu trình chủng ngừa các vắc xin phế cầu khác nhau trên trẻ em”….\nCác Công trình khoa học bao gồm: “Immunogenicity and reactogenicity of ten-valent versus 13-valent pneumococcal conjugate vaccines among infants in Ho Chi Minh City, Vietnam: a randomised controlled trial”, “Three Decades of Dengue Surveillance in Five Highly Endemic South East Asian Countries: A Descriptive Review”, “Efficacy and Long-Term Safety of a Dengue Vaccine in Regions of Endemic Disease” trên tạp chí The  New England Journal of medicine, “Clinical efficacy and safety of a novel tetravalent dengue vaccine in healthy children in Asia: a phase 3, randomised, observer-masked, placebo-controlled trial” trên tạp chí The Lancet…\nPhó Giáo sư, Tiến sĩ, Bác sĩ Trần Ngọc Hữu từng giữ nhiều vị trí quan trọng trong hơn 40 năm công tác như: Giám đốc Trung tâm Y tế Dự phòng tỉnh Long An; Giám đốc Bệnh viện Đa khoa tỉnh Long An; Giám đốc Sở Y tế Long An; Giám đốc Viện Pasteur TP.HCM; Phó Chủ tịch Hội Y học Dự phòng Việt Nam; Phó Chủ tịch Hội đồng Đạo đức trong Nghiên cứu Y sinh học Quốc gia.\nHiện nay, PGS.TS.BS Trần Ngọc Hữu đang giữ vai trò Quản lý Thử nghiệm lâm sàng Vắc xin tại Trung tâm Đào tạo & Nghiên cứu Khoa học, Bệnh viện Đa khoa Tâm Anh TP.HCM.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2023/03/tran-ngoc-huu-avt.png');
-INSERT INTO BACSI VALUES (
+        N'BS0011.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0012',
-        N'Nguyễn Thị Liên Hương', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'BS Nguyễn Thị Liên Hương đã có hơn 20 năm kinh nghiệm trong lĩnh vực Mô phôi học. Bên cạnh công tác chuyên môn, bác sĩ Liên Hương còn dành nhiều thời gian cho hoạt động nghiên cứu khoa học và đóng góp nhiều công trình nghiên cứu, bài báo khoa học trong lĩnh vực Mô phôi học. \nKhông chỉ là một bác sĩ tài năng với nhiều công trình nghiên cứu có giá trị, TS.BS Liên Hương còn là Giảng viên kiêm nhiệm bộ môn Mô – Công nghệ Phôi tại Đại học Y Hà Nội. Nhiều thế hệ bác sĩ ưu tú của ngành Mô phôi học Việt Nam đã được tiếp lửa yêu nghề và trưởng thành dưới sự hướng dẫn của TS.BS Nguyễn Thị Liên Hương.\nSau nhiều năm công tác tại Bệnh viện Phụ sản Trung ương, bác sĩ Liên Hương chính thức trở thành một thành viên của Trung tâm Hỗ trợ sinh sản, Bệnh viện Đa khoa Tâm Anh Hà Nội với vị trí Phó Giám đốc Trung tâm, phụ trách LAB IVF. “Là một đơn vị được đầu tư mạnh mẽ và toàn diện, đặc biệt hệ thống phòng LAB tại IVFTA sở hữu những thiết bị, công nghệ hiện đại nhất trong ngành hỗ trợ sinh sản. Đội ngũ chuyên viên LAB IVFTA đáp ứng được những tiêu chuẩn cao về trình độ chuyên môn và luôn giữ vững cái tâm với nghề, luôn nỗ lực chắt chiu cơ hội làm mẹ, làm cha cho những gia đình hiếm muộn.” – bác sĩ Liên Hương chia sẻ.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2011/01/bac-si-nguyen-thi-lien-huong-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0012.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0013',
-        N'Trịnh Tuấn Dũng', 
-        N'Bác sĩ', 
         N'Phó giáo sư', 
         N'Với kinh nghiệm hơn 30 năm trong ngành Giải phẫu bệnh, PGS.TS.BS Trịnh Tuấn Dũng hiện đang nắm giữ cương vị Giám đốc Trung tâm Giải phẫu bệnh & Tế bào của Bệnh viện Đa khoa Tâm Anh, Chủ tịch Hội Giải phẫu bệnh – Tế bào học Việt Nam. Ông là một chuyên gia hàng đầu về Giải phẫu bệnh & Tế bào học, không chỉ của Việt Nam mà ở tầm quốc tế, giàu kinh nghiệm trong việc đánh giá và đọc kết quả giải phẫu bệnh & tế bào học chuẩn xác, giúp chẩn đoán sớm các bệnh lý ung thư. \nTrong suốt quá trình công tác, PGS.TS.BS Trịnh Tuấn Dũng luôn tận tâm, say mê và dành nhiều thời gian, công sức đầu tư nghiên cứu những công trình khoa học mang giá trị ứng dụng cao. Tiêu biểu phải kể đến những đề tài từ cấp Bộ Quốc phòng, cấp Nhà nước tới cấp cơ sở, cùng 168 bài báo khoa học đã công bố, trong đó có 8 bài công bố ở nước ngoài và nhiều cuốn sách, giáo trình quan trọng về Giải phẫu bệnh khác.\nXuất thân từ Quân đội, được đào tạo và rèn luyện trong Quân đội hơn 40 năm, trước khi trở thành bác sĩ, Phó giáo sư Trịnh Tuấn Dũng đã có 3 năm làm chiến sĩ công tác tại Lữ đoàn Tăng thiết giáp 215. Hoàn thành nghĩa vụ quân sự, với mong muốn được góp phần đẩy lùi các bệnh hiểm nghèo, đặc biệt là bệnh ung thư, ông quyết tâm theo học ngành Giải phẫu bệnh mặc dù thời điểm đó số lượng bác sĩ theo học và công tác trong ngành này không nhiều. Ông thi đỗ vào Học viện Quân y và sau 6 năm miệt mài học tập, ông tốt nghiệp Bác sĩ loại ưu và được chọn về công tác tại Bệnh viện Trung ương Quân đội 108. \nTốt nghiệp Bác sĩ chuyên khoa sơ bộ, rồi chuyên khoa cấp I tại Đại học Y Hà Nội, nhưng với  PGS.TS.BS Trịnh Tuấn Dũng là chưa đủ. Càng học ông càng thấy kiến thức y khoa thật mênh mông rộng lớn. Với niềm đam mê cùng khát khao chữa bệnh cứu người, ông quyết tâm thi đỗ nghiên cứu sinh Tiến sĩ, và sau 5 năm miệt mài học tập, nghiên cứu, ông đã bảo vệ thành công luận án Tiến sĩ Y học được Hội đồng đánh giá xuất sắc. \nTrở về Bệnh viện Trung ương Quân đội 108 công tác, PGS.TS.BS Trịnh Tuấn Dũng được bổ nhiệm làm phó Khoa Giải phẫu bệnh (tháng 10/2000), rồi gần 7 năm sau đó (tháng 6/2007) ông được bổ nhiệm làm Trưởng khoa. \nTừ năm 2012 đến nay, ông còn là Chuyên viên duy nhất của Cục Quân y Bộ Quốc phòng về Giải phẫu bệnh & Tế bào học, thường xuyên được mời tham gia khám chữa bệnh cho các cán bộ cao cấp của Đảng, Nhà nước và Quân đội. Tháng 12/2012, tại Đại hội toàn quốc của Hội Giải phẫu bệnh – Tế bào Việt nam, ông được bầu làm Chủ tịch Hội và liên tục đảm nhiệm trọng trách đó cho tới nay. \nHoàn thành xuất sắc những nhiệm vụ được giao, PGS.TS.BS Trịnh Tuấn Dũng được nhà nước ghi nhận những cống hiến to lớn cho nền Y học, trao tặng Giải thưởng Hồ Chí Minh về KH-CN (01/2017); 4 Bằng khen của Bộ Quốc phòng; 2 Bằng khen của Chủ tịch Tổng hội Y học Việt Nam cùng rất nhiều giải thưởng khác.\nĐể liên tục cập nhật những kiến thức và kỹ thuật tiên tiến, góp phần chẩn đoán và điều trị hiệu quả nhất cho người bệnh, bên cạnh trau dồi kiến thức từ các chương trình đào tạo chuyên môn trong nước và liên tục nỗ lực tự đào tạo, PGS.TS.BS Trịnh Tuấn Dũng còn tham gia nhiều khóa đào tạo chuyên sâu và nâng cao tại Mỹ, Hungary, Nhật, Singapore…\nTừ tháng 01/2020, PGS.TS.BS Trịnh Tuấn Dũng được mời về làm việc tại Bệnh viện Đa khoa Tâm Anh. Hiện nay, ông có mối quan hệ thân thiết với nhiều đồng nghiệp là các Giáo sư hàng đầu của nhiều nước trên thế giới.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2011/01/bs-trinh-tuan-dung-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0013.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0014',
-        N'Nguyễn Duy Trinh', 
-        N'Phó giám đốc', 
-        NULL, 
+        N'Null', 
         N'Với kinh nghiệm trên 20 năm trong lĩnh vực chẩn đoán hình ảnh, đồng thời từng đảm nhận nhiều vị trí quan trọng tại bệnh viện tuyến đầu trên cả nước, TS.BS Nguyễn Duy Trinh đã chẩn đoán thành công nhiều ca bệnh khó, phức tạp, đặc biệt các bệnh lý đau cột sống, khớp vai, đau do thần kinh ngoại biên… trên các thiết bị máy móc hiện đại như: Siêu âm, Cắt lớp vi tính, cộng hưởng từ..\nSau những nỗ lực không ngừng nghỉ trong lĩnh vực Chẩn đoán hình ảnh, TS.BS Nguyễn Duy Trinh vinh dự được Bộ Y Tế trao tặng bằng khen Danh hiệu chiến sĩ thi đua cấp cơ sở. Bên cạnh đó, TS.BS Nguyễn Duy Trinh còn đóng góp các công trình nghiên cứu đề tài khoa học, sách chuyên ngành cùng các bài báo có giá trị thực tiễn.\nNgoài công tác khám chữa bệnh, TS Nguyễn Duy Trình còn tham gia giảng dạy, bồi dưỡng kiến thức cho các bác sĩ tại các tỉnh giúp đẩy mạnh và phát triển lĩnh vực chẩn đoán hình ảnh. TS Duy Trinh góp phần không nhỏ giúp các bác sĩ cập nhật kiến thức và sử dụng máy móc thiết bị một cách hiệu quả nhằm đưa ra những chẩn đoán chính xác và kịp thời, giúp người bệnh có thể rút ngắn thời gian điều trị.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2011/02/nguyen-duy-trinh.png');
-INSERT INTO BACSI VALUES (
+        N'BS0014.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0015',
-        N'Trần Thị Thanh Trúc', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'BS.CKII Trần Thị Thanh Trúc có gần 15 năm kinh nghiệm thực tiễn và đạt được nhiều thành tựu nhất định trong ngành y, đặc biệt là lĩnh vực nội tim mạch. Tốt nghiệp bác sĩ Y khoa tại Đại học Y Dược TP.HCM vào năm 2005 và tiếp tục hoàn thành văn bằng Thạc sĩ, bác sĩ Trần Thị Thanh Trúc đã không ngừng học hỏi, cập nhật những kiến thức mới và nâng cao nghiệp vụ để cung cấp dịch vụ thăm khám, chẩn đoán, điều trị và tư vấn sức khỏe toàn diện cho bệnh nhân. ', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2021/02/tran-thi-thanh-truc-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0015.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0016',
-        N'Huỳnh Văn Mười Một', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Suốt hơn 20 năm học tập, nghiên cứu và công tác trong lĩnh vực y khoa, bác sĩ Huỳnh Văn Mười Một đã tích lũy được nhiều kinh nghiệm khi từng tiếp cận và giải quyết rất nhiều trường hợp cấp cứu Nội, Ngoại khoa, Nhi khoa… Sau khi tốt nghiệp Đại học Y Dược TP.HCM, Bác sĩ Mười Một tiếp tục theo học để lấy các chứng chỉ ngắn hạn, trong đó có chứng chỉ về Bệnh lý cơ xương khớp và Phục hồi chức năng – vốn rất hữu ích cho công việc chuyên môn của bác sĩ sau này.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2013/02/huynh-van-muoi-mot-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0016.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0017',
-        N'Nguyễn Đức Hưng', 
-        N'Phó khoa', 
-        NULL, 
+        N'Null', 
         N'Với 14 năm kinh nghiệm trong lĩnh vực khám và điều trị về các bệnh lý tim mạch, bác sĩ Nguyễn Đức Hưng là một trong những thầy thuốc luôn được bệnh nhân tin tưởng khi thăm khám và điều trị tại Khoa Tim mạch, Bệnh viện Đa khoa Tâm Anh, Hà Nội.\nTốt nghiệp Trường Đại học Y Hà Nội, bác sĩ Nguyễn Đức Hưng đã đăng ký tham gia các khóa đào tạo của các Viện Tim mạch trong và ngoài nước để trau dồi thêm kiến thức, kỹ năng chuyên môn nhằm mang lại những phác đồ điều trị tiên tiến đến với người bệnh trong quá trình khám chữa bệnh.\nBên cạnh sự tận tâm trong chăm sóc và điều trị cho bệnh nhân, bác sĩ Nguyễn Đức Hưng cũng rất tích cực tham gia các hoạt động nghiên cứu khoa học. Bác sĩ đã thực hiện những đề tài có tính giá trị thực tiễn cao và nhận được nhiều giải thưởng tại những cuộc thi nghiên cứu khoa học uy tín của ngành Y tế. ', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2020/05/nguyen-duc-hung-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0017.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0018',
-        N'Nguyễn Tân Cương', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Với nhiều năm kinh nghiệm trong lĩnh vực Tiết Niệu – Nam khoa, Ths.Bs Nguyễn Tân Cương được đồng nghiệp đánh giá cao và đông đảo bệnh nhân hết lòng tin tưởng để gửi gắm những vấn đề “khó nói” của mình. Bản thân Ths.Bs Tân Cương cũng luôn nỗ lực trau dồi chuyên môn, cập nhật những kiến thức mới, tích cực tham gia các hiệp hội trong nước và quốc tế để có thể đưa ra phác đồ điều trị ưu việt cho từng bệnh nhân, giúp họ cải thiện chất lượng cuộc sống, tìm thấy niềm hạnh phúc lứa đôi.\nThs.Bs Tân Cương có nhiều năm công tác tại chuyên khoa Tiết Niệu – Nam học của các bệnh viện uy tín ở khu vực TP.HCM như Bệnh viện Đại học Y Dược TP.HCM và một số bệnh viện quốc tế khác. Hiện tại, Ths.Bs Tân Cương đang công tác tại Bệnh viện Đa khoa Tâm Anh TP.HCM với vai trò bác sĩ khoa Ngoại Tiết niệu.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2021/02/bs-nguyen-tan-cuong.png');
-INSERT INTO BACSI VALUES (
+        N'BS0018.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0019',
-        N'Nguyễn Ngọc Huỳnh', 
-        N'Trưởng lap', 
-        NULL, 
+        N'Null', 
         N'Phòng LAB được ví như “trái tim” của một trung tâm Hỗ trợ sinh sản bởi đó chính là nơi thực hiện các kỹ thuật vô cùng phức tạp trong thụ tinh nhân tạo, thụ tinh ống nghiệm IVF. Với nhiều năm kinh nghiệm, Thạc sĩ Nguyễn Ngọc Quỳnh đã làm chủ nhiều kỹ thuật hiện đại, tăng khả năng có con của các cặp vợ chồng vô sinh hiếm muộn đã tăng lên gấp nhiều lần. Thạc sĩ Nguyễn Ngọc Quỳnh luôn làm việc với tâm niệm: “Nỗ lực của chúng tôi là mang tiếng cười trẻ thơ đến mọi nhà, đồng thời kết hợp theo dõi và chăm sóc sức khỏe toàn diện cho trẻ em.”', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2021/02/nguyen-ngoc-quynh-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0019.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0020',
-        N'Dương Quang Huy', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Hơn 15 năm trước, khi lĩnh vực điều trị các bệnh lý nam khoa, hiếm muộn nam vẫn đang bị bỏ quên, ThS.BS.CKII Dương Quang Huy có cơ duyên tiếp cận sớm với các chương trình đào tạo chuyên sâu ở quốc tế, đặc biệt là Chương trình đào tạo sức khỏe nam giới tại trường Đại học Dược John Hopkins – Hoa Kỳ.\nVới thâm niên 15 năm công tác tại các bệnh viện lớn khu vực phía Nam, thực hiện thành công nhiều ca mổ phức tạp như: Vi phẫu tích mô tinh hoàn tìm tinh trùng (micro-Tese), vi phẫu nối ống dẫn tinh & mào tinh, chỉnh hình cơ quan sinh dục nam, tạo hình khiếm khuyết cơ quan sinh dục, ung thư cơ quan sinh dục nam… ThS.BS.CKII Dương Quang Huy trở thành một trong số ít chuyên gia đặt nền móng đầu tiên cho sự phát triển của lĩnh vực này như ngày nay.\nKhông chỉ tận tâm đồng hành cùng từng bệnh nhân, giúp những nam giới vô sinh hiếm muộn có con “chính chủ”, giảm nguy cơ phải xin tinh trùng từ nguồn hiến tặng, ThS.BS.CKII Dương Quang Huy tâm niệm luôn nỗ lực hơn thế để góp phần cải thiện chất lượng cuộc sống của nam giới ngay cả sau khi điều trị.\nThS.BS.CKII Dương Quang Huy cũng say mê nghiên cứu khoa học với nhiều đề tài nghiên cứu trong nước và quốc tế, thường xuyên cập nhật những phương pháp hiện đại nhất trong khám và điều trị các bệnh lý nam khoa, vô sinh nam, đồng thời chia sẻ những kinh nghiệm hay cùng đồng nghiệp trong và ngoài nước, đào tạo phát triển đội ngũ bác sĩ trẻ.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2024/01/bac-si-duong-quang-huy-detail.jpg');
-INSERT INTO BACSI VALUES (
+        N'BS0020.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0021',
-        N'Lê Xuân Nguyên', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Tốt nghiệp chuyên ngành bác sĩ đa khoa loại giỏi tại khoa Y – Đại học Tây Nguyên, Bác sĩ Lê Xuân Nguyên có cơ duyên làm việc tại các bệnh viện lớn về sản khoa trên cả nước như bệnh viện Từ Dũ, phòng khám IVFMD Nam Sài Gòn…\nDù tuổi đời, tuổi nghề còn rất trẻ, nhưng với sự ham học hỏi và tận tâm, bác sĩ Lê Xuân Nguyên được đánh giá là một bác sĩ giỏi, có năng lực và sẽ vươn xa trong ngành Vô sinh hiếm muộn. ', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2013/02/le-xuan-nguyen-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0021.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0022',
-        N'Nguyễn Phạm Thùy Linh', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'BS.CKI Nguyễn Phạm Thùy Linh có hơn 12 năm kinh nghiệm thăm khám và điều trị trong lĩnh vực Nội tim mạch nhi. Sau khi tốt nghiệp Đại học Y khoa Phạm Ngọc Thạch, bác sĩ Nguyễn Phạm Thùy Linh tham gia các khóa tu nghiệp tại Malaysia và Hàn Quốc về lĩnh vực Tim mạch nhi. Bác sĩ Nguyễn Phạm Thùy Linh gắn bó với Bệnh viện tim Tâm Đức TP.HCM trong suốt thời gian dài, đồng thời trở thành thành viên Hội Tim mạch Việt Nam và Phân hội Siêu âm tim Việt Nam. \nDành tình yêu đặc biệt đối với các em nhỏ không may bị bệnh tim bẩm sinh, bác sĩ Nguyễn Phạm Thùy Linh chia sẻ: “Nếu chỉ còn một ngày để sống, hãy để tôi chăm sóc những em bé bị tim bẩm sinh. Các bé sinh ra đã không được may mắn. Bằng sự chăm sóc đúng cách với trái tim chân thành, hy vọng tôi sẽ giúp giảm đi nỗi đau trong những trái tim không lành lặn ấy”.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2021/08/bs-nguyen-pham-thuy-linh.png');
-INSERT INTO BACSI VALUES (
+        N'BS0022.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0023',
-        N'Ngô Trường Sơn', 
-        N'Phó trưởng khoa', 
-        NULL, 
+        N'Null', 
         N'BS.CKII Ngô Trường Sơn có gần 20 năm kinh nghiệm điều trị ung thư và được đào tạo bài bản chuyên môn ở trong nước cũng như quốc tế. Sau khi tốt nghiệp chuyên ngành đa khoa tại Đại học Y Hà Nội – Ngôi trường đào tạo y khoa danh tiếng hàng đầu cả nước, bác sĩ Sơn tiếp tục hoàn thành xuất sắc khóa đào tạo bác sĩ nội trú và bác sĩ chuyên khoa II tại đây. Không dừng lại ở đó, với mong muốn học tập và cập nhật những phác đồ hiện đại nhất giúp người bệnh ung thư kiểm soát và điều trị hiệu quả, bác sĩ Sơn đã tham gia nhiều chương trình đào tạo nâng cao tại các quốc gia có nền y học phát triển như: Mỹ, Đan Mạch, Tây Ban Nha, Singapore…\nTrong suốt quá trình công tác và học tập, bác sĩ đã áp dụng nhiều kỹ thuật công nghệ cao về xạ trị và hóa chất vào điều trị các bệnh lý ung thư. Cùng với công tác khám chữa bệnh bác sĩ Sơn còn tham gia đào tạo, giảng dạy, chỉ đạo tuyến, viết sách chuyên ngành và nghiên cứu khoa học. Nhờ thành tích xuất sắc trong công tác giảng dạy và điều trị bác sĩ Sơn nhận được nhiều bằng khen của lãnh đạo các cấp. Bác sĩ Sơn cũng luôn được người bệnh yêu quý bởi sự gần gũi và giản dị.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2022/11/ngo-truong-son-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0023.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0024',
-        N'Lê Thanh Hùng', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Tốt nghiệp Á khoa tại đại học y khoa Phạm Ngọc Thạch năm 1998 với tấm bằng loại Giỏi, BS.CKII Lê Thanh Hùng được giữ lại làm giảng viên tại trường. Bác sĩ Thanh Hùng đã có 23 năm kinh nghiệm giảng dạy và thực hành trong lĩnh vực Sản Phụ khoa, tu nghiệp nội trú tại Bệnh viện Pellegrin-Bordeaux-Pháp. Bác sĩ Thanh Hùng từng phụ trách nhiều ca sinh và mổ khó như song thai, tiền sản giật, nhau tiền đạo, vết mổ lấy thai nhiều lần…\nĐể giúp sản phụ vượt qua những khó khăn trong quá trình sinh nở, Bác sĩ Thanh Hùng thường dành nhiều thời gian trò chuyện cùng sản phụ, giúp họ giảm bớt lo âu. Trong từng ca mổ khó, Bác sĩ Thanh Hùng luôn tập trung cao độ để đảm bảo sự an toàn cho cả mẹ và bé. Bác sĩ Thanh Hùng cũng từng là bác sĩ đại diện cho Việt Nam góp mặt trong chương trình 4 Babies A Second, một phóng sự của kênh truyền hình National Geographic năm 2015 về các ca sinh tại nhiều quốc gia trên thế giới.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2013/11/khoa-san-le-thanh-hung.png');
-INSERT INTO BACSI VALUES (
+        N'BS0024.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0025',
-        N'Tạ Ngọc Thạch', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Là một trong những bác sĩ trẻ tài năng của khoa Tiết niệu – Nam học, Bệnh viện Đa khoa Tâm Anh Hà Nội, ThS.BS Tạ Ngọc Thạch luôn muốn tiếp cận và áp dụng nhiều phương pháp, kỹ thuật khám, chữa bệnh tiên tiến để cứu chữa cho nhiều người bệnh. \nTốt nghiệp Đại học Y Dược Thái Nguyên, chàng sinh viên y khoa đến từ “Thủ đô Chè Việt Nam”, với tinh thần ham học, đã chuẩn bị hành trang lên Hà Nội, tiếp tục chinh phục lĩnh vực chuyên khoa Ngoại, và bắt đầu bén duyên với ngành Nam học từ đây. Năm 2015, anh được trao tặng danh hiệu Chiến sĩ thi đua cấp cơ sở khi đóng góp nhiều đề tài nghiên cứu khoa học mang tính ứng dụng cao như: “Đánh giá kết quả điều trị cắt túi mật qua phẫu thuật nội soi tại BV Gang thép Thái Nguyên”; “Kết quả ghép thận ở bệnh nhân suy thận mạn giai đoạn cuối từ người cho sống tại BV TƯ Thái Nguyên”…', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2013/12/ta-ngoc-thach-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0025.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0026',
-        N'Chế Đình Nghĩa', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Với hơn 20 năm công tác trong ngành Y, TS.BS Chế Đình Nghĩa được biết đến là một trong những chuyên gia hàng đầu Việt Nam trong lĩnh vực Chấn thương chỉnh hình và Phẫu thuật tạo hình. Bác sĩ Đình Nghĩa đã giúp nhiều bệnh nhân thoát khỏi những cơn đau đớn, phục hồi khả năng vận động và tránh được nhiều biến chứng nguy hiểm nhờ đường mổ nhỏ, ít đau đớn, giảm tỷ lệ nhiễm trùng, rút ngắn thời gian và tăng khả năng hồi phục…\nSau khi tốt nghiệp Đại học Y Hà Nội (2001), bác sĩ Đình Nghĩa tiếp tục tham gia đào tạo Thạc sĩ Ngoại khoa tại trường (2007) và Tiến sĩ Y học tại Viện Nghiên cứu Khoa học Y Dược Lâm sàng 108 (2019). Hơn 20 năm nghiên cứu và làm việc, Bác sĩ Đình Nghĩa đã điều trị thành công nhiều ca bệnh khó trong lĩnh vực vi phẫu như: trồng nối lại chi thể đứt rời, điều trị các tổn thương liệt đám rối cánh tay, điều trị liệt mặt, tạo hình tuyến vú sau phẫu thuật đoạn vú ung thư, siêu vi phẫu thuật nối thông bạch mạch – tĩnh mạch và chuyển ghép vi phẫu hạch bạch huyết điều trị phù bạch mạch chi thể, chuyển ghép vạt xương mác phục hồi mất đoạn xương sau cắt bỏ khối U vùng đầu mặt, chi thể… \nNgoài ra, bác sĩ Đình Nghĩa dành thời gian tham gia nghiên cứu khoa học, góp phần vào sự tiến bộ chung của ngành. Một số đề tài như nghiên cứu đặc điểm chẩn đoán và kết quả điều trị phẫu thuật tổn thương động mạch chi dưới bằng ghép tĩnh mạch tự thân tại Bệnh viện Việt Đức, nghiên cứu ứng dụng kỹ thuật vi phẫu trong trồng nối chi thể đứt rời… và nhiều báo cáo khoa học về vi phẫu tạo hình. Các nghiên cứu và báo cáo được đánh giá cao, đóng góp không nhỏ vào sự phát triển của nền y học hiện đại. ', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2023/01/che-dinh-nghia-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0026.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0027',
-        N'Ngô Quý Châu', 
-        N'Phó tổng giám đốc chuyên môn', 
         N'Giáo sư', 
         N'Với hơn 40 năm kinh nghiệm trong lĩnh vực Nội hô hấp, đồng thời từng đảm nhận nhiều vị trí quan trọng tại các bệnh viện lớn hàng đầu cả nước, TTND.GS.TS.BS Ngô Quý Châu hiện đang là Giám đốc chuyên môn, kiêm cố vấn chuyên môn khoa Nội hô hấp, Bệnh viện Đa khoa Tâm Anh, Hà Nội. Tên tuổi TTND.GS.TS.BS Ngô Quý Châu không chỉ vang danh trong nước mà còn “phủ sóng” sang cả các nước châu  Âu – nơi vốn có nền y học hiện đại nhất thế giới. Các thành tựu mà Giáo sư Ngô Quý Châu đạt được, cùng những cống hiến của ông cho nền Y khoa nước nhà như khẳng định thêm cho câu nói: “Trong lĩnh vực Nội tổng hợp nói chung và Phổi – Hô hấp nói riêng, giáo sư Ngô Quý Châu xứng đáng là cây đa cây đề”. \nNăm 1977, cậu học trò Ngô Quý Châu thi đỗ vào trường Đại học Y khoa Hà Nội. Từ quê hương Bắc Giang, chàng trai trẻ khăn gói ra Hà Nội bắt đầu sự nghiệp học tập, tìm tòi và nghiên cứu. Năm 1983, chàng bác sĩ trẻ Ngô Quý Châu xuất sắc nhận bằng loại giỏi – phần thưởng xứng đáng cho những nỗ lực và cố gắng của ông suốt những năm tháng ngồi giảng đường Đại học Y Hà Nội. \nĐủ điều kiện thi tuyển khóa đào tạo bác sĩ nội trú chuyên khoa I, bác sĩ Ngô Quý Châu tiếp tục chinh phục bầu trời tri thức tại Bệnh viện Bạch Mai – Bộ môn Nội Tổng hợp, Trường Đại học Y Hà Nội. Trong số các bác sĩ nội trú khóa đào tạo lúc bấy giờ, ông là người duy nhất được chuyển thẳng làm nghiên cứu sinh. Ba năm miệt mài nghiên cứu, năm 1992, Ngô Quý Châu đã bảo vệ thành công luận án Tiến sĩ về đề tài ung thư phổi khi mới 32 tuổi. Ông chính là vị bác sĩ trẻ nhất của Việt Nam nhận bằng Tiến sĩ Y khoa lúc bấy giờ.  \nKhông dừng lại ở việc trau dồi kiến thức ở môi trường đào tạo trong nước, bác sĩ Ngô Quý Châu còn có khoảng thời gian dài sang Pháp nghiên cứu và thực tập trong nhiều chuyên ngành y khoa: ung thư học, bệnh phổi nghề nghiệp và môi trường… Năm 1995, ông là người Việt Nam đầu tiên thi đỗ vào khóa học Liên các trường đại học của Pháp chuyên sâu về phổi và được Bộ Y tế cho phép tiếp tục học ở Pháp thêm 4 năm nữa. Cuối năm 1999, ông trở lại Việt Nam và công tác tại Bệnh viện Bạch Mai, Hà Nội.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2011/01/bac-si-ngo-quy-chau.png');
-INSERT INTO BACSI VALUES (
+        N'BS0027.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0028',
-        N'Trần Quán Anh', 
-        N'Bác sĩ cao cấp', 
         N'Giáo sư', 
         N'NGND.GS.TS.BS Trần Quán Anh là người đầu tiên đặt nền móng cho ngành Nam học Việt Nam.\nÔng là Tổng Thư ký Hội Tiết niệu – Thận học Việt Nam, Hội viên Hội Tiết niệu thế giới (S.I.U), là người khởi xướng xây dựng phân khoa nam học, thuộc Khoa tiết niệu, Bệnh viện Việt – Đức, Hà Nội. Từng tham gia nhiều hội nghị quốc tế về nam học tại nhiều quốc gia trên thế giới, Giáo sư Trần Quán Anh tiến hành hàng chục công trình nghiên cứu quý giá gây dựng cho bộ môn khoa học từ non trẻ đến gặt hái được những thành tựu to lớn ở Việt Nam hiện nay.\nHơn nửa thế kỷ cống hiến hết mình cho nền Y học nước nhà, lúc đất nước có chiến tranh, không ngồi yên ở trường đại học, hay phòng nghiên cứu, bác sĩ Trần Quán Anh đã xông pha khắp các vùng đất ác liệt như Hà Tĩnh, Quảng Bình, Quảng Trị… để phục vụ các thương bệnh binh; có nhiều binh trạm số lượng chiến sĩ bị thương hơn 1000 người, người bác sĩ trẻ ấy và các đồng nghiệp phải đã việc không ngừng nghỉ trong suốt nhiều ngày đêm dưới hầm tối với ánh sáng “phòng mổ” chỉ từ những chiếc đèn pha xe đạp. Thậm chí tay không dám ngưng một phút vì “nếu bác sĩ phẫu thuật nghỉ ngơi là đồng nghĩa với chấp nhận đồng đội của mình hy sinh”.\nGác lại những hồi ức tuổi trẻ ở chiến trường, bom đạn, nơi ông là một người lính cầm dao mổ để cứu chữa thương, bệnh binh, hòa bình lập lại, Giáo sư dành trọn vẹn tình yêu tâm sức và quyết gắn bó thuỷ chung với nghề Y. Ông trở thành một trong những người đặt nền móng đầu tiên xây dựng ngành tiết niệu nam học ở Việt Nam và góp phần rất lớn vào sự phát triển của ngành nam học ngày nay. ', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2021/03/bac-si-tran-quan-anh.png');
-INSERT INTO BACSI VALUES (
+        N'BS0028.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0029',
-        N'Trần Anh Vũ', 
-        N'Cố vấn chuyên môn', 
-        NULL, 
+        N'Null', 
         N'ThS.BS.CKII Trần Anh Vũ tốt nghiệp Thạc sĩ Chấn thương chỉnh hình, Đại học Y Dược TP. HCM, từng tu nghiệp tại Pháp và Tây Ban Nha để nâng cao kiến thức và kỹ năng trong lĩnh vực Chấn thương chỉnh hình. Bác sĩ Anh Vũ đã điều trị thành công cho rất nhiều trường hợp gặp phải các chấn thương thể thao từ nhẹ đến nghiêm trọng, giúp bệnh nhân phục hồi nhanh chóng và trở lại với đam mê thể thao.\nBác sĩ Anh Vũ có thời gian 5 năm làm việc tại khoa Chấn thương chỉnh hình, Bệnh viện Nguyễn Tri Phương (TP. HCM) trước khi gia nhập Bệnh viện Đa khoa Tâm Anh TP. HCM với vai trò Trưởng khoa Y học thể thao và Nội soi, Trung tâm Chấn thương Chỉnh hình.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2021/02/bs-tran-anh-vu.png');
-INSERT INTO BACSI VALUES (
+        N'BS0029.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0030',
-        N'Hồ Thị Khánh Quyên', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'BS.CKI Hồ Thị Khánh Quyên tốt nghiệp và nhận Bằng chuyên khoa cấp I Sản Phụ khoa tại Đại học Y Dược Cần Thơ. Ngoài ra, bác sĩ còn đạt được các chứng nhận về phẫu thuật nội soi cơ bản trong phụ khoa, soi cổ tử cung, kỹ thuật bơm tinh trùng vào buồng tử cung, cấy và rút que tránh thai IMPLANON NXT và là hội viên hội Nội tiết sinh sản và Vô sinh TPHCM (HOSREM). Với 14 năm kinh nghiệm làm việc tại bệnh viện Đa Khoa tỉnh Kiên Giang và bệnh viện Đa khoa Hoàn Mỹ Sài Gòn cùng phương châm “Đừng cố gắng trở thành người thành công, hãy cố gắng là người có giá trị”, bác sĩ Khánh Quyên luôn nỗ lực để tận tay chào đón những thiên thần bé nhỏ và mang lại niềm hạnh phúc cho các sản phụ.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2014/02/khoa-san-ho-ngoc-khanh-quyen.png');
-INSERT INTO BACSI VALUES (
+        N'BS0030.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0031',
-        N'Nguyễn Quang Nhật', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Xuất thân từ Đại học Y Dược Huế, BS.CKI Nguyễn Quang Nhật có gần 10 năm kinh nghiệm trong lĩnh vực khám và điều trị Sản Phụ khoa tại các bệnh viện như bệnh viện Đa khoa tỉnh Đồng Nai và bệnh viện Đa khoa Hoàn Mỹ Sài Gòn. Với những kinh nghiệm tích lũy được trong quá trình học tập và làm việc, bác sĩ Quang Nhật đã phẫu thuật thành công ca nội soi cấp cứu vỡ thai ngoài tử cung đoạn kẽ, song thai IVF.\nTham gia ngành y với mong muốn được cống hiến cho xã hội, bác sĩ Quang Nhật luôn không ngừng học hỏi và cập nhật những phương pháp y khoa tiên tiến để hỗ trợ các thai phụ có một thai kỳ khỏe mạnh và trải nghiệm vượt cạn an toàn. Bác sĩ Quang Nhật đang là hội viên hội Nội tiết sinh sản và Vô sinh TP.HCM – HOSREM.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2014/04/khoa-san-nguyen-quang-nhat.png');
-INSERT INTO BACSI VALUES (
+        N'BS0031.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0032',
-        N'Đào Trần Tiến', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Sau khi tốt nghiệp bác sĩ nội trú tại Đại học Y Hà Nội, với niềm đam mê và tâm huyết đối với lĩnh vực tiêu hóa, BS Đào Trần Tiến tiếp tục tham gia nhiều khóa đào tạo chuyên sâu trong và ngoài nước về các kỹ thuật can thiệp điều trị bệnh lý Tiêu hóa – Gan mật – Tụy. Trong đó có các kỹ thuật hiện đại như nội soi điều trị ung thư dạ dày sớm và cắt cơ thắt thực quản (POEM), đào tạo cầm tay Nội soi can thiệp Tiêu hoá nâng cao (ESD)…\nBác sĩ Tiến có thế mạnh trong chẩn đoán, điều trị các bệnh lý thực quản, dạ dày, đại tràng, bệnh lý về gan, đường mật, tụy; làm chủ kỹ thuật nội soi can thiệp điều trị xuất huyết tiêu hóa, cắt cơ thực quản, cắt ung thư sớm; sử dụng nội soi mật tuỵ ngược dòng trong chẩn đoán và điều trị các bệnh lý đường mật, ống tụy, và túi mật…\nĐồng thời, bác sĩ Tiến cũng tích cực tham gia nghiên cứu khoa học và là tác giả của nhiều công trình nghiên cứu có tính thực tiễn cao. Với những cống hiến không ngừng nghỉ đó, bác sĩ Đào Trần Tiến đã nhận được bằng khen của Bộ Y tế, bằng khen Chiến sĩ thi đua cấp cơ sở tại Bệnh viện Bạch Mai…', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/02/dao-tran-tien.png');
-INSERT INTO BACSI VALUES (
+        N'BS0032.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0033',
-        N'Hà Thị Loan', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Năm 2015, bác sĩ Hà Thị Loan tốt nghiệp chuyên ngành Bác sĩ Đa khoa tại trường Đại học Y dược Thái Nguyên. Với tinh thần học hỏi nâng cao chuyên môn nhằm hoàn thiện bản thân, có thể điều trị thành công nhiều ca bệnh khó, bác sĩ Loan tiếp tục học tập, hoàn thành nhiều chuyên ngành sau đại học như Hồi sức cấp cứu, siêu âm tổng quát, nội soi tiêu hóa trên, nội soi đại tràng.\nThS.BSNT Hà Thị Loan là bác sĩ trẻ nhiều tâm huyết với người bệnh, tận tụy với công việc khám chữa bệnh tại khoa Tiêu hóa – Gan Mật – Tụy, Bệnh viện Đa khoa Tâm Anh Hà Nội. Bên cạnh đó, bác sĩ luôn dành thời gian nghiên cứu chuyên sâu. Tiêu biểu là công trình nghiên cứu: Đặc điểm lâm sàng, cận lâm sàng và nồng độ Procalcitonin huyết thanh ở bệnh nhân nhiễm khuẩn huyết điều trị tại Bệnh viện đa khoa Trung Ương Thái Nguyên năm 2018.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/02/ha-thi-loan-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0033.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0034',
-        N'Mai Mạnh Tam', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'ThS. BS Mai Mạnh Tam được đào tạo cơ bản và chuyên sâu lĩnh vực Nội – Hô Hấp tại trường Đại học Y Hà Nội từ năm 2003, có nhiều kinh nghiệm trong thăm khám và điều trị bệnh. Thời gian học tập tại National Center for Global Health and Medicine (NCGM – Nhật Bản) giúp Bác sĩ Mai Mạnh Tam ưu thế phát triển kỹ thuật nội soi phế quản.\nBác sĩ Mai Mạnh Tam đã đóng góp nhiều đề tài, công trình nghiên cứu khoa học, vinh dự nhận được giải thưởng Chiến sĩ thi đua do Sở Y tế trao tặng.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/02/bac-si-mai-manh-tam-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0034.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0035',
-        N'Lã Quý Hương', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'BSNT Lã Quý Hương là bác sĩ  trẻ được đào tạo chuyên biệt – hệ Bác sĩ Nội trú, chuyên ngành Nội khoa tại một trong những trường đại học về Y lớn nhất cả nước – Đại học Y Hà Nội và thực tập tại Bệnh viện Đại học Ajou (Hàn Quốc). \nLà bác sĩ vững vàng về chuyên môn tại chuyên khoa Nội Hô hấp, bác sĩ Lã Quý Hương để lại ấn tượng tốt cho người bệnh trong suốt quá trình theo dõi tình trạng sức khỏe khi thăm khám, điều trị tại bệnh viện.\nNgoài ra, BSNT Lã Quý Hương thường xuyên tham gia các khóa đào tạo cơ bản cũng như nâng cao trong và ngoài nước để cập nhật các kiến thức y khoa mới. BS Hương là thành viên tích cực của Hội Hô hấp Việt Nam, Hội Hô hấp Hà Nội và Hội Y học Giấc ngủ Việt Nam.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/03/bac-si-la-quy-huong-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0035.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0036',
-        N'Nguyễn Văn Ngân', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Với nhiều năm kinh nghiệm trong lĩnh vực Nội tổng hợp và công tác tại bệnh viện tuyến đầu của cả nước, BSNT. Nguyễn Văn Ngân đã điều trị thành công hàng trăm ca bệnh hô hấp phổ biến như: Viêm phế quản, viêm phổi, COPD, hen phế quản, ung thư phổi,… cũng như các bệnh hô hấp chuyên sâu như: Lao, bệnh tích protein phế nang, viêm phổi kẽ, xơ phổi vô căn, Sarcoidosis,… \nLà thành viên tích cực của Hội hô hấp Việt Nam, Hội hô hấp Hà Nội, Hội hô hấp Thành phố Hồ Chí Minh, BS Nguyễn Văn Ngân luôn dẫn đầu trong các hoạt động, hội thảo về chuyên môn, cập nhật những kỹ thuật mới và ứng dụng linh hoạt, sáng tạo trong việc điều trị cho người bệnh một cách hiệu quả nhất. ', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/03/bac-si-nguyen-van-ngan-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0036.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0037',
-        N'Đặng Thành Đô', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'ThS.BSNT. Đặng Thành Đô tốt nghiệp xuất sắc tại trường ĐH Y Hà Nội với nhiều thành tích đáng nể. Là một trong những bác sĩ trẻ được đánh giá cao về chuyên môn, bác sĩ Đặng Thành Đô được giữ lại giảng dạy tại Đại học Y Hà Nội, đây cũng là cơ hội để bác sĩ “truyền lửa” đam mê và nhiệt huyết cống hiến cho nhiều thế hệ sinh viên.\nTrong suốt quá trình khám chữa bệnh tại các cơ sở y tế đầu ngành của cả nước, BS Đô đã thăm khám và điều trị thành công hàng nghìn ca bệnh mắc các bệnh lý hô hấp, đặc biệt là bệnh Phổi tắc nghẽn mạn tính. \nNgoài ra, BS Đô luôn dành nhiều thời gian và tâm huyết để giải đáp thắc mắc, tư vấn giúp người bệnh nhanh chóng cải thiện các vấn đề sức khỏe.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/03/bac-si-dang-thanh-do-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0037.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0038',
-        N'Thân Thị Ngọc Lan', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Với nhiều năm kinh nghiệm thực tiễn tích lũy tại các bệnh viện lớn, ThS.BSNT. Thân Thị Ngọc Lan được các chuyên gia đầu ngành đánh giá cao về trình độ chuyên môn cũng như nhiệt huyết với công tác khám chữa bệnh. Không chỉ dừng lại ở trong nước, ThS.BSNT Ngọc Lan còn tham gia nhiều đào tạo khoa học liên đại học Pháp – Việt về phương pháp chẩn đoán và điều trị bệnh lý hô hấp. \nVới hơn 10 năm học tập và công tác, bác sĩ Thân Thị Ngọc Lan đã giải quyết được nhiều vấn đề sức khỏe cho người bệnh trong lĩnh vực hô hấp. Luôn tận tâm, chu đáo với từng người bệnh, Ths.BSNT. Ngọc Lan trở thành lựa chọn tin cậy được nhiều người bệnh khi đến thăm khám và điều trị tại Khoa Nội Hô hấp, Bệnh viện Đa Khoa Tâm Anh Hà Nội.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/04/bac-si-than-thi-ngoc-lan-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0038.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0039',
-        N'Trần Duy Hưng', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Tốt nghiệp Trường Đại học Y Hà Nội (2018) – đơn vị đào tạo y khoa hàng đầu cả nước, bác sĩ Trần Duy Hưng tiếp tục tham gia chương trình đào tạo Bác sĩ Nội trú. Sau 3 năm học tập, rèn luyện, bác sĩ Trần Duy Hưng đã xuất sắc hoàn thành khóa học và công tác tại khoa Hô hấp, Bệnh viện Đa khoa Tâm Anh Hà Nội.\nLà người đầy nhiệt huyết, đam mê với công việc, không quản ngại khó khăn thử thách, bác sĩ Trần Duy Hưng đã tích cực tham gia công tác phòng chống và hỗ trợ điều trị người bệnh Covid-19 trong đợt dịch bệnh bùng phát nghiêm trọng, giúp không ít bệnh nhân khỏi bệnh trở về với gia đình.\nBác sĩ Trần Duy Hưng còn dành nhiều thời gian nghiên cứu sâu về phương pháp chẩn đoán, điều trị hiệu quả các bệnh lý đường hô hấp ở người lớn, không ngừng cập nhật các kiến thức mới để áp dụng trong thực tiễn khám chữa bệnh.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2023/02/tran-duy-hung-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0039.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0040',
-        N'Cẩn Tuyết Nga', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Dược sĩ Cẩn Tuyết Nga tốt nghiệp xuất sắc Đại học Dược Piatigorsk (Cộng hòa Liên Bang Nga). Với mong muốn nâng cao chuyên môn, trau dồi kiến thức, dược sĩ Nga trở về Việt Nam, tiếp tục tham gia nghiên cứu và được cấp bằng tiến sĩ tại Đại học Dược Hà Nội.\nVới hơn 30 năm công tác trong ngành Y Dược, TS.DS Cẩn Tuyết Nga từng đảm nhiệm nhiều vị trí quan trọng tại Bệnh viện Bạch Mai như Phó khoa Dược (2013 – 2018), Trưởng khoa Dược (2019 – 2020). Tại đây, TS Nga đã tổ chức hoạt động dược lâm sàng, thông tin các loại thuốc, góp phần giúp người bệnh sử dụng thuốc an toàn, hợp lý, hiệu quả.\nTrong quá trình công tác, TS.DS Cẩn Tuyết Nga đã tham gia xây dựng và triển khai thành công ứng dụng phần mềm cảnh báo các vấn đề liên quan đến thuốc khi kê đơn thuốc ngoại trú tại bệnh viện Bạch Mai (là một trong những đơn vị đầu tiên đưa ra ý tưởng và phát triển được phần mềm cảnh báo khi kê đơn)', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2024/04/duoc-si-can-tuyet-nga-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0040.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0041',
-        N'Trần Đức Hậu', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Bác sĩ Hậu được đào tạo chuyên ngành Nhi khoa tại trường Đại học Y Nhi Leningrad, Liên xô. Sau khi tốt nghiệp, bác sĩ tiếp tục thực tập sau đại học tại trường, tích lũy kinh nghiệm thăm khám và điều trị cho các bệnh nhi. Bác sĩ Hậu đã có hơn 30 năm kinh nghiệm trong chuyên ngành Nhi khoa.\nBên cạnh công tác chuyên môn, bác sĩ Trần Đức Hậu dành thời gian tham dự nhiều khóa đào tạo nâng cao chuyên môn và báo cáo tại các hội nghị khoa học trong nước và quốc tế chuyên ngành Nhi, chuyên ngành Nhi Ung thư. Đồng thời bác sĩ là giảng viên thỉnh giảng của Bộ môn Nhi, Đại học Y Hà Nội trong nhiều năm, tham gia vào công tác đào tạo sau đại học.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/12/ts-bs-tran-duc-hau.png');
-INSERT INTO BACSI VALUES (
+        N'BS0041.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0042',
-        N'Lê Thị Lan Anh', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Bằng chuyên môn vững chắc cùng bề dày kinh nghiệm 20 năm về Nhi khoa, ThS.BSNT Lê Thị Lan Anh được nhiều bố mẹ đánh giá “mát tay” trong thăm khám và điều trị các bệnh lý ở trẻ nhỏ. Sự cẩn thận, nhẹ nhàng của bác sĩ Lan Anh là điều mà các bậc phụ huynh hoàn toàn an tâm và tin tưởng.\nBác sĩ Lan Anh tốt nghiệp Đại học Y Hà Nội và tiếp tục đào tạo chuyên sâu về Thạc sĩ, Bác sĩ nội trú chuyên khoa Nhi. Trong suốt thời gian cống hiến cho ngành Y, bác sĩ Lan Anh luôn không ngừng hoàn thiện chuyên môn về kỹ năng, tham gia nghiên cứu, cập nhật các kỹ thuật, phương pháp mới.\nKhông chỉ là tác giả của nhiều đề án nghiên cứu giá trị, bác sĩ Lan Anh cũng là gương mặt quen thuộc trong nhiều chương trình về sức khỏe với vai trò chuyên gia tư vấn và là Hội viên Hội Nhi khoa Việt Nam.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2024/03/bsnt-le-thi-lan-anh.png');
-INSERT INTO BACSI VALUES (
+        N'BS0042.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0043',
-        N'Nguyễn Văn Lan', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Với 15 năm kinh nghiệm trong ngành Chẩn đoán hình ảnh, BSCKI Nguyễn Văn Lan – Phó khoa Chẩn đoán hình ảnh, Bệnh viện Đa khoa Tâm Anh, Hà Nội đã ứng dụng các kỹ thuật tiên tiến vào chẩn đoán, giúp phát hiện sớm các bệnh lý, hỗ trợ bác sĩ điều trị đưa ra phác đồ điều trị sớm và hiệu quả cho người bệnh.\nNgay sau khi tốt nghiệp Bác sĩ Y khoa tại Đại học Y Thái Bình, ông đã “đầu quân” cho Bệnh viện Đa khoa tỉnh Hà Tĩnh. Sau 10 năm giữ vai trò bác sĩ đa khoa, tiếp xúc với nhiều bệnh nhân, trải nghiệm khám chữa bệnh thực tế, ông nhận ra việc chẩn đoán bệnh chính xác, kịp thời giữ vai trò quan trọng, là yếu tố tiên quyết trong điều trị bất kỳ loại bệnh nào. Thấu hiểu tầm quan trọng đó, cùng khát khao muốn cứu chữa nhiều bệnh nhân, bác sĩ Nguyễn Văn Lan tiếp tục theo học Bác sĩ chuyên khoa I – Chuyên ngành Chẩn đoán hình ảnh và tốt nghiệp vào năm 2005. 2 năm sau đó, ông nhận được Chứng chỉ An toàn bức xạ trong X-quang y tế và tiếp tục đạt nhiều thành tựu trong lĩnh vực chẩn đoán hình ảnh, đóng góp cho sự phát triển của y học nước nhà.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/12/nguyen-van-lan.png');
-INSERT INTO BACSI VALUES (
+        N'BS0043.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0044',
-        N'Lê Văn Khánh', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Với gần 10 năm kinh nghiệm và từng công tác tại các bệnh viện tuyến đầu của cả nước trong lĩnh vực Chẩn đoán hình ảnh và điện quang can thiệp, BSCKII. BSNT Lê Văn Khánh đã thực hiện thành công hàng nghìn ca đốt sóng cao tần RFA tuyến giáp, thực hiện nút mạch thành trong u xơ tử cung, u xơ tuyến tiền liệt và đặc biệt kỹ thuật nút tĩnh mạch thừng tinh trong trường hợp vô sinh hiếm muộn.\nMong muốn trau dồi kiến thức, kỹ năng, nâng cao chuyên môn nghề nghiệp, BSNT Lê Văn Khánh nhiệt tình tham gia nhiều khóa học chuyên sâu tại Hàn Quốc như: cắt u hút u vú chân không VABB, đốt sóng cao tầng RFA tuyến giáp… BS Khánh còn dành thời gian nghiên cứu các công trình liên quan đến Chẩn đoán hình ảnh và Điện quang can thiệp, vinh dự được đăng tải các công trình có giá trị thực tiễn trên tạp chí trong và ngoài nước. \nNhờ những cống hiến hết mình trong công tác khám chữa bệnh và nghiên cứu khoa học, BS Khánh được lãnh đạo viện và đồng nghiệp đánh giá cao về chuyên môn, nhiệt huyết với công việc, hết mình vì người bệnh.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/12/le-van-khanh.png');
-INSERT INTO BACSI VALUES (
+        N'BS0044.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0045',
-        N'Lê Nguyệt Minh', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'BS.CKII Lê Nguyệt Minh đã có hơn 10 năm kinh nghiệm trong lĩnh vực chẩn đoán hình ảnh và can thiệp điện quang. Tốt nghiệp Đại học Y Hà Nội – một trong những môi trường đào tạo y khoa danh tiếng nhất cả nước, Bác sĩ Minh tiếp tục tham gia thêm nhiều chương trình đào tạo chuyên sâu từ các trường đại học nổi tiếng thế giới như chứng chỉ DFMSA tại Trường đại học Clermont Auvergne (Pháp), đào tạo chẩn đoán hình ảnh tại Bệnh viện Đại học San Antonio (Mỹ), chứng chỉ sinh thiết vú có hỗ trợ hút chân không (VABB) tại Seoul (Hàn Quốc)…\nDành hết thời gian và tâm huyết của mình cho lĩnh vực chẩn đoán hình ảnh và can thiệp vú – tĩnh mạch, Bác sĩ Minh không chỉ xuất sắc trong hoạt động khám chữa bệnh, mà còn đóng góp xây dựng nên nhiều công trình nghiên cứu khoa học có giá trị lớn trong và ngoài nước. Tiêu biểu như công trình “Nghiên cứu đặc điểm hình ảnh suy tĩnh mạch chi dưới tại Bệnh viện Bạch Mai” đăng trên Tạp chí Y học thực hành năm 2017, báo cáo “Các liệu pháp giảm nhẹ trong điều trị suy giãn tĩnh mạch – kinh nghiệm của Việt Nam” tại Đại hội Can thiệp ung thư Châu Á – Thái Bình Dương lần thứ 6 (2017)…', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/12/le-nguyet-minh.png');
-INSERT INTO BACSI VALUES (
+        N'BS0045.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0046',
-        N'Quảng Thị Bính Thìn', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Bác sĩ Quản Thị Bính Thìn có gần 20 năm công tác trong lĩnh vực y khoa, chuyên khoa Chẩn đoán hình ảnh. Những kinh nghiệm đúc kết được trong quá trình học tập và khám chữa bệnh đã giúp Bác sĩ Bính Thìn đưa ra những đánh giá chính xác khi thực hiện các chẩn đoán lâm sàng cho bệnh nhân. Đây chính là cơ sở giúp bác sĩ phát hiện bệnh kịp thời và đưa ra phương án điều trị hiệu quả. ', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2015/12/quan-thi-binh-thin.png');
-INSERT INTO BACSI VALUES (
+        N'BS0046.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0047',
-        N'Phạm Thanh Xuân', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Là một trong những người đầu tiên đặt nền móng xây dựng khoa Nhi trở thành khoa mũi nhọn của Bệnh viện Đa Khoa Tâm Anh Hà Nội và là khoa vệ tinh của Bệnh viện Nhi Trung ương, BS.CKII Phạm Thanh Xuân không chỉ được các bệnh nhân yêu mến bởi sự nhẹ nhàng, ấm áp mà còn nhận được sự kính trọng của các đồng nghiệp bởi tính quyết đoán, mạnh mẽ bên trong sự nhẹ nhàng của một bác sĩ Nhi khoa.\nGần 40 năm “tuổi nghề”, bác sĩ Thanh Xuân đã đồng hành cùng hàng triệu bệnh nhi, hàng triệu trường hợp đã được điều trị thành công. Chưa bao giờ ngừng đam mê, sau thời gian công tác tại bệnh viện, bác sĩ Thanh Xuân luôn dành tâm huyết để tìm tòi, nghiên cứu và trau dồi kiến thức chuyên môn.\nKhông chỉ chú trọng công tác chuyên môn, bác sĩ Thanh Xuân còn tích cực tham gia công tác giảng dạy, tâm huyết với sự nghiệp “truyền lửa đam mê” cho các thế hệ bác sĩ trẻ. Đối với bác sĩ Thanh Xuân, giáo dục y tế là phải nhìn về cội nguồn, y tế phải gắn với tri thức và thái độ ứng xử của con người, do đó trong công tác giảng dạy cũng như khi thực hiện vai trò khám chữa bệnh, bác sĩ Thanh Xuân luôn đề cao kinh nghiệm sống, thái độ phục vụ bệnh nhân, đặc biệt là thấu hiểu và thích nghi với những điều kiện thực tế, cho dù là khó khăn và thiếu thốn nhất.\nHơn nửa đời người gắn bó với mối duyên nợ Nhi khoa, bác sĩ Thanh Xuân đã xuất sắc giành được nhiều thành tích nổi bật, trong đó có nhiều danh hiệu thi đua và bằng khen của Bộ Y tế.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2020/12/Detail_Thanh-Xuan.png');
-INSERT INTO BACSI VALUES (
+        N'BS0047.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0048',
-        N'Phan Thị Phương Thảo', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'“Thân thiện, chuyên nghiệp, tận tâm” là những tính từ nổi bật mà đồng nghiệp và bệnh nhân nói về ThS.BS.CKII Phan Thị Phương Thảo. Hơn 29 năm gắn bó với nghề y, niềm vui của bác sĩ Phương Thảo là nhìn thấy nụ cười hài lòng của bệnh nhân. Mỗi ngày đến bệnh viện, bác sĩ Phương Thảo đều cảm thấy hạnh phúc hơn khi bệnh nhân có tiến triển tích cực, hồi phục khỏe mạnh. \nĐối với bác sĩ Phương Thảo, điều trị cho bệnh nhân không chỉ là xây dựng phác đồ phù hợp, theo dõi sát sao quá trình chữa trị; mà còn ở sự tư vấn tận tình, cử chỉ nhẹ nhàng, quan sát từng chút và lưu tâm đến cả những điều nhỏ ở bệnh nhân. Điều này giúp bác sĩ gần gũi hơn và bệnh nhân có thể đặt trọn niềm tin ở người bác sĩ. \nHiện tại, ThS.BS.CKII Phan Thị Phương Thảo vẫn không ngừng nâng cao kiến thức để phát huy các ưu thế trong điều trị. Là bác sĩ nội tim mạch giàu kinh nghiệm, bác sĩ Phương Thảo ưu tiên lựa chọn phương án chữa trị tối ưu với chi phí phù hợp cho bệnh nhân.', 
         N'Nữ', 
-        'https://tamanhhospital.vn/wp-content/uploads/2023/01/phan-thi-phuong-thao-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0048.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0049',
-        N'Nguyễn Quốc Khánh', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'Hơn 30 năm gắn bó với nghề y, ThS.BS Nguyễn Quốc Khánh luôn miệt mài nghiên cứu, học tập để nâng cao trình độ chuyên môn trong khám, chẩn đoán bệnh và đưa ra những quyết định đúng đắn để chiến thắng những ca bệnh khó, cứu sống người bệnh.\nTrở về nước sau nhiều năm tu nghiệp ở nước ngoài, ThS.BS Nguyễn Quốc Khánh vừa đảm nhận công tác tại Khoa tim mạch Bệnh viện 19-8 Bộ Công an vừa tiếp tục theo học bác sĩ chuyên khoa và cao học tại Học viện Quân Y. “Luôn bận rộn, căng thẳng và nhiều áp lực, nhưng khi đã bén duyên và yêu quý nghề là nguồn động lực để tôi vượt lên tất cả và gắn bó đến tận bây giờ và cả sau này nữa.”, bác sĩ Nguyễn Quốc Khánh chia sẻ. \nCó lẽ cũng chính vì vậy mà trong ngần ấy năm theo nghiệp Y khoa, Ths.BS Nguyễn Quốc Khánh được nhắc nhớ không chỉ về cái tâm, cái tài của người thầy thuốc mà còn về một tấm gương trau dồi chuyên môn, với những công trình nghiên cứu có giá trị cao, trong đó nhiều đề tài khoa học của bác sĩ đã được áp dụng vào thực tiễn.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2020/05/nguyen-quoc-khanh-detail.png');
-INSERT INTO BACSI VALUES (
+        N'BS0049.png');
+INSERT INTO CHITIETBACSI VALUES (
         'BS0050',
-        N'Dương Công Lĩnh', 
-        N'Bác sĩ', 
-        NULL, 
+        N'Null', 
         N'ThS.BSNT Dương Công Lĩnh vượt qua kỳ sát hạch khắt khe để trở thành Bác sĩ nội trú chuyên ngành Nội Tim mạch tại Trường Đại học Y Hà Nội. \nĐặt phương châm “dùng trái tim để bảo vệ trái tim” lên đầu, ThS.BSNT Dương Công Lĩnh không ngừng học hỏi và áp dụng những kỹ thuật, phương pháp trị liệu mới giúp cho bệnh nhân bảo vệ sức khỏe của mình trước những nguy hiểm của bệnh tim mạch. Không chỉ là bác sĩ giỏi chuyên môn, đam mê sáng tạo và có tinh thần trách nhiệm, bác sĩ Lĩnh còn tích cực tham gia công tác tư vấn khám chữa cho bệnh nhân. \nBằng y đức và tài năng của mình, bác sĩ Lĩnh được rất nhiều bệnh nhân và người nhà tin tưởng. Hiện tại Bác sĩ Lĩnh đang công tác tại Khoa Tim mạch, BVĐK Tâm Anh Hà Nội.', 
         N'Nam', 
-        'https://tamanhhospital.vn/wp-content/uploads/2023/04/duong-cong-linh-detail.png');
+        N'BS0050.png');
 
 
 INSERT INTO HOCVI VALUES ('BS.CKII', N'Bác sĩ chuyên khoa II');
@@ -1281,9 +1184,59 @@ INSERT INTO PHIEUHEN VALUES ('PH00096', '07/05/2023', N'Sáng', 'BS0023', NULL, 
 INSERT INTO PHIEUHEN VALUES ('PH00097', '08/05/2023', N'Sáng', 'BS0024', NULL, N'Thi Tuấn Hoài', '24/03/2010', N'Nam', '0918765429', N'90 Phạm Văn Đồng, Nghĩa Chánh Bắc, Quảng Ngãi, Việt Nam');
 INSERT INTO PHIEUHEN VALUES ('PH00098', '09/05/2023', N'Chiều', 'BS0033', NULL, N'Ứng Hoàng Vũ', '12/02/1998', N'Nam', '0801991858', N'1 Đ. Phan Đăng Lưu, phường 03, Bình Thạnh, Thành phố Hồ Chí Minh 72300, Việt Nam');
 
-INSERT INTO NHANVIEN VALUES ('NV001', N'Bùi Phan Bảo Ngọc ', N'Quản lý');
-INSERT INTO NHANVIEN VALUES ('NV002', N'Nguyễn Phan Như Quỳnh ', N'Thu ngân');
-INSERT INTO NHANVIEN VALUES ('NV003', N'Võ Thị Thanh Trúc', N'Thu ngân');
+INSERT INTO NHANVIEN VALUES ('NV001', N'Bùi Phan Bảo Ngọc ', N'Quản lý', 'TK0001');
+INSERT INTO NHANVIEN VALUES ('NV002', N'Nguyễn Phan Như Quỳnh ', N'Thu ngân', 'TK0002');
+INSERT INTO NHANVIEN VALUES ('NV003', N'Võ Thị Thanh Trúc', N'Thu ngân', 'TK0003');
+INSERT INTO NHANVIEN VALUES ('BS0001', N'Triệu Triều Dương', N'Giám đốc', 'TK0004');
+INSERT INTO NHANVIEN VALUES ('BS0002', N'Trần Văn Hinh', N'Trưởng khoa', 'TK0005');
+INSERT INTO NHANVIEN VALUES ('BS0003', N'Nguyễn Văn Nghĩa', N'Bác sĩ', 'TK0006');
+INSERT INTO NHANVIEN VALUES ('BS0004', N'Tống Văn Khả', N'Dược sĩ', 'Null');
+INSERT INTO NHANVIEN VALUES ('BS0005', N'Đỗ Thanh Thư', N'Bác sĩ', 'TK0007');
+INSERT INTO NHANVIEN VALUES ('BS0006', N'Huỳnh Thị Thanh Trang', N'Phó khoa', 'TK0008');
+INSERT INTO NHANVIEN VALUES ('BS0007', N'Trần Kim Oanh', N'Bác si', 'TK0009');
+INSERT INTO NHANVIEN VALUES ('BS0008', N'Trần Đức Minh', N'Bác sĩ', 'TK0010');
+INSERT INTO NHANVIEN VALUES ('BS0009', N'Võ Thị Tường Duy', N'Bác sĩ', 'TK0011');
+INSERT INTO NHANVIEN VALUES ('BS0010', N'Cam Ngọc Phượng', N'Giám đốc trung tâm', 'Null');
+INSERT INTO NHANVIEN VALUES ('BS0011', N'Trần Ngọc Hứu', N'Bác sĩ', 'TK0012');
+INSERT INTO NHANVIEN VALUES ('BS0012', N'Nguyễn Thị Liên Hương', N'Bác sĩ', 'TK0013');
+INSERT INTO NHANVIEN VALUES ('BS0013', N'Trịnh Tuấn Dũng', N'Bác sĩ', 'TK0014');
+INSERT INTO NHANVIEN VALUES ('BS0014', N'Nguyễn Duy Trinh', N'Phó giám đốc', 'TK0015');
+INSERT INTO NHANVIEN VALUES ('BS0015', N'Trần Thị Thanh Trúc', N'Bác sĩ', 'TK0016');
+INSERT INTO NHANVIEN VALUES ('BS0016', N'Huỳnh Văn Mười Một', N'Bác sĩ', 'TK0017');
+INSERT INTO NHANVIEN VALUES ('BS0017', N'Nguyễn Đức Hưng', N'Phó khoa', 'TK0018');
+INSERT INTO NHANVIEN VALUES ('BS0018', N'Nguyễn Tân Cương', N'Bác sĩ', 'TK0019');
+INSERT INTO NHANVIEN VALUES ('BS0019', N'Nguyễn Ngọc Huỳnh', N'Trưởng lap', 'Null');
+INSERT INTO NHANVIEN VALUES ('BS0020', N'Dương Quang Huy', N'Bác sĩ', 'TK0020');
+INSERT INTO NHANVIEN VALUES ('BS0021', N'Lê Xuân Nguyên', N'Bác sĩ', 'TK0021');
+INSERT INTO NHANVIEN VALUES ('BS0022', N'Nguyễn Phạm Thùy Linh', N'Bác sĩ', 'TK0022');
+INSERT INTO NHANVIEN VALUES ('BS0023', N'Ngô Trường Sơn', N'Phó trưởng khoa', 'TK0023');
+INSERT INTO NHANVIEN VALUES ('BS0024', N'Lê Thanh Hùng', N'Bác sĩ', 'TK0024');
+INSERT INTO NHANVIEN VALUES ('BS0025', N'Tạ Ngọc Thạch', N'Bác sĩ', 'TK0025');
+INSERT INTO NHANVIEN VALUES ('BS0026', N'Chế Đình Nghĩa', N'Bác sĩ', 'TK0026');
+INSERT INTO NHANVIEN VALUES ('BS0027', N'Ngô Quý Châu', N'Phó tổng giám đốc chuyên môn', 'TK0027');
+INSERT INTO NHANVIEN VALUES ('BS0028', N'Trần Quán Anh', N'Bác sĩ cao cấp', 'TK0028');
+INSERT INTO NHANVIEN VALUES ('BS0029', N'Trần Anh Vũ', N'Cố vấn chuyên môn', 'TK0029');
+INSERT INTO NHANVIEN VALUES ('BS0030', N'Hồ Thị Khánh Quyên', N'Bác sĩ', 'TK0030');
+INSERT INTO NHANVIEN VALUES ('BS0031', N'Nguyễn Quang Nhật', N'Bác sĩ', 'TK0031');
+INSERT INTO NHANVIEN VALUES ('BS0032', N'Đào Trần Tiến', N'Bác sĩ', 'TK0032');
+INSERT INTO NHANVIEN VALUES ('BS0033', N'Hà Thị Loan', N'Bác sĩ', 'TK0033');
+INSERT INTO NHANVIEN VALUES ('BS0034', N'Mai Mạnh Tam', N'Bác sĩ', 'TK0034');
+INSERT INTO NHANVIEN VALUES ('BS0035', N'Lã Quý Hương', N'Bác sĩ', 'TK0035');
+INSERT INTO NHANVIEN VALUES ('BS0036', N'Nguyễn Văn Ngân', N'Bác sĩ', 'TK0036');
+INSERT INTO NHANVIEN VALUES ('BS0037', N'Đặng Thành Đô', N'Bác sĩ', 'TK0037');
+INSERT INTO NHANVIEN VALUES ('BS0038', N'Thân Thị Ngọc Lan', N'Bác sĩ', 'TK0038');
+INSERT INTO NHANVIEN VALUES ('BS0039', N'Trần Duy Hưng', N'Bác sĩ', 'TK0039');
+INSERT INTO NHANVIEN VALUES ('BS0040', N'Cẩn Tuyết Nga', N'Bác sĩ', 'TK0040');
+INSERT INTO NHANVIEN VALUES ('BS0041', N'Trần Đức Hậu', N'Bác sĩ', 'TK0041');
+INSERT INTO NHANVIEN VALUES ('BS0042', N'Lê Thị Lan Anh', N'Bác sĩ', 'TK0042');
+INSERT INTO NHANVIEN VALUES ('BS0043', N'Nguyễn Văn Lan', N'Bác sĩ', 'TK0043');
+INSERT INTO NHANVIEN VALUES ('BS0044', N'Lê Văn Khánh', N'Bác sĩ', 'TK0044');
+INSERT INTO NHANVIEN VALUES ('BS0045', N'Lê Nguyệt Minh', N'Bác sĩ', 'TK0045');
+INSERT INTO NHANVIEN VALUES ('BS0046', N'Quảng Thị Bính Thìn', N'Bác sĩ', 'TK0046');
+INSERT INTO NHANVIEN VALUES ('BS0047', N'Phạm Thanh Xuân', N'Bác sĩ', 'TK0047');
+INSERT INTO NHANVIEN VALUES ('BS0048', N'Phan Thị Phương Thảo', N'Bác sĩ', 'TK0048');
+INSERT INTO NHANVIEN VALUES ('BS0049', N'Nguyễn Quốc Khánh', N'Bác sĩ', 'TK0049');
+INSERT INTO NHANVIEN VALUES ('BS0050', N'Dương Công Lĩnh', N'Bác sĩ', 'TK0050');
 
 INSERT INTO BENH VALUES ('B0001', N'Cúm');
 INSERT INTO BENH VALUES ('B0002', N'Viêm phổi');
@@ -1659,106 +1612,106 @@ INSERT INTO PHIEUKHAM VALUES ('PK0099', 'BN0101', 150000, 'A14', N'Có hẹn', '
 INSERT INTO PHIEUKHAM VALUES ('PK0100', 'BN0102', 150000, 'A11', N'Không có hẹn', 'NV003');
 
 
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0001', 'PK0001', 'BS0001', '02/01/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0002', 'PK0002', 'BS0002', '02/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0003', 'PK0003', 'BS0003', '03/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0004', 'PK0004', 'BS0014', '04/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0005', 'PK0005', 'BS0005', '05/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0006', 'PK0006', 'BS0006', '06/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0007', 'PK0007', 'BS0007', '07/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0008', 'PK0008', 'BS0008', '08/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0009', 'PK0009', 'BS0009', '09/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0010', 'PK0010', 'BS0020', '10/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0011', 'PK0011', 'BS0011', '11/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0012', 'PK0012', 'BS0012', '12/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0013', 'PK0013', 'BS0013', '13/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0014', 'PK0014', 'BS0014', '14/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0015', 'PK0015', 'BS0015', '15/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0016', 'PK0016', 'BS0016', '16/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0017', 'PK0017', 'BS0017', '17/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0018', 'PK0018', 'BS0018', '18/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0019', 'PK0019', 'BS0029', '19/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0020', 'PK0020', 'BS0020', '20/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0021', 'PK0021', 'BS0021', '21/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0022', 'PK0022', 'BS0022', '22/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0023', 'PK0023', 'BS0023', '23/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0024', 'PK0024', 'BS0024', '24/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0025', 'PK0025', 'BS0025', '25/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0026', 'PK0026', 'BS0026', '26/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0027', 'PK0027', 'BS0027', '27/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0028', 'PK0028', 'BS0028', '28/02/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0029', 'PK0029', 'BS0029', '01/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0030', 'PK0030', 'BS0030', '02/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0031', 'PK0031', 'BS0031', '03/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0032', 'PK0032', 'BS0032', '04/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0033', 'PK0033', 'BS0033', '05/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0034', 'PK0034', 'BS0034', '06/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0035', 'PK0035', 'BS0035', '07/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0036', 'PK0036', 'BS0036', '08/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0037', 'PK0037', 'BS0037', '09/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0038', 'PK0038', 'BS0038', '10/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0039', 'PK0039', 'BS0039', '11/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0040', 'PK0040', 'BS0040', '12/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0041', 'PK0041', 'BS0041', '13/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0042', 'PK0042', 'BS0042', '14/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0043', 'PK0043', 'BS0043', '15/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0044', 'PK0044', 'BS0044', '16/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0045', 'PK0045', 'BS0045', '17/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0046', 'PK0046', 'BS0046', '18/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0047', 'PK0047', 'BS0047', '19/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0048', 'PK0048', 'BS0048', '20/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0049', 'PK0049', 'BS0049', '21/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0050', 'PK0050', 'BS0050', '22/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0051', 'PK0051', 'BS0001', '23/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0052', 'PK0052', 'BS0002', '24/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0053', 'PK0053', 'BS0003', '25/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0054', 'PK0054', 'BS0011', '26/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0055', 'PK0055', 'BS0005', '27/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0056', 'PK0056', 'BS0006', '28/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0057', 'PK0057', 'BS0007', '29/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0058', 'PK0058', 'BS0008', '30/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0059', 'PK0059', 'BS0009', '31/03/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0060', 'PK0060', 'BS0050', '01/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0061', 'PK0061', 'BS0011', '02/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0062', 'PK0062', 'BS0012', '03/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0063', 'PK0063', 'BS0013', '04/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0064', 'PK0064', 'BS0014', '05/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0065', 'PK0065', 'BS0015', '06/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0066', 'PK0066', 'BS0016', '07/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0067', 'PK0067', 'BS0017', '08/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0068', 'PK0068', 'BS0018', '09/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0069', 'PK0069', 'BS0049', '10/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0070', 'PK0070', 'BS0020', '11/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0071', 'PK0071', 'BS0021', '12/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0072', 'PK0072', 'BS0022', '13/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0073', 'PK0073', 'BS0023', '14/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0074', 'PK0074', 'BS0024', '15/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0075', 'PK0075', 'BS0025', '16/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0076', 'PK0076', 'BS0026', '17/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0077', 'PK0077', 'BS0027', '18/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0078', 'PK0078', 'BS0028', '19/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0079', 'PK0079', 'BS0029', '20/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0080', 'PK0080', 'BS0030', '21/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0081', 'PK0081', 'BS0031', '22/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0082', 'PK0082', 'BS0032', '23/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0083', 'PK0083', 'BS0033', '24/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0084', 'PK0084', 'BS0034', '25/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0085', 'PK0085', 'BS0035', '26/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0086', 'PK0086', 'BS0036', '27/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0087', 'PK0087', 'BS0037', '28/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0088', 'PK0088', 'BS0038', '29/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0089', 'PK0089', 'BS0039', '30/04/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0090', 'PK0090', 'BS0040', '01/05/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0091', 'PK0091', 'BS0041', '02/05/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0092', 'PK0092', 'BS0042', '03/05/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0093', 'PK0093', 'BS0043', '04/05/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0094', 'PK0094', 'BS0044', '05/05/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0095', 'PK0095', 'BS0045', '06/05/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0096', 'PK0096', 'BS0046', '07/05/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0097', 'PK0097', 'BS0047', '08/05/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0098', 'PK0098', 'BS0048', '09/05/2023');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0099', 'PK0099', 'BS0049', '09/05/2024');
-INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MABACSI, NGAYLAP) VALUES ('TT0100', 'PK0100', 'BS0050', '09/05/2025');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0001', 'PK0001', 'BS0001', '02/01/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0002', 'PK0002', 'BS0002', '02/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0003', 'PK0003', 'BS0003', '03/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0004', 'PK0004', 'BS0014', '04/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0005', 'PK0005', 'BS0005', '05/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0006', 'PK0006', 'BS0006', '06/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0007', 'PK0007', 'BS0007', '07/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0008', 'PK0008', 'BS0008', '08/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0009', 'PK0009', 'BS0009', '09/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0010', 'PK0010', 'BS0020', '10/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0011', 'PK0011', 'BS0011', '11/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0012', 'PK0012', 'BS0012', '12/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0013', 'PK0013', 'BS0013', '13/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0014', 'PK0014', 'BS0014', '14/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0015', 'PK0015', 'BS0015', '15/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0016', 'PK0016', 'BS0016', '16/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0017', 'PK0017', 'BS0017', '17/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0018', 'PK0018', 'BS0018', '18/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0019', 'PK0019', 'BS0029', '19/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0020', 'PK0020', 'BS0020', '20/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0021', 'PK0021', 'BS0021', '21/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0022', 'PK0022', 'BS0022', '22/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0023', 'PK0023', 'BS0023', '23/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0024', 'PK0024', 'BS0024', '24/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0025', 'PK0025', 'BS0025', '25/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0026', 'PK0026', 'BS0026', '26/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0027', 'PK0027', 'BS0027', '27/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0028', 'PK0028', 'BS0028', '28/02/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0029', 'PK0029', 'BS0029', '01/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0030', 'PK0030', 'BS0030', '02/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0031', 'PK0031', 'BS0031', '03/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0032', 'PK0032', 'BS0032', '04/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0033', 'PK0033', 'BS0033', '05/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0034', 'PK0034', 'BS0034', '06/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0035', 'PK0035', 'BS0035', '07/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0036', 'PK0036', 'BS0036', '08/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0037', 'PK0037', 'BS0037', '09/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0038', 'PK0038', 'BS0038', '10/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0039', 'PK0039', 'BS0039', '11/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0040', 'PK0040', 'BS0040', '12/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0041', 'PK0041', 'BS0041', '13/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0042', 'PK0042', 'BS0042', '14/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0043', 'PK0043', 'BS0043', '15/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0044', 'PK0044', 'BS0044', '16/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0045', 'PK0045', 'BS0045', '17/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0046', 'PK0046', 'BS0046', '18/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0047', 'PK0047', 'BS0047', '19/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0048', 'PK0048', 'BS0048', '20/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0049', 'PK0049', 'BS0049', '21/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0050', 'PK0050', 'BS0050', '22/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0051', 'PK0051', 'BS0001', '23/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0052', 'PK0052', 'BS0002', '24/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0053', 'PK0053', 'BS0003', '25/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0054', 'PK0054', 'BS0011', '26/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0055', 'PK0055', 'BS0005', '27/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0056', 'PK0056', 'BS0006', '28/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0057', 'PK0057', 'BS0007', '29/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0058', 'PK0058', 'BS0008', '30/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0059', 'PK0059', 'BS0009', '31/03/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0060', 'PK0060', 'BS0050', '01/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0061', 'PK0061', 'BS0011', '02/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0062', 'PK0062', 'BS0012', '03/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0063', 'PK0063', 'BS0013', '04/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0064', 'PK0064', 'BS0014', '05/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0065', 'PK0065', 'BS0015', '06/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0066', 'PK0066', 'BS0016', '07/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0067', 'PK0067', 'BS0017', '08/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0068', 'PK0068', 'BS0018', '09/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0069', 'PK0069', 'BS0049', '10/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0070', 'PK0070', 'BS0020', '11/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0071', 'PK0071', 'BS0021', '12/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0072', 'PK0072', 'BS0022', '13/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0073', 'PK0073', 'BS0023', '14/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0074', 'PK0074', 'BS0024', '15/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0075', 'PK0075', 'BS0025', '16/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0076', 'PK0076', 'BS0026', '17/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0077', 'PK0077', 'BS0027', '18/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0078', 'PK0078', 'BS0028', '19/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0079', 'PK0079', 'BS0029', '20/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0080', 'PK0080', 'BS0030', '21/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0081', 'PK0081', 'BS0031', '22/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0082', 'PK0082', 'BS0032', '23/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0083', 'PK0083', 'BS0033', '24/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0084', 'PK0084', 'BS0034', '25/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0085', 'PK0085', 'BS0035', '26/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0086', 'PK0086', 'BS0036', '27/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0087', 'PK0087', 'BS0037', '28/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0088', 'PK0088', 'BS0038', '29/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0089', 'PK0089', 'BS0039', '30/04/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0090', 'PK0090', 'BS0040', '01/05/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0091', 'PK0091', 'BS0041', '02/05/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0092', 'PK0092', 'BS0042', '03/05/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0093', 'PK0093', 'BS0043', '04/05/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0094', 'PK0094', 'BS0044', '05/05/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0095', 'PK0095', 'BS0045', '06/05/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0096', 'PK0096', 'BS0046', '07/05/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0097', 'PK0097', 'BS0047', '08/05/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0098', 'PK0098', 'BS0048', '09/05/2023');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0099', 'PK0099', 'BS0049', '09/05/2024');
+INSERT INTO TOATHUOC (MATOATHUOC, MAPHIEUKHAM, MANHANVIEN, NGAYLAP) VALUES ('TT0100', 'PK0100', 'BS0050', '09/05/2025');
 
 
 INSERT INTO CHITIETCHUANDOAN VALUES ('TT0001', 'B0001');
@@ -1887,56 +1840,56 @@ INSERT INTO CHITIETCHUANDOAN VALUES ('TT0099', 'B0027');
 INSERT INTO CHITIETCHUANDOAN VALUES ('TT0100', 'B0028');
 
 
-INSERT INTO TAIKHOAN VALUES ('quanly', N'admin', N'Quản lý');
-INSERT INTO TAIKHOAN VALUES ('nhuquynh', N'123456', N'Thu ngân');
-INSERT INTO TAIKHOAN VALUES ('thanhtruc', N'1234', N'Thu ngân');
-INSERT INTO TAIKHOAN VALUES ('ttd1', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('tvh2', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('nvn3', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('dtt5', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('httt6', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('tko7', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('tdm8', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('vttd9', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('tnh11', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('ntlh12', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('ttd13', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('ndt14', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('tttt15', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('hvmm16', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('ndh17', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('ntc18', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('dqh20', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('lxn21', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('nptl22', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('nts23', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('lth24', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('tnt25', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('cdn26', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('nqc27', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('tqa28', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('tav29', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('htkq30', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('nqn31', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('dtt32', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('htl33', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('mmt34', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('lqh35', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('nvn36', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('dtd37', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('ttnl38', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('tdh39', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('ctn40', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('tdh41', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('ltla42', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('nvl43', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('lvk44', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('lnm45', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('qtbt46', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('ptx47', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('ptpt48', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('nqk49', N'123', N'Bác sĩ');
-INSERT INTO TAIKHOAN VALUES ('dcl50', N'123', N'Bác sĩ');
+INSERT INTO TAIKHOAN VALUES ('TK0001', 'quanly', N'admin', N'Quản lý', 'Q001');
+INSERT INTO TAIKHOAN VALUES ('TK0002', 'nhuquynh', N'123456', N'Thu ngân', 'Q002');
+INSERT INTO TAIKHOAN VALUES ('TK0003', 'thanhtruc', N'1234', N'Thu ngân', 'Q002');
+INSERT INTO TAIKHOAN VALUES ('TK0004', 'ttd1', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0005', 'tvh2', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0006', 'nvn3', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0007', 'dtt5', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0008', 'httt6', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0009', 'tko7', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0010', 'tdm8', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0011', 'vttd9', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0012', 'tnh11', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0013', 'ntlh12', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0014', 'ttd13', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0015', 'ndt14', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0016', 'tttt15', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0017', 'hvmm16', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0018', 'ndh17', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0019', 'ntc18', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0020', 'dqh20', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0021', 'lxn21', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0022', 'nptl22', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0023', 'nts23', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0024', 'lth24', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0025', 'tnt25', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0026', 'cdn26', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0027', 'nqc27', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0028', 'tqa28', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0029', 'tav29', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0030', 'htkq30', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0031', 'nqn31', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0032', 'dtt32', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0033', 'htl33', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0034', 'mmt34', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0035', 'lqh35', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0036', 'nvn36', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0037', 'dtd37', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0038', 'ttnl38', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0039', 'tdh39', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0040', 'ctn40', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0041', 'tdh41', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0042', 'ltla42', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0043', 'nvl43', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0044', 'lvk44', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0045', 'lnm45', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0046', 'qtbt46', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0047', 'ptx47', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0048', 'ptpt48', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0049', 'nqk49', N'123', N'Bác sĩ', 'Q003');
+INSERT INTO TAIKHOAN VALUES ('TK0050', 'dcl50', N'123', N'Bác sĩ', 'Q003');
 
 INSERT INTO CHITIETTOATHUOC VALUES ('TT0001', 'T0096', 50000, 10, N'Ngày 3 lần mỗi lần 1 viên');
 INSERT INTO CHITIETTOATHUOC VALUES ('TT0001', 'T0097', 7000, 12, N'Ngày 2 lần mỗi lần 1 viên');
