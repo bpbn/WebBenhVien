@@ -1,10 +1,20 @@
-<mat-toolbar class="my-toolbar">
+<header class="text-gray-600 body-font">
+  <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+    <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+      <img width="50" src="https://bvbnd.vn/wp-content/uploads/2022/11/Logo-BVBND-1861-80x71.png" >
     
-    <span>Bệnh viện Nhiệt Đới</span>
-
-    <div class="example-spacer"></div>
-    <a mat-button>Home</a>
-    <a mat-button>Bác sĩ</a>
-    <a mat-button>Đặt lịch hẹn</a>
-</mat-toolbar>
-  
+      <span class="ml-3 text-xl">Bệnh viện nhiệt đới</span>
+    </a>
+    <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+      <a routerLink="/home" routerLinkActive="active" 
+      [routerLinkActiveOptions]="{exact: true}" ariaCurrentWhenActive="page"
+      class="mr-5 hover:text-gray-900">HOME</a>
+      <a routerLink="/bacsi" routerLinkActive="active" 
+      [routerLinkActiveOptions]="{exact: true}" ariaCurrentWhenActive="page"
+      class="mr-5 hover:text-gray-900">CHUYÊN GIA - BÁC SĨ</a>
+      <a routerLink="/datlich" routerLinkActive="active" 
+      [routerLinkActiveOptions]="{exact: true}" ariaCurrentWhenActive="page"
+      class="mr-5 hover:text-gray-900">ĐẶT LỊCH</a>
+    </nav>
+  </div>
+</header>
