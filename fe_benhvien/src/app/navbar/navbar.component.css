@@ -1,5 +1,9 @@
 .active{
-  border-bottom: 2px solid #7c3aed;
+  border-bottom: 2px solid #fdfcff;
   transform: scale(1.1);
   transition: border-bottom 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.backgroundcolor{
+  background-color: #148068;
 }
