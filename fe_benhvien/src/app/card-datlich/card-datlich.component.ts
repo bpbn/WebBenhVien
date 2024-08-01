@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-card-datlich',
   standalone: true,
   templateUrl: './card-datlich.component.html',
   styleUrls: ['./card-datlich.component.css'],
-  imports: [FormsModule]
+  imports: [FormsModule, CommonModule]
 })
+
 export class CardDatlichComponent {
   showDoctor: boolean = false;
   showDate: boolean = false;
@@ -24,7 +26,7 @@ export class CardDatlichComponent {
     description: ''
   };
 
-  private apiUrl = 'http://localhost:8080/phieuhen/themPH';  // Thay đổi theo URL của bạn
+  private apiUrl = 'http://localhost:8080/phieuhen/themPH'; 
 
   constructor(private http: HttpClient) {}
 

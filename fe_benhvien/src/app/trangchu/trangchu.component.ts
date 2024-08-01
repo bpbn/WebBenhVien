@@ -1,7 +1,6 @@
 import { BacsiService } from './../services/bacsi.service';
 import { Component } from '@angular/core';
 import { MatCardImage } from '@angular/material/card';
-import { HttpClient } from '@angular/common/http';
 
 
 @Component({
