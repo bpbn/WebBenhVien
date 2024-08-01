@@ -16,12 +16,13 @@ public class PhieuHenDAO {
     }
 
     public void themPhieuHen(PhieuHenPOJO phieuHenPOJO) {
-        String sql = "INSERT INTO PHIEUHEN (MaPhieuHen, NgayKham, KhungGioKham, VanDeSucKhoe, TenBenhNhan, NgaySinh, GioiTinh, SDT, DiaChi) " +
+        String sql = "INSERT INTO PHIEUHEN (MaPhieuHen, NgayKham, KhungGioKham, MaNhanVien, VanDeSucKhoe, TenBenhNhan, NgaySinh, GioiTinh, SDT, DiaChi) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 phieuHenPOJO.getMaPhieuHen(),
                 phieuHenPOJO.getNgayKham(),
                 phieuHenPOJO.getKhungGioKham(),
+                phieuHenPOJO.getBacSi().getMaNhanVien(),
                 phieuHenPOJO.getVanDeSucKhoe(),
                 phieuHenPOJO.getTenBenhNhan(),
                 phieuHenPOJO.getNgaySinh(),
