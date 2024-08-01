@@ -95,5 +95,56 @@ public class BacSiDAO {
 
         return danhHieu.toString();
     }
+
+    public Integer tinhTongBacSiLaGS_PGS(){
+        int sum = 0;
+        List<BacSiPOJO> list = layDanhSachBacSi();
+        for(BacSiPOJO bs : list){
+            if(bs.getHocHam().equals("Giáo sư") || bs.getHocHam().equals("Phó giáo sư"))
+            {
+                sum++;
+            }
+        }
+        return  sum;
+    }
+
+    public Integer tinhTongTienSi(){
+        int sum = 0;
+        List<BacSiPOJO> list = layDanhSachBacSi();
+        for(BacSiPOJO bs : list){
+            List<BacSiPOJO.HocVi> list2 = layDanhSachHocViCuaBacSi(bs.getMaNhanVien());
+            for(BacSiPOJO.HocVi h : list2) {
+                if(h.getMaHocVi().equals("TS"))
+                {
+                    sum++;
+                }
+            }
+        }
+        return  sum;
+    }
+
+    public Integer tinhTongThacSi(){
+        int sum = 0;
+        List<BacSiPOJO> list = layDanhSachBacSi();
+        for(BacSiPOJO bs : list){
+            List<BacSiPOJO.HocVi> list2 = layDanhSachHocViCuaBacSi(bs.getMaNhanVien());
+            for(BacSiPOJO.HocVi h : list2) {
+                if(h.getMaHocVi().equals("THS"))
+                {
+                    sum++;
+                }
+            }
+        }
+        return  sum;
+    }
+
+    public Integer tinhTongBacSi(){
+        int sum = 0;
+        List<BacSiPOJO> list = layDanhSachBacSi();
+        for(BacSiPOJO bs : list){
+            sum++;
+        }
+        return  sum;
+    }
 }
 

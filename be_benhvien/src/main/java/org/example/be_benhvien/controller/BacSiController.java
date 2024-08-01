@@ -3,6 +3,7 @@ package org.example.be_benhvien.controller;
 import ch.qos.logback.core.model.Model;
 import org.example.be_benhvien.DAO.BacSiDAO;
 import org.example.be_benhvien.POJO.BacSiPOJO;
+import org.jetbrains.annotations.ApiStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,30 @@ public class BacSiController {
     public ResponseEntity<String> dhBS(@PathVariable String id) {
         String danhHieu = bacSiDAO.taoDanhHieuBS(id);
         return new ResponseEntity<>(danhHieu, HttpStatus.OK);
+    }
+
+    @GetMapping("/tongGSvaPGS")
+    public ResponseEntity<Integer> tongGSvaPGS(Model model) {
+        Integer sum = bacSiDAO.tinhTongBacSiLaGS_PGS();
+        return new ResponseEntity<>(sum, HttpStatus.OK);
+    }
+
+    @GetMapping("/tongTS")
+    public ResponseEntity<Integer> tongTS(Model model) {
+        Integer sum = bacSiDAO.tinhTongTienSi();
+        return new ResponseEntity<>(sum, HttpStatus.OK);
+    }
+
+    @GetMapping("/tongThS")
+    public ResponseEntity<Integer> tongThS(Model model) {
+        Integer sum = bacSiDAO.tinhTongThacSi();
+        return new ResponseEntity<>(sum, HttpStatus.OK);
+    }
+
+    @GetMapping("/tongBS")
+    public ResponseEntity<Integer> tongBS(Model model) {
+        Integer sum = bacSiDAO.tinhTongBacSi();
+        return new ResponseEntity<>(sum, HttpStatus.OK);
     }
 
 }
