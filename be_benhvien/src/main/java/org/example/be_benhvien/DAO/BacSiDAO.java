@@ -34,17 +34,6 @@ public class BacSiDAO {
         return ds;
     }
 
-    public List<BacSiPOJO.HocVi> layDanhSachHocVi(){
-        List<BacSiPOJO.HocVi> ds = new ArrayList<BacSiPOJO.HocVi>();
-        try {
-            String sql = "select * from HocVi";
-            return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BacSiPOJO.HocVi.class));
-        } catch (Exception e) {
-            System.out.println((e.getMessage()));
-        }
-        return ds;
-    }
-
     public List<BacSiPOJO.HocVi> layDanhSachHocViCuaBacSi(String MaBacSi){
         List<BacSiPOJO.HocVi> ds = new ArrayList<BacSiPOJO.HocVi>();
         try {
@@ -145,6 +134,26 @@ public class BacSiDAO {
             sum++;
         }
         return  sum;
+    }
+    public List<BacSiPOJO.HocVi> layDanhSachHocVi(){
+        List<BacSiPOJO.HocVi> ds = new ArrayList<BacSiPOJO.HocVi>();
+        try {
+            String sql = "select * from HocVi";
+            return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BacSiPOJO.HocVi.class));
+        } catch (Exception e) {
+            System.out.println((e.getMessage()));
+        }
+        return ds;
+    }
+
+    public List<String> layDanhSachHocHam() {
+        String sql = "select distinct HOCHAM from THONGTINBACSI WHERE HOCHAM IS NOT Null";
+        return jdbcTemplate.queryForList(sql, String.class);
+    }
+
+    public List<String> layDanhSachChucVu() {
+        String sql = "select distinct CHUCVU from NHANVIEN WHERE CHUCVU NOT IN (N'Thu ngân', N'Quản lý')";
+        return jdbcTemplate.queryForList(sql, String.class);
     }
 }
 

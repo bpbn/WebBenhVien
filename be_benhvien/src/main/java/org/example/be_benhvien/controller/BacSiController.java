@@ -27,12 +27,6 @@ public class BacSiController {
         return new ResponseEntity<>(danhSachBacSi, HttpStatus.OK);
     }
 
-    @GetMapping("/danhsachhv")
-    public ResponseEntity dsHV(Model model) {
-        List<BacSiPOJO.HocVi> danhSachHocVi = bacSiDAO.layDanhSachHocVi();
-        return new ResponseEntity<>(danhSachHocVi, HttpStatus.OK);
-    }
-
     @GetMapping("/hocvi/{id}")
     public ResponseEntity dsHVcuaBS(@PathVariable String id) {
         List<BacSiPOJO.HocVi> dsHocVi = bacSiDAO.layDanhSachHocViCuaBacSi(id);
@@ -67,6 +61,24 @@ public class BacSiController {
     public ResponseEntity<Integer> tongBS(Model model) {
         Integer sum = bacSiDAO.tinhTongBacSi();
         return new ResponseEntity<>(sum, HttpStatus.OK);
+    }
+
+    @GetMapping("/danhsachhv")
+    public ResponseEntity dsHV(Model model) {
+        List<BacSiPOJO.HocVi> danhSachHocVi = bacSiDAO.layDanhSachHocVi();
+        return new ResponseEntity<>(danhSachHocVi, HttpStatus.OK);
+    }
+
+    @GetMapping("/danhsachhh")
+    public ResponseEntity dsHH(Model model) {
+        List<String> danhSachHocHam = bacSiDAO.layDanhSachHocHam();
+        return new ResponseEntity<>(danhSachHocHam, HttpStatus.OK);
+    }
+
+    @GetMapping("/danhsachcv")
+    public ResponseEntity dsCV(Model model) {
+        List<String> danhSachChucVu = bacSiDAO.layDanhSachChucVu();
+        return new ResponseEntity<>(danhSachChucVu, HttpStatus.OK);
     }
 
 }
