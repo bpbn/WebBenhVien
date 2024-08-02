@@ -37,7 +37,7 @@
             <img alt="content" class="object-cover object-center h-full w-full" src="https://tamanhhospital.vn/wp-content/uploads/2010/01/trieu-trieu-duong.png">
           </div>
           <div class="md:flex-grow">
-            <h2 class="text-2xl font-medium text-gray-900 title-font mb-4">{{item.tenNhanVien.toUpperCase()}}</h2>
+            <h2 class="text-2xl font-medium text-gray-900 title-font mb-4">{{getDanhHieuByMaNhanVien(item.maNhanVien)}} {{item.tenNhanVien.toUpperCase()}}</h2>
             <p class="leading-relaxed text-gray-500">{{item.chucVu}}</p>
             <p class="leading-relaxed mt-4">{{item.gioiThieu.substring(0, 200)}}...</p>
             <button class="inline-flex text-white backgroundcolor mt-4 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded">ĐẶT LỊCH HẸN</button>

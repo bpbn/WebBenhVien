@@ -5,11 +5,12 @@ import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
+import { withFetch } from '@angular/common/http';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(), provideAnimationsAsync('noop'), provideHttpClient()
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(), provideAnimationsAsync('noop'), provideHttpClient(), provideHttpClient(withFetch())
      
   ]
 };

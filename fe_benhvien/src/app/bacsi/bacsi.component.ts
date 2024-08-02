@@ -23,13 +23,14 @@ export class BacsiComponent {
   ListHocHam: string[] = [];
   ListChucVu: string[] = [];
   ListBacSi: any[] = [];
-  DanhHieu: string = "";
+  ListDanhHieu: any[] = [];
 
   ngOnInit() {
     this.getListHocVi();
     this.getListHocHam();
     this.getListChucVu();
     this.getListBacSi();
+    this.getListDanhHieu();
   }
 
   getListHocVi(){
@@ -56,10 +57,17 @@ export class BacsiComponent {
     })
   }
 
-  getDanhHieu(id: string){
-    this.bacsiService.getDanhHieu(id).subscribe(res => {
-      this.DanhHieu = res;
+  getListDanhHieu(){
+    this.bacsiService.getListDanhHieu().subscribe((res:any)=>{
+        this.ListDanhHieu = res;
     })
   }
+
+  getDanhHieuByMaNhanVien(maNhanVien: string): string | undefined {
+    const bacsi = this.ListDanhHieu.find(bs => bs.maNhanVien === maNhanVien);
+    return bacsi.danhHieu;
+  }
+
+  
 
 }
