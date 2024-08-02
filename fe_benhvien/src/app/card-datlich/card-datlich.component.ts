@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./card-datlich.component.css'],
   imports: [FormsModule, CommonModule]
 })
+
 export class CardDatlichComponent {
   showDoctor: boolean = false;
   showDate: boolean = false;
@@ -25,7 +26,7 @@ export class CardDatlichComponent {
     description: ''
   };
 
-  private apiUrl = 'http://localhost:8080/phieuhen/themPH';  // Thay đổi theo URL của bạn
+  private apiUrl = 'http://localhost:8080/phieuhen/themPH'; 
 
   constructor(private http: HttpClient) {}
 
