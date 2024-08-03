@@ -1,12 +1,11 @@
 package org.example.be_benhvien.POJO;
 
-import javax.xml.crypto.Data;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class LichLamViecPOJO {
     private String MaLich;
     private BacSiPOJO BacSi;
-    private Date NgayLam;
+    private LocalDate NgayLam;
     private String CaLam;
     private PhongKham PhongLamViec;
 
@@ -26,11 +25,11 @@ public class LichLamViecPOJO {
         BacSi = bacSi;
     }
 
-    public Date getNgayLam() {
+    public LocalDate getNgayLam() {
         return NgayLam;
     }
 
-    public void setNgayLam(Date ngayLam) {
+    public void setNgayLam(LocalDate ngayLam) {
         NgayLam = ngayLam;
     }
 
