@@ -3,8 +3,8 @@
     <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
 
       <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 textcolor">TTƯT.PGS.TS TRIỆU TRIỀU DƯƠNG</h1>
-        <p class="leading-relaxed text-base mb-10">Giám đốc Khối Ngoại</p>
+        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 textcolor">{{DanhHieu}}    {{ttbacsi.tenNhanVien}}</h1>
+        <p class="leading-relaxed text-base mb-10">{{ttbacsi.chucVu}}</p>
         <div class="leading-relaxed text-base mb-4">
           <p class="textcolor text-lg font-medium title-font">Lịch làm việc</p>
           <mat-card class="demo-inline-calendar-card">
@@ -24,12 +24,9 @@
     
     <div class="mb-20">
       <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 textcolor">Giới thiệu</h1>
-      <p class="mb-8 leading-relaxed">TTƯT.PGS.TS Triệu Triều Dương là chuyên gia hàng đầu ngành phẫu thuật tiêu hóa: phẫu thuật thực quản, dạ dày, ruột, gan mật tụy, đại trực tràng, hậu môn, sàn chậu….</p>
-      <p class="mb-8 leading-relaxed">Sau khi tốt nghiệp bác sĩ đa khoa tại Học viện Quân Y năm 1985, bác sĩ Triều Dương tiếp tục tham gia các khóa đào tạo sau đại học tại Học viện Quân Y (1989), nghiên cứu sinh năm 1996 và đào tạo chuyên sâu về Phẫu thuật nội soi tại Bệnh viện Việt Đức (1992), tại Thái Lan (1996), tại Hàn Quốc, Pháp (2004), tại Singapore (2007); Đào tạo phẫu thuật lạnh tại Ucraina (2007) và Đào tạo ghép gan – tụy tại Hàn Quốc (2017)… PGS Dương thường xuyên tham dự các hội nghị hội thảo, tập huấn ngắn hạn trong nước và quốc tế về phẫu thuật ung thư đường tiêu hóa, phẫu thuật nội soi nâng cao.</p>
-      <p class="mb-8 leading-relaxed">PGS Triệu Triều Dương có gần 40 năm kinh nghiệm trong lĩnh vực nội soi và phẫu thuật ổ bụng. “Bàn tay vàng” của ông đã giúp hàng nghìn người cải thiện sức khỏe và chất lượng sống. Với những cống hiến to lớn cho nền y học nước nhà, PGS.TS.BSCC Triệu Triều Dương nhận được nhiều Bằng khen của Thủ tướng Chính phủ, Bộ trưởng Bộ Y tế, Bộ trưởng Bộ Quốc phòng, đạt danh hiệu Chiến sĩ thi đua cấp Bộ, cấp viện nhiều năm liên tục, Bằng khen tuổi trẻ sáng tạo thủ đô, Kỷ niệm chương “Vì sự nghiệp Khoa học và Công nghệ”…</p>
-      <p class="mb-8 leading-relaxed">Đặc biệt, TTƯT.PGS.TS Triệu Triều Dương vinh dự được Chủ tịch nước tặng Huân chương chiến công hạng Nhất (2004), Huân chương Quân kỳ quyết thắng (2014), Huân chương bảo vệ tổ quốc hạng Nhì (2022), Thầy thuốc ưu tú (2007).</p>
-      <p class="mb-8 leading-relaxed">Trong suốt chặng đường sự nghiệp vinh quang của mình, PGS Triệu Triều Dương giữ nhiều chức vụ quan trọng: Chủ nhiệm khoa Ngoại nhân dân (2000), Chủ nhiệm khoa Ngoại Tổng hợp (B15) (2003), Viện trưởng Viện phẫu thuật tiêu hóa kiêm chủ nhiệm khoa gan mật tụy (2016), chủ nhiệm khoa phẫu thuật hậu môn trực tràng và sàn chậu (B3C). Phó chủ bộ môn Ngoại tiêu hóa, Giảng viên bộ môn Ngoại tiêu hóa, Chuyên viên Kỹ thuật Cục Quân Y – chuyên ngành Phẫu thuật Tiêu hóa, Bệnh viện Trung ương Quân đội 108…</p>
-      <p class="mb-8 leading-relaxed">Hiện nay, với vai trò là Giám đốc khối Ngoại, TTƯT.PGS.TS Triệu Triều Dương tiếp tục cùng đội ngũ chuyên gia hàng đầu tại Bệnh viện Đa khoa Tâm Anh Hà Nội góp phần mang đến chất lượng thăm khám và điều trị hiệu quả cho người bệnh.</p>
+      @for(item of ListGioiThieu; track $index){
+        <p class="mb-8 leading-relaxed">{{item}}</p>
+      }
     </div>
 
   </div>

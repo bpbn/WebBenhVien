@@ -5,7 +5,8 @@
       <div class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
         <mat-form-field class="mr-10">
           <mat-label>CHỨC VỤ</mat-label>
-          <mat-select>
+          <mat-select [(value)]="chucVuSelected" (selectionChange)="onChucVuChange($event)">
+            <mat-option [value]="">CHỨC VỤ</mat-option>
             @for(item of ListChucVu; track $index){
               <mat-option [value]="item">{{item}}</mat-option>
             }
@@ -14,7 +15,8 @@
 
         <mat-form-field class="mr-10">
           <mat-label>HỌC HÀM</mat-label>
-          <mat-select>
+          <mat-select  [(value)]="hocHamSelected" (selectionChange)="onHocHamChange($event)">
+            <mat-option [value]="">HỌC HÀM</mat-option>
             @for(item of ListHocHam; track $index){
               <mat-option [value]="item">{{item}}</mat-option>
             }
@@ -23,7 +25,8 @@
 
         <mat-form-field>
           <mat-label>HỌC VỊ</mat-label>
-          <mat-select>
+          <mat-select [(value)]="hocViSelected" (selectionChange)="onHocViChange($event)">
+            <mat-option [value]="">HỌC VỊ</mat-option>
             @for(item of ListHocVi; track $index){
               <mat-option [value]="item.maHocVi">{{item.tenHocVi}}</mat-option>
             }
@@ -31,27 +34,33 @@
         </mat-form-field>
       </div>
 
-      @for(item of ListBacSi; track $index){
-        <div class="py-8 flex flex-wrap md:flex-nowrap">
-          <div class="md:w-64 md:mb-0 mb-6 mr-5 flex-shrink-0 flex flex-col">
-            <img alt="content" class="object-cover object-center h-full w-full" src="https://tamanhhospital.vn/wp-content/uploads/2010/01/trieu-trieu-duong.png">
-          </div>
-          <div class="md:flex-grow">
-            <h2 class="text-2xl font-medium text-gray-900 title-font mb-4">{{getDanhHieuByMaNhanVien(item.maNhanVien)}} {{item.tenNhanVien.toUpperCase()}}</h2>
-            <p class="leading-relaxed text-gray-500">{{item.chucVu}}</p>
-            <p class="leading-relaxed mt-4">{{item.gioiThieu.substring(0, 200)}}...</p>
-            <button class="inline-flex text-white backgroundcolor mt-4 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded">ĐẶT LỊCH HẸN</button>
-            <button routerLink="/ctbacsi" class="inline-flex text-white backgroundcolor ml-4 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded">XEM CHI TIẾT</button>
-          </div>
-        </div>
-      }
+      <div *ngIf="ListBacSi.length === 0 && originalListBacSi.length > 0">
+        <p class="text-center text-gray-500 mt-10">Chưa có thông tin bác sĩ, vui lòng đặt lại bộ lọc.</p>
+      </div>
 
-      <mat-paginator [length]="100"
-              [pageSize]="10"
-              [pageSizeOptions]="[5, 10, 25, 100]"
-              aria-label="Select page" class="bg-white">
-      </mat-paginator>
+      <div *ngIf="ListBacSi.length > 0">
+        @for(item of ListBacSi; track  $index){
+          <div class="py-8 flex flex-wrap md:flex-nowrap">
+            <div class="md:w-64 md:mb-0 mb-6 mr-5 flex-shrink-0 flex flex-col">
+              <img alt="content" class="object-cover object-center h-full w-full" src="https://tamanhhospital.vn/wp-content/uploads/2010/01/trieu-trieu-duong.png">
+            </div>
+            <div class="md:flex-grow">
+              <h2 class="text-2xl font-medium text-gray-900 title-font mb-4">{{ getDanhHieuByMaNhanVien(item.maNhanVien) }} {{ item.tenNhanVien.toUpperCase() }}</h2>
+              <p class="leading-relaxed text-gray-500">{{ item.chucVu }}</p>
+              <p class="leading-relaxed mt-4">{{ item.gioiThieu.substring(0, 200) }}...</p>
+              <button class="inline-flex text-white backgroundcolor mt-4 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded">ĐẶT LỊCH HẸN</button>
+              <button routerLink="/ctbacsi/{{ item.maNhanVien }}" class="inline-flex text-white backgroundcolor ml-4 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded">XEM CHI TIẾT</button>
+            </div>
+          </div>
+        }
+          
+        <mat-paginator [length]="100"
+          [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page" class="bg-white">
+        </mat-paginator>
 
+      </div>
     </div>
   </div>
 </section>

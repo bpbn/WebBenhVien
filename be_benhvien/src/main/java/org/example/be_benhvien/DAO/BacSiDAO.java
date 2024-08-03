@@ -2,20 +2,14 @@ package org.example.be_benhvien.DAO;
 
 import org.example.be_benhvien.POJO.BacSiPOJO;
 import org.example.be_benhvien.POJO.DanhHieuPOJO;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -169,6 +163,22 @@ public class BacSiDAO {
     public List<String> layDanhSachChucVu() {
         String sql = "select distinct CHUCVU from NHANVIEN WHERE CHUCVU NOT IN (N'Thu ngân', N'Quản lý')";
         return jdbcTemplate.queryForList(sql, String.class);
+    }
+
+    public Integer kiemTraTonTaiHocViCuaBacSi(String maNhanVien, String hocVi){
+        List<BacSiPOJO.HocVi> hv = layDanhSachHocViCuaBacSi(maNhanVien);
+        for(BacSiPOJO.HocVi h : hv){
+            if(h.getMaHocVi().equals(hocVi)){
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    public List<String> layThongTinGioiThieu(String maNhanVien){
+        BacSiPOJO bs = timBacSiTheoMa(maNhanVien);
+        String[] gt = bs.getGioiThieu().split("\n");
+        return Arrays.asList(gt);
     }
 }
 

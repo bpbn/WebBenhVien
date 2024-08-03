@@ -83,4 +83,23 @@ public class BacSiController {
         return new ResponseEntity<>(danhSachChucVu, HttpStatus.OK);
     }
 
+    @GetMapping("/timbstheoma/{id}")
+    public ResponseEntity timBSTheoMa(@PathVariable String id) {
+        BacSiPOJO bs = bacSiDAO.timBacSiTheoMa(id);
+        return new ResponseEntity<>(bs, HttpStatus.OK);
+    }
+
+    @GetMapping("/kiemTraHVCuaBS/{id}/{hocvi}")
+    public ResponseEntity kiemTraHVCuaBS(@PathVariable String id, @PathVariable String hocvi) {
+        Integer kt = bacSiDAO.kiemTraTonTaiHocViCuaBacSi(id, hocvi);
+        return new ResponseEntity<>(kt, HttpStatus.OK);
+    }
+
+    @GetMapping("/ttGioiThieu/{id}")
+    public ResponseEntity layThongTinGioiThieu(@PathVariable String id) {
+        List<String> gt = bacSiDAO.layThongTinGioiThieu(id);
+        return new ResponseEntity<>(gt, HttpStatus.OK);
+    }
+
+
 }

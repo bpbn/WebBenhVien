@@ -6,12 +6,13 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { BacsiService } from '../services/bacsi.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-bacsi',
   standalone: true,
-  imports: [RouterLink, FormsModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatPaginatorModule],
+  imports: [RouterLink, FormsModule, MatInputModule, MatFormFieldModule, MatSelectModule, MatPaginatorModule, CommonModule],
   templateUrl: './bacsi.component.html',
   styleUrl: './bacsi.component.css'
 })
@@ -24,6 +25,12 @@ export class BacsiComponent {
   ListChucVu: string[] = [];
   ListBacSi: any[] = [];
   ListDanhHieu: any[] = [];
+  bacSi: any = {};
+  ListHocViCuaBS: string[] = [];
+  originalListBacSi: any[] = [];
+  chucVuSelected: string = "";
+  hocHamSelected: string = "";
+  hocViSelected: string = "";
 
   ngOnInit() {
     this.getListHocVi();
@@ -31,6 +38,7 @@ export class BacsiComponent {
     this.getListChucVu();
     this.getListBacSi();
     this.getListDanhHieu();
+    this.originalListBacSi = [...this.ListBacSi]; 
   }
 
   getListHocVi(){
@@ -63,11 +71,53 @@ export class BacsiComponent {
     })
   }
 
-  getDanhHieuByMaNhanVien(maNhanVien: string): string | undefined {
+  getDanhHieuByMaNhanVien(maNhanVien: string) {
     const bacsi = this.ListDanhHieu.find(bs => bs.maNhanVien === maNhanVien);
     return bacsi.danhHieu;
   }
+  
+  onChucVuChange(event: any) {
+    this.resetList()
+    this.filterBacSi();
+  }
 
+  onHocHamChange(event: any) {
+    this.resetList()
+    this.filterBacSi();
+  }
+
+  onHocViChange(event: any) {
+    this.resetList()
+    this.filterBacSi();
+  }
+
+  getHocViCuaBacSi(id: string){
+      this.bacsiService.getHocViCuaBS(id).subscribe((res:any)=>{
+        this.ListHocViCuaBS = res;
+    })
+  }
   
 
+  resetList() {
+    this.ListBacSi = [...this.originalListBacSi];
+  }
+  filterBacSi() {
+    const selectedChucVu = this.chucVuSelected;
+    const selectedHocHam = this.hocHamSelected;
+    const selectedHocVi = this.hocViSelected;
+  
+    const promises = this.ListBacSi.map(bs => {
+      return this.bacsiService.kiemTraHVTonTai(bs.maNhanVien, selectedHocVi).toPromise();
+    });
+  
+    Promise.all(promises).then(results => {
+      const filteredBacSi = this.ListBacSi.filter((bs, index) => {
+        return (!selectedChucVu || bs.chucVu === selectedChucVu) &&
+               (!selectedHocHam || bs.hocHam === selectedHocHam) &&
+               (!selectedHocVi || results[index] === 1);
+      });
+      this.ListBacSi = filteredBacSi;
+    });
+  }
+  
 }
