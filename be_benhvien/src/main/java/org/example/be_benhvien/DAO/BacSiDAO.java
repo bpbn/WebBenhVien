@@ -78,7 +78,6 @@ public class BacSiDAO {
         if (danhHieu.charAt(0) =='.') {
             danhHieu.deleteCharAt(0);
         }
-
         return danhHieu.toString();
     }
 
@@ -90,7 +89,6 @@ public class BacSiDAO {
             DanhHieuPOJO dhp = new DanhHieuPOJO(bs.getMaNhanVien(), dh);
             listDH.add(dhp);
         }
-
         return listDH;
     }
 

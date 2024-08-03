@@ -54,7 +54,11 @@ export class CtbacsiComponent {
 
   getDanhHieuByMaNhanVien() {
     const bacsi = this.ListDanhHieu.find(bs => bs.maNhanVien === this.id);
-    this.DanhHieu = bacsi.danhHieu;
+    if (bacsi && bacsi.danhHieu) {
+      this.DanhHieu = bacsi.danhHieu;
+    } else {
+        this.DanhHieu = "";
+    }
   }
 
 

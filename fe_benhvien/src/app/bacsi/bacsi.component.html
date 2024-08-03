@@ -42,23 +42,26 @@
         @for(item of ListBacSi; track  $index){
           <div class="py-8 flex flex-wrap md:flex-nowrap">
             <div class="md:w-64 md:mb-0 mb-6 mr-5 flex-shrink-0 flex flex-col">
-              <img alt="content" class="object-cover object-center h-full w-full" src="https://tamanhhospital.vn/wp-content/uploads/2010/01/trieu-trieu-duong.png">
+              <img alt="content" class="object-cover object-center h-full w-full crop-image" src="assets/images/{{item.hinhAnh}}" >
             </div>
             <div class="md:flex-grow">
               <h2 class="text-2xl font-medium text-gray-900 title-font mb-4">{{ getDanhHieuByMaNhanVien(item.maNhanVien) }} {{ item.tenNhanVien.toUpperCase() }}</h2>
               <p class="leading-relaxed text-gray-500">{{ item.chucVu }}</p>
               <p class="leading-relaxed mt-4">{{ item.gioiThieu.substring(0, 200) }}...</p>
-              <button class="inline-flex text-white backgroundcolor mt-4 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded">ĐẶT LỊCH HẸN</button>
+              <button routerLink="/datlich" class="inline-flex text-white backgroundcolor mt-4 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded">ĐẶT LỊCH HẸN</button>
               <button routerLink="/ctbacsi/{{ item.maNhanVien }}" class="inline-flex text-white backgroundcolor ml-4 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded">XEM CHI TIẾT</button>
             </div>
           </div>
         }
           
-        <mat-paginator [length]="100"
-          [pageSize]="10"
-          [pageSizeOptions]="[5, 10, 25, 100]"
-          aria-label="Select page" class="bg-white">
+        <mat-paginator [length]="ListBacSi.length"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page"
+              (pageChange)="onPageChange($event)"
+              class="bg-white">
         </mat-paginator>
+
 
       </div>
     </div>

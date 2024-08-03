@@ -10,6 +10,16 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
+        "assets": [
+                               {
+                "glob": "**/*",
+                "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              }] ,
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {

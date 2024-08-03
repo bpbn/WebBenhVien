@@ -17,6 +17,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './bacsi.component.css'
 })
 export class BacsiComponent {
+  currentPage: number = 1;
+  pageSize: number = 10;
+  displayedDoctors: any[] = [];
 
   constructor(private bacsiService : BacsiService){}
 
@@ -31,6 +34,7 @@ export class BacsiComponent {
   chucVuSelected: string = "";
   hocHamSelected: string = "";
   hocViSelected: string = "";
+  
 
   ngOnInit() {
     this.getListHocVi();
@@ -73,7 +77,11 @@ export class BacsiComponent {
 
   getDanhHieuByMaNhanVien(maNhanVien: string) {
     const bacsi = this.ListDanhHieu.find(bs => bs.maNhanVien === maNhanVien);
-    return bacsi.danhHieu;
+    if (bacsi && bacsi.danhHieu) {
+      return bacsi.danhHieu;
+    } else {
+        return "";
+    };
   }
   
   onChucVuChange(event: any) {
@@ -97,27 +105,53 @@ export class BacsiComponent {
     })
   }
   
-
   resetList() {
     this.ListBacSi = [...this.originalListBacSi];
   }
+
+
   filterBacSi() {
     const selectedChucVu = this.chucVuSelected;
     const selectedHocHam = this.hocHamSelected;
     const selectedHocVi = this.hocViSelected;
-  
-    const promises = this.ListBacSi.map(bs => {
-      return this.bacsiService.kiemTraHVTonTai(bs.maNhanVien, selectedHocVi).toPromise();
-    });
-  
-    Promise.all(promises).then(results => {
-      const filteredBacSi = this.ListBacSi.filter((bs, index) => {
+    
+    if(this.hocViSelected == "")
+    {
+      const filteredBacSi = this.ListBacSi.filter((bs) => {
         return (!selectedChucVu || bs.chucVu === selectedChucVu) &&
-               (!selectedHocHam || bs.hocHam === selectedHocHam) &&
-               (!selectedHocVi || results[index] === 1);
-      });
+                (!selectedHocHam || bs.hocHam === selectedHocHam);
+      });   
       this.ListBacSi = filteredBacSi;
-    });
+      this.updateDisplayedDoctors();
+    }
+    else
+    {
+      const promises = this.ListBacSi.map(bs => {
+        return this.bacsiService.kiemTraHVTonTai(bs.maNhanVien, selectedHocVi).toPromise();
+      });
+    
+      Promise.all(promises).then(results => {
+        const filteredBacSi = this.ListBacSi.filter((bs, index) => {
+          return (!selectedChucVu || bs.chucVu === selectedChucVu) &&
+                (!selectedHocHam || bs.hocHam === selectedHocHam) &&
+                (!selectedHocVi || results[index] === 1);
+        });
+        this.ListBacSi = filteredBacSi;
+        this.updateDisplayedDoctors();
+      });
+    }
+  }
+
+  updateDisplayedDoctors() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.displayedDoctors = this.ListBacSi.slice(startIndex, endIndex);
   }
   
+
+  onPageChange(event: any) {
+    this.currentPage = event.pageIndex + 1; 
+    this.updateDisplayedDoctors();
+  }
+
 }
