@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-card-datlich',
@@ -37,18 +36,19 @@ export class CardDatlichComponent implements OnInit {
 
   constructor(private http: HttpClient) {}
 
-  async ngOnInit() {
-    await this.getDoctors();
+  ngOnInit() {
+    this.getDoctors();
   }
 
-  async getDoctors() {
-    try {
-      console.log('Đang lấy danh sách bác sĩ...');
-      this.doctors = await lastValueFrom(this.http.get<any[]>(`${this.baseUrl}/bacsi/danhsachbs`));
-      console.log('Danh sách bác sĩ đã lấy:', this.doctors);
-    } catch (error) {
-      console.error('Lỗi khi lấy danh sách bác sĩ:', error);
-    }
+  getDoctors() {
+    this.http.get<any[]>(`${this.baseUrl}/bacsi/danhsachbs`).subscribe(
+      response => {
+        this.doctors = response;
+      },
+      error => {
+        console.error('Lỗi khi lấy danh sách bác sĩ:', error);
+      }
+    );
   }
 
   showDoctorSection() {
@@ -69,24 +69,24 @@ export class CardDatlichComponent implements OnInit {
     this.getAllAvailableDates();
   }
 
-  async getAvailableDatesForDoctors() {
-    for (const doctor of this.doctors) {
-      await this.getAvailableDatesForDoctor(doctor.name);
-    }
+  getAvailableDatesForDoctors() {
+    this.doctors.forEach(doctor => {
+      this.getAvailableDatesForDoctor(doctor.name);
+    });
   }
 
-  async getAvailableDatesForDoctor(doctorName: string) {
-    try {
-      console.log(`Đang lấy ngày làm việc cho bác sĩ: ${doctorName}...`);
-      const response = await lastValueFrom(this.http.get<any[]>(`${this.baseUrl}/phieuhen/ngaylamvieccuabs`, { params: { tenBacSi: doctorName } }));
-      this.doctorDatesMap[doctorName] = response || [];
-      console.log(`Ngày làm việc của bác sĩ ${doctorName}:`, response);
-      if (this.phObj.doctor === doctorName) {
-        this.availableDates = response;
+  getAvailableDatesForDoctor(doctorName: string) {
+    this.http.get<any[]>(`${this.baseUrl}/phieuhen/ngaylamvieccuabs`, { params: { tenBacSi: doctorName } }).subscribe(
+      response => {
+        this.doctorDatesMap[doctorName] = response;
+        if (this.phObj.doctor === doctorName) {
+          this.availableDates = response;
+        }
+      },
+      error => {
+        console.error('Lỗi khi lấy ngày làm việc của bác sĩ:', error);
       }
-    } catch (error) {
-      console.error('Lỗi khi lấy ngày làm việc của bác sĩ:', error);
-    }
+    );
   }
 
   onDoctorChange(event: Event) {
@@ -97,15 +97,15 @@ export class CardDatlichComponent implements OnInit {
     this.availableShifts = [];
   }
 
-  async getAllAvailableDates() {
-    try {
-      console.log('Đang lấy tất cả các ngày làm việc...');
-      const response = await lastValueFrom(this.http.get<any[]>(`${this.baseUrl}/phieuhen/ngaylamvieccuabs`, { params: { tenBacSi: '' } }));
-      this.availableDates = response || [];
-      console.log('Tất cả các ngày làm việc:', response);
-    } catch (error) {
-      console.error('Lỗi khi lấy tất cả các ngày làm việc:', error);
-    }
+  getAllAvailableDates() {
+    this.http.get<any[]>(`${this.baseUrl}/phieuhen/ngaylamvieccuabs`, { params: { tenBacSi: '' } }).subscribe(
+      response => {
+        this.availableDates = response;
+      },
+      error => {
+        console.error('Lỗi khi lấy tất cả các ngày làm việc:', error);
+      }
+    );
   }
 
   onDateChange(event: Event) {
@@ -119,24 +119,26 @@ export class CardDatlichComponent implements OnInit {
     }
   }
 
-  async getAvailableShiftsForDoctor(date: string) {
-    try {
-      console.log(`Đang lấy ca làm việc cho bác sĩ vào ngày ${date}...`);
-      this.availableShifts = await lastValueFrom(this.http.get<any[]>(`${this.baseUrl}/phieuhen/bstheongaylam`, { params: { ngayLam: date, caLam: 'Sáng' } })) || [];
-      console.log(`Ca làm việc vào ngày ${date}:`, this.availableShifts);
-    } catch (error) {
-      console.error('Lỗi khi lấy ca làm việc theo ngày và bác sĩ:', error);
-    }
+  getAvailableShiftsForDoctor(date: string) {
+    this.http.get<any[]>(`${this.baseUrl}/phieuhen/bstheongaylam`, { params: { ngayLam: date, caLam: 'Sáng' } }).subscribe(
+      response => {
+        this.availableShifts = response;
+      },
+      error => {
+        console.error('Lỗi khi lấy ca làm việc theo ngày và bác sĩ:', error);
+      }
+    );
   }
 
-  async getAvailableShiftsForDate(date: string) {
-    try {
-      console.log(`Đang lấy ca làm việc vào ngày: ${date}...`);
-      this.dateShiftsMap[date] = await lastValueFrom(this.http.get<any[]>(`${this.baseUrl}/phieuhen/bstheongaylam`, { params: { ngayLam: date, caLam: '' } })) || [];
-      console.log(`Ca làm việc vào ngày ${date}:`, this.dateShiftsMap[date]);
-    } catch (error) {
-      console.error('Lỗi khi lấy ca làm việc theo ngày:', error);
-    }
+  getAvailableShiftsForDate(date: string) {
+    this.http.get<any[]>(`${this.baseUrl}/phieuhen/bstheongaylam`, { params: { ngayLam: date, caLam: '' } }).subscribe(
+      response => {
+        this.dateShiftsMap[date] = response;
+      },
+      error => {
+        console.error('Lỗi khi lấy ca làm việc theo ngày:', error);
+      }
+    );
   }
 
   onShiftChange(caLam: string) {
@@ -146,15 +148,16 @@ export class CardDatlichComponent implements OnInit {
     }
   }
 
-  async themPhieuHen() {
+  themPhieuHen() {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    try {
-      console.log('Đang gửi phiếu hẹn...', this.phObj);
-      const response = await lastValueFrom(this.http.post<string>(`${this.baseUrl}/phieuhen/themPH`, this.phObj, { headers }));
-      console.log('Phản hồi từ server:', response);
-    } catch (error) {
-      console.error('Lỗi khi gọi API:', error);
-    }
+    this.http.post<string>(this.baseUrl + '/phieuhen/themPH', this.phObj, { headers }).subscribe(
+      response => {
+        console.log('Phản hồi từ server:', response);
+      },
+      error => {
+        console.error('Lỗi khi gọi API:', error);
+      }
+    );
   }
 
   onSubmit() {
