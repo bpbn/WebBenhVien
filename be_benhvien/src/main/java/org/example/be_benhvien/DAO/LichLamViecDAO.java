@@ -34,12 +34,11 @@ public class LichLamViecDAO {
         });
     }
 
-    public List<LichLamViecPOJO> layNgayLamViecTheoTenBacSi(String tenBacSi) {
-        String sql = "SELECT L.NGAYLAM, L.CALAM " +
-                "FROM LICHLAMVIEC L " +
-                "JOIN NHANVIEN N ON L.MANHANVIEN = N.MANHANVIEN " +
-                "WHERE N.TENNHANVIEN = ?";
-        return jdbcTemplate.query(sql, new Object[]{tenBacSi}, (rs, rowNum) -> {
+    public List<LichLamViecPOJO> layNgayLamViecTheoMaNhanVien(String maNhanVien) {
+        String sql = "SELECT NGAYLAM, CALAM " +
+                "FROM LICHLAMVIEC " +
+                "WHERE MANHANVIEN = ?";
+        return jdbcTemplate.query(sql, new Object[]{maNhanVien}, (rs, rowNum) -> {
             LichLamViecPOJO lichLamViecPOJO = new LichLamViecPOJO();
 
             lichLamViecPOJO.setNgayLam(rs.getDate("NGAYLAM").toLocalDate());

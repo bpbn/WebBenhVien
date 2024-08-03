@@ -47,9 +47,9 @@ public class PhieuHenController {
     }
 
     @GetMapping("/ngaylamvieccuabs")
-    public ResponseEntity<List<LichLamViecPOJO>> layNgayVaCaTheoTenBacSi(
-            @RequestParam String tenBacSi) {
-        List<LichLamViecPOJO> danhSachNgayVaCa = lichLamViecDAO.layNgayLamViecTheoTenBacSi(tenBacSi);
+    public ResponseEntity<List<LichLamViecPOJO>> layNgayVaCaTheoMaNhanVien(
+            @RequestParam String maNhanVien) {
+        List<LichLamViecPOJO> danhSachNgayVaCa = lichLamViecDAO.layNgayLamViecTheoMaNhanVien(maNhanVien);
         return new ResponseEntity<>(danhSachNgayVaCa, HttpStatus.OK);
     }
 }
