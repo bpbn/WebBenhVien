@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
@@ -21,7 +21,10 @@ export class BacsiComponent {
   pageSize: number = 10;
   displayedDoctors: any[] = [];
 
-  constructor(private bacsiService : BacsiService){}
+  constructor(
+    private bacsiService : BacsiService,
+    private cdRef: ChangeDetectorRef 
+  ){}
 
   ListHocVi: any[] = [];
   ListHocHam: string[] = [];
@@ -34,6 +37,7 @@ export class BacsiComponent {
   chucVuSelected: string = "";
   hocHamSelected: string = "";
   hocViSelected: string = "";
+
   
 
   ngOnInit() {
@@ -97,12 +101,6 @@ export class BacsiComponent {
   onHocViChange(event: any) {
     this.resetList()
     this.filterBacSi();
-  }
-
-  getHocViCuaBacSi(id: string){
-      this.bacsiService.getHocViCuaBS(id).subscribe((res:any)=>{
-        this.ListHocViCuaBS = res;
-    })
   }
   
   resetList() {

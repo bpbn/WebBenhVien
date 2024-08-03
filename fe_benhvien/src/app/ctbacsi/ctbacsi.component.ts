@@ -6,6 +6,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { CardDatlichComponent } from '../card-datlich/card-datlich.component';
 import { BacsiService } from '../services/bacsi.service';
 import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
+import { MbscEventcalendarView } from '@mobiscroll/angular';
 
 @Component({
   selector: 'app-ctbacsi',
@@ -14,14 +16,21 @@ import { ActivatedRoute } from '@angular/router';
   providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './ctbacsi.component.html',
-  styleUrl: './ctbacsi.component.css'
+  styleUrl: './ctbacsi.component.css',
 })
 export class CtbacsiComponent {
+  calView: MbscEventcalendarView = {
+    schedule: {
+      type: 'day'
+    }
+  };
+  
   selected = model<Date | null>(null);
 
   constructor(
     private bacsiService : BacsiService,
     private route: ActivatedRoute,
+    private cdRef: ChangeDetectorRef 
   ){}
 
   ttbacsi: any = {};
@@ -29,6 +38,7 @@ export class CtbacsiComponent {
   ListDanhHieu: any[] = [];
   DanhHieu: string = "";
   ListGioiThieu: string[] = [];
+  date: any[] = [];
 
   ngOnInit() {
     this.route.params.subscribe(param => {
@@ -38,11 +48,12 @@ export class CtbacsiComponent {
     this.getListDanhHieu();
     this.getDanhHieuByMaNhanVien();
     this.getListGioiThieu()
-  }
+    }
 
   getTTBS(){
     this.bacsiService.getBacSiByID(this.id).subscribe((res:any)=>{
       this.ttbacsi = res;
+      this.cdRef.markForCheck();
     })
   }
 
@@ -60,7 +71,6 @@ export class CtbacsiComponent {
         this.DanhHieu = "";
     }
   }
-
 
   getListGioiThieu() {
     if (this.ttbacsi?.gioiThieu) {

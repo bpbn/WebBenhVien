@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class BacsiService {
 
   apiURL: string = "http://localhost:4848/bacsi"
+  apiURL2: string = "http://localhost:4848/phieuhen"
 
   constructor(private http: HttpClient){}
 
@@ -58,8 +59,11 @@ export class BacsiService {
   }
 
   kiemTraHVTonTai(id: string, maHocVi: string){
-    return this.http.get<number>(this.apiURL + "/kiemTraHVCuaBS/" + id + "/" + maHocVi)
+    return this.http.get<number>(this.apiURL + "/kiemTraHVCuaBS/" + id + "/" + maHocVi);
   }
 
+  getAvailableDatesForDoctor(maBacSi: string){
+    return this.http.get(this.apiURL2 + "/ngaylamvieccuabs/" + maBacSi);
+  }
 }
   

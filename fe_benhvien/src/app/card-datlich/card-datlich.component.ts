@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { lastValueFrom } from 'rxjs';
+import { BacsiService } from '../services/bacsi.service';
 
 @Component({
   selector: 'app-card-datlich',
@@ -35,20 +36,19 @@ export class CardDatlichComponent implements OnInit {
 
   private baseUrl = 'http://localhost:4848'; 
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private bacsiService : BacsiService
+  ) {}
 
   async ngOnInit() {
     await this.getDoctors();
   }
 
   async getDoctors() {
-    try {
-      console.log('Đang lấy danh sách bác sĩ...');
-      this.doctors = await lastValueFrom(this.http.get<any[]>(`${this.baseUrl}/bacsi/danhsachbs`));
-      console.log('Danh sách bác sĩ đã lấy:', this.doctors);
-    } catch (error) {
-      console.error('Lỗi khi lấy danh sách bác sĩ:', error);
-    }
+    this.bacsiService.getAllDoctor().subscribe((res:any)=>{
+      this.doctors = res;
+  })
   }
 
   showDoctorSection() {
@@ -66,27 +66,21 @@ export class CardDatlichComponent implements OnInit {
     this.phObj.doctor = '';
     this.phObj.appointment_date = '';
     this.availableShifts = [];
-    this.getAllAvailableDates();
+    this.getAvailableDatesForDoctor('');
   }
 
-  async getAvailableDatesForDoctors() {
+   getAvailableDatesForDoctors() {
     for (const doctor of this.doctors) {
-      await this.getAvailableDatesForDoctor(doctor.name);
+      this.getAvailableDatesForDoctor(doctor.maNhanVien);
+      debugger;
+      console.log(this.availableDates);
     }
   }
 
-  async getAvailableDatesForDoctor(doctorName: string) {
-    try {
-      console.log(`Đang lấy ngày làm việc cho bác sĩ: ${doctorName}...`);
-      const response = await lastValueFrom(this.http.get<any[]>(`${this.baseUrl}/phieuhen/ngaylamvieccuabs`, { params: { tenBacSi: doctorName } }));
-      this.doctorDatesMap[doctorName] = response || [];
-      console.log(`Ngày làm việc của bác sĩ ${doctorName}:`, response);
-      if (this.phObj.doctor === doctorName) {
-        this.availableDates = response;
-      }
-    } catch (error) {
-      console.error('Lỗi khi lấy ngày làm việc của bác sĩ:', error);
-    }
+   getAvailableDatesForDoctor(manv: string) {
+    this.bacsiService.getAvailableDatesForDoctor(manv).subscribe((res:any)=>{
+      this.availableDates = res;
+    })
   }
 
   onDoctorChange(event: Event) {
@@ -97,16 +91,16 @@ export class CardDatlichComponent implements OnInit {
     this.availableShifts = [];
   }
 
-  async getAllAvailableDates() {
-    try {
-      console.log('Đang lấy tất cả các ngày làm việc...');
-      const response = await lastValueFrom(this.http.get<any[]>(`${this.baseUrl}/phieuhen/ngaylamvieccuabs`, { params: { tenBacSi: '' } }));
-      this.availableDates = response || [];
-      console.log('Tất cả các ngày làm việc:', response);
-    } catch (error) {
-      console.error('Lỗi khi lấy tất cả các ngày làm việc:', error);
-    }
-  }
+  // async getAllAvailableDates() {
+  //   try {
+  //     console.log('Đang lấy tất cả các ngày làm việc...');
+  //     const response = await lastValueFrom(this.http.get<any[]>(`${this.baseUrl}/phieuhen/ngaylamvieccuabs`, { params: { tenBacSi: '' } }));
+  //     this.availableDates = response || [];
+  //     console.log('Tất cả các ngày làm việc:', response);
+  //   } catch (error) {
+  //     console.error('Lỗi khi lấy tất cả các ngày làm việc:', error);
+  //   }
+  // }
 
   onDateChange(event: Event) {
     const target = event.target as HTMLSelectElement;
