@@ -46,9 +46,9 @@ public class PhieuHenController {
         return new ResponseEntity<>(danhSachBacSi, HttpStatus.OK);
     }
 
-    @GetMapping("/ngaylamvieccuabs")
+    @GetMapping("/ngaylamvieccuabs/{maNhanVien}")
     public ResponseEntity<List<LichLamViecPOJO>> layNgayVaCaTheoMaNhanVien(
-            @RequestParam String maNhanVien) {
+            @PathVariable String maNhanVien) {
         List<LichLamViecPOJO> danhSachNgayVaCa = lichLamViecDAO.layNgayLamViecTheoMaNhanVien(maNhanVien);
         return new ResponseEntity<>(danhSachNgayVaCa, HttpStatus.OK);
     }
