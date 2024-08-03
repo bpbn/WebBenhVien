@@ -3,6 +3,7 @@ package org.example.be_benhvien.controller;
 import ch.qos.logback.core.model.Model;
 import org.example.be_benhvien.DAO.BacSiDAO;
 import org.example.be_benhvien.POJO.BacSiPOJO;
+import org.example.be_benhvien.POJO.DanhHieuPOJO;
 import org.jetbrains.annotations.ApiStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,11 +34,12 @@ public class BacSiController {
         return new ResponseEntity<>(dsHocVi, HttpStatus.OK);
     }
 
-    @GetMapping("/danhhieu/{id}")
-    public ResponseEntity<String> dhBS(@PathVariable String id) {
-        String danhHieu = bacSiDAO.taoDanhHieuBS(id);
-        return new ResponseEntity<>(danhHieu, HttpStatus.OK);
+    @GetMapping("/danhsachdh")
+    public ResponseEntity dsDH(Model model) {
+        List<DanhHieuPOJO> danhSachDanhHieu = bacSiDAO.layDanhSachDanhHieu();
+        return new ResponseEntity<>(danhSachDanhHieu, HttpStatus.OK);
     }
+
 
     @GetMapping("/tongGSvaPGS")
     public ResponseEntity<Integer> tongGSvaPGS(Model model) {

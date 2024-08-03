@@ -1,11 +1,14 @@
 package org.example.be_benhvien.DAO;
 
 import org.example.be_benhvien.POJO.BacSiPOJO;
+import org.example.be_benhvien.POJO.DanhHieuPOJO;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -33,7 +36,7 @@ public class BacSiDAO {
         }
         return ds;
     }
-
+    
     public List<BacSiPOJO.HocVi> layDanhSachHocViCuaBacSi(String MaBacSi){
         List<BacSiPOJO.HocVi> ds = new ArrayList<BacSiPOJO.HocVi>();
         try {
@@ -85,11 +88,23 @@ public class BacSiDAO {
         return danhHieu.toString();
     }
 
+    public List<DanhHieuPOJO> layDanhSachDanhHieu(){
+        ArrayList<DanhHieuPOJO> listDH = new ArrayList<DanhHieuPOJO>();
+        List<BacSiPOJO> listBS = layDanhSachBacSi();
+        for(BacSiPOJO bs : listBS){
+            String dh = taoDanhHieuBS(bs.getMaNhanVien());
+            DanhHieuPOJO dhp = new DanhHieuPOJO(bs.getMaNhanVien(), dh);
+            listDH.add(dhp);
+        }
+
+        return listDH;
+    }
+
     public Integer tinhTongBacSiLaGS_PGS(){
         int sum = 0;
         List<BacSiPOJO> list = layDanhSachBacSi();
         for(BacSiPOJO bs : list){
-            if(bs.getHocHam().equals("Giáo sư") || bs.getHocHam().equals("Phó giáo sư"))
+            if(bs.getHocHam() != null)
             {
                 sum++;
             }

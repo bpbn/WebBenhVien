@@ -1943,3 +1943,22 @@ INSERT INTO CHITIETTOATHUOC VALUES ('TT0098', 'T0081', 830000, 15, N'Ngày 3 l�
 INSERT INTO CHITIETTOATHUOC VALUES ('TT0098', 'T0082', 222000, 18, N'Ngày 3 lần mỗi lần 3 viên');
 INSERT INTO CHITIETTOATHUOC VALUES ('TT0099', 'T0083', 569000, 20, N'Ngày 3 lần mỗi lần 1 viên');
 INSERT INTO CHITIETTOATHUOC VALUES ('TT0100', 'T0073', 769000, 24, N'Ngày 3 lần mỗi lần 2 viên');
+GO
+
+CREATE PROCEDURE sp_TimThongTinBacSi
+    @ChucVu nvarchar(100),
+    @HocHam nvarchar(100),
+    @HocVi nvarchar(100)
+AS
+BEGIN
+    SELECT T.*, N.*
+    FROM THONGTINBACSI T
+    JOIN NHANVIEN N ON T.MANHANVIEN = N.MANHANVIEN
+    WHERE
+        (N.CHUCVU = @ChucVu OR @ChucVu IS NULL)
+        AND (HOCHAM = @HocHam OR @HocHam IS NULL)
+        AND (T.MANHANVIEN IN (SELECT MANHANVIEN FROM CHITIETHOCVI C WHERE C.MAHOCVI = @HocVi) OR @HocVi IS NULL)
+END
+
+
+EXEC sp_TimThongTinBacSi N'Giám đốc', NULL, NULL
