@@ -61,22 +61,6 @@ CREATE TABLE PHIEUHEN(
 	CONSTRAINT P_PHIEUHEN PRIMARY KEY(MAPHIEUHEN)
 )
 
-CREATE TABLE BENH(
-	MABENH			VARCHAR(10) NOT NULL,
-	TENBENH			NVARCHAR(30),
-
-	CONSTRAINT P_BENH PRIMARY KEY(MABENH)
-)
-
-CREATE TABLE THUOC(
-	MATHUOC			VARCHAR(10) NOT NULL,
-	TENTHUOC		NVARCHAR(50),
-	QCDONGGOI		NVARCHAR(30),
-	DVT				NVARCHAR(20),
-	TONKHO  		INT,
-
-	CONSTRAINT P_THUOC PRIMARY KEY(MATHUOC)
-)
 
 
 CREATE TABLE PHONGKHAM(
@@ -110,6 +94,23 @@ CREATE TABLE TOATHUOC(
 	CONSTRAINT P_TOATHUOC PRIMARY KEY(MATOATHUOC)
 )
 
+CREATE TABLE BENH(
+	MABENH			VARCHAR(10) NOT NULL,
+	TENBENH			NVARCHAR(30),
+
+	CONSTRAINT P_BENH PRIMARY KEY(MABENH)
+)
+
+CREATE TABLE THUOC(
+	MATHUOC			VARCHAR(10) NOT NULL,
+	TENTHUOC		NVARCHAR(50),
+	QCDONGGOI		NVARCHAR(30),
+	DVT				NVARCHAR(20),
+	GIA				INT,
+	TONKHO  		INT,
+
+	CONSTRAINT P_THUOC PRIMARY KEY(MATHUOC)
+)
 
 CREATE TABLE CHITIETCHUANDOAN(
 	MATOATHUOC		VARCHAR(10) NOT NULL,
@@ -1291,206 +1292,207 @@ INSERT INTO BENH VALUES ('B0046', N'Nhiễm nấm Histoplasma');
 INSERT INTO BENH VALUES ('B0047', N'Nhiễm nấm Cryptococcus');
 INSERT INTO BENH VALUES ('B0048', N'Khác');
 
-INSERT INTO THUOC VALUES ('T0001', N'Acetylcystein', N'Vỉ 10 viên', N'Viên', 26);
-INSERT INTO THUOC VALUES ('T0002', N'Avircrem', N'Hộp 1 tuýp 5g', N'Tuýp', 131);
-INSERT INTO THUOC VALUES ('T0003', N'Salonpas pain relief patch', N'hộp 1 bao x 5 miếng', N'Hộp', 147);
-INSERT INTO THUOC VALUES ('T0004', N'Dung dịch Natri clorid 0,9%', N'Chai 500ml', N'Chai', 46);
-INSERT INTO THUOC VALUES ('T0005', N'Farzincol', N'Lọ 100 viên', N'Lọ', 255);
-INSERT INTO THUOC VALUES ('T0006', N'Phosphalugel', N'Hộp 26 gói', N'Gói', 147);
-INSERT INTO THUOC VALUES ('T0007', N'Eszopiclone', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 89);
-INSERT INTO THUOC VALUES ('T0008', N'5-Fluorouracil Ebewe', N'Hộp 1 lọ 5ml', N'Lọ', 96);
-INSERT INTO THUOC VALUES ('T0009', N'Aecysmux', N'Chai 100 viên', N'Viên', 205);
-INSERT INTO THUOC VALUES ('T0010', N'Isotretinoin', N'Hộp 3 vỉ x 10 viên', N'Viên', 194);
-INSERT INTO THUOC VALUES ('T0011', N'Chymotrypsin', N'Hộp 2 vỉ x 10 viên', N'Viên', 33);
-INSERT INTO THUOC VALUES ('T0012', N'Aradine', N'Hộp 1 lọ', N'Lọ', 84);
-INSERT INTO THUOC VALUES ('T0013', N'Bactronil', N'Tuýp 5g', N'Tuýp', 161);
-INSERT INTO THUOC VALUES ('T0014', N'Beratan', N'Chai 100 viên', N'Viên', 38);
-INSERT INTO THUOC VALUES ('T0015', N'Cadipiride', N'Hộp 10 vỉ x 10 viên', N'Viên', 264);
-INSERT INTO THUOC VALUES ('T0016', N'Paracetamol', N'Hộp 20 gói x 15g', N'Gói', 261);
-INSERT INTO THUOC VALUES ('T0017', N'AB-Intimus', N'Hộp 1 vỉ x 7 viên', N'Hộp', 137);
-INSERT INTO THUOC VALUES ('T0018', N'Pravastatin Dwp', N'Vỉ 10 viên', N'Viên', 236);
-INSERT INTO THUOC VALUES ('T0019', N'Perindopril Plus Dwp', N'Hộp 1 tuýp 5g', N'Tuýp', 205);
-INSERT INTO THUOC VALUES ('T0020', N'Nebivolol Plus', N'hộp 1 bao x 5 miếng', N'Hộp', 200);
-INSERT INTO THUOC VALUES ('T0021', N'Irbesartan Dwp', N'Chai 500ml', N'Chai', 243);
-INSERT INTO THUOC VALUES ('T0022', N'Calcivin', N'Lọ 100 viên', N'Lọ', 441);
-INSERT INTO THUOC VALUES ('T0023', N'Saxagliptin', N'Hộp 26 gói', N'Gói', 383);
-INSERT INTO THUOC VALUES ('T0024', N'Mebizemib', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 334);
-INSERT INTO THUOC VALUES ('T0025', N'Toduet', N'Hộp 1 lọ 5ml', N'Lọ', 272);
-INSERT INTO THUOC VALUES ('T0026', N'Methylprednisolon', N'Chai 100 viên', N'Viên', 21);
-INSERT INTO THUOC VALUES ('T0027', N'Lazimidin', N'Hộp 3 vỉ x 10 viên', N'Viên', 19);
-INSERT INTO THUOC VALUES ('T0028', N'Infloxin', N'Hộp 2 vỉ x 10 viên', N'Viên', 249);
-INSERT INTO THUOC VALUES ('T0029', N'Glutathion', N'Hộp 1 lọ', N'Lọ', 3);
-INSERT INTO THUOC VALUES ('T0030', N'Gliglutin', N'Tuýp 5g', N'Tuýp', 104);
-INSERT INTO THUOC VALUES ('T0031', N'Colistimethate sodium', N'Chai 100 viên', N'Viên', 147);
-INSERT INTO THUOC VALUES ('T0032', N'Bimesta', N'Hộp 10 vỉ x 10 viên', N'Viên', 46);
-INSERT INTO THUOC VALUES ('T0033', N'Aciste', N'Hộp 20 gói x 15g', N'Gói', 255);
-INSERT INTO THUOC VALUES ('T0034', N'Bfavits', N'Hộp 1 vỉ x 7 viên', N'Hộp', 147);
-INSERT INTO THUOC VALUES ('T0035', N'Aciste 2 MIU', N'Hộp 1 cái', N'Que', 89);
-INSERT INTO THUOC VALUES ('T0036', N'Methobam', N'Hộp 20 miếng', N'Hộp', 96);
-INSERT INTO THUOC VALUES ('T0037', N'Sun Pharmaceutical Industries  ', N'Túi 25g', N'Túi', 205);
-INSERT INTO THUOC VALUES ('T0038', N'Dr. Reddys Laboratories  ', N'Gói 5 cái', N'Gói', 194);
-INSERT INTO THUOC VALUES ('T0039', N'Divis Laboratories  ', N'Hộp 20 ống x 10ml', N'Hộp', 33);
-INSERT INTO THUOC VALUES ('T0040', N'Cipla  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 84);
-INSERT INTO THUOC VALUES ('T0041', N'Biocon  ', N'Hộp 60 viên', N'Hộp', 161);
-INSERT INTO THUOC VALUES ('T0042', N'Aurobindo Pharma  ', N'Hộp 60 viên', N'Viên', 38);
-INSERT INTO THUOC VALUES ('T0043', N'Torrent Pharmaceuticals  ', N'Hộp 60 viên', N'Hộp', 264);
-INSERT INTO THUOC VALUES ('T0044', N'Lupin  ', N'Hộp 1 máy', N'Máy', 261);
-INSERT INTO THUOC VALUES ('T0045', N'Cadila Healthcare  ', N'Hộp 1 cái', N'Cái', 137);
-INSERT INTO THUOC VALUES ('T0046', N'Abbott India  ', N'Hộp 100 chiếc', N'Cái', 236);
-INSERT INTO THUOC VALUES ('T0047', N'Alkem Laboratories  ', N'Hộp 100 cái', N'Cái', 205);
-INSERT INTO THUOC VALUES ('T0048', N'Glaxosmithkline Pharmaceuticals  ', N'Vỉ 10 viên', N'Viên', 200);
-INSERT INTO THUOC VALUES ('T0049', N'Ipca Laboratories  ', N'Hộp 1 tuýp 5g', N'Tuýp', 243);
-INSERT INTO THUOC VALUES ('T0050', N'Alembic Pharmaceuticals  ', N'hộp 1 bao x 5 miếng', N'Hộp', 441);
-INSERT INTO THUOC VALUES ('T0051', N'Glenmark Pharmaceuticals  ', N'Chai 500ml', N'Chai', 383);
-INSERT INTO THUOC VALUES ('T0052', N'JB Chemicals & Pharmaceuticals  ', N'Lọ 100 viên', N'Lọ', 334);
-INSERT INTO THUOC VALUES ('T0053', N'Sun Pharmaceutical Industries  ', N'Hộp 26 gói', N'Gói', 272);
-INSERT INTO THUOC VALUES ('T0054', N'Dr. Reddys Laboratories  ', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 21);
-INSERT INTO THUOC VALUES ('T0055', N'Divis Laboratories  ', N'Hộp 1 lọ 5ml', N'Lọ', 19);
-INSERT INTO THUOC VALUES ('T0056', N'Cipla  ', N'Chai 100 viên', N'Viên', 249);
-INSERT INTO THUOC VALUES ('T0057', N'Biocon  ', N'Hộp 3 vỉ x 10 viên', N'Viên', 3);
-INSERT INTO THUOC VALUES ('T0058', N'Aurobindo Pharma  ', N'Hộp 2 vỉ x 10 viên', N'Viên', 104);
-INSERT INTO THUOC VALUES ('T0059', N'Torrent Pharmaceuticals  ', N'Hộp 1 lọ', N'Lọ', 147);
-INSERT INTO THUOC VALUES ('T0060', N'Lupin  ', N'Tuýp 5g', N'Tuýp', 46);
-INSERT INTO THUOC VALUES ('T0061', N'Cadila Healthcare  ', N'Chai 100 viên', N'Viên', 255);
-INSERT INTO THUOC VALUES ('T0062', N'Abbott India  ', N'Hộp 10 vỉ x 10 viên', N'Viên', 147);
-INSERT INTO THUOC VALUES ('T0063', N'Alkem Laboratories  ', N'Hộp 20 gói x 15g', N'Gói', 89);
-INSERT INTO THUOC VALUES ('T0064', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 1 vỉ x 7 viên', N'Hộp', 96);
-INSERT INTO THUOC VALUES ('T0065', N'Ipca Laboratories  ', N'Hộp 1 cái', N'Que', 205);
-INSERT INTO THUOC VALUES ('T0066', N'Alembic Pharmaceuticals  ', N'Hộp 20 miếng', N'Hộp', 194);
-INSERT INTO THUOC VALUES ('T0067', N'Glenmark Pharmaceuticals  ', N'Túi 25g', N'Túi', 33);
-INSERT INTO THUOC VALUES ('T0068', N'JB Chemicals & Pharmaceuticals  ', N'Gói 5 cái', N'Gói', 84);
-INSERT INTO THUOC VALUES ('T0069', N'Sun Pharmaceutical Industries  ', N'Hộp 20 ống x 10ml', N'Hộp', 161);
-INSERT INTO THUOC VALUES ('T0070', N'Dr. Reddys Laboratories  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 38);
-INSERT INTO THUOC VALUES ('T0071', N'Divis Laboratories  ', N'Hộp 60 viên', N'Hộp', 264);
-INSERT INTO THUOC VALUES ('T0072', N'Cipla  ', N'Hộp 60 viên', N'Viên', 261);
-INSERT INTO THUOC VALUES ('T0073', N'Biocon  ', N'Hộp 60 viên', N'Hộp', 137);
-INSERT INTO THUOC VALUES ('T0074', N'Aurobindo Pharma  ', N'Hộp 1 máy', N'Máy', 236);
-INSERT INTO THUOC VALUES ('T0075', N'Torrent Pharmaceuticals  ', N'Hộp 1 cái', N'Cái', 205);
-INSERT INTO THUOC VALUES ('T0076', N'Lupin  ', N'Hộp 100 chiếc', N'Cái', 200);
-INSERT INTO THUOC VALUES ('T0077', N'Cadila Healthcare  ', N'Hộp 100 cái', N'Cái', 243);
-INSERT INTO THUOC VALUES ('T0078', N'Abbott India  ', N'Vỉ 10 viên', N'Viên', 441);
-INSERT INTO THUOC VALUES ('T0079', N'Alkem Laboratories  ', N'Hộp 1 tuýp 5g', N'Tuýp', 383);
-INSERT INTO THUOC VALUES ('T0080', N'Glaxosmithkline Pharmaceuticals  ', N'hộp 1 bao x 5 miếng', N'Hộp', 334);
-INSERT INTO THUOC VALUES ('T0081', N'Ipca Laboratories  ', N'Chai 500ml', N'Chai', 272);
-INSERT INTO THUOC VALUES ('T0082', N'Alembic Pharmaceuticals  ', N'Lọ 100 viên', N'Lọ', 21);
-INSERT INTO THUOC VALUES ('T0083', N'Glenmark Pharmaceuticals  ', N'Hộp 26 gói', N'Gói', 19);
-INSERT INTO THUOC VALUES ('T0084', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 249);
-INSERT INTO THUOC VALUES ('T0085', N'Sun Pharmaceutical Industries  ', N'Hộp 1 lọ 5ml', N'Lọ', 3);
-INSERT INTO THUOC VALUES ('T0086', N'Dr. Reddys Laboratories  ', N'Chai 100 viên', N'Viên', 104);
-INSERT INTO THUOC VALUES ('T0087', N'Divis Laboratories  ', N'Hộp 3 vỉ x 10 viên', N'Viên', 147);
-INSERT INTO THUOC VALUES ('T0088', N'Cipla  ', N'Hộp 2 vỉ x 10 viên', N'Viên', 46);
-INSERT INTO THUOC VALUES ('T0089', N'Biocon  ', N'Hộp 1 lọ', N'Lọ', 255);
-INSERT INTO THUOC VALUES ('T0090', N'Aurobindo Pharma  ', N'Tuýp 5g', N'Tuýp', 147);
-INSERT INTO THUOC VALUES ('T0091', N'Torrent Pharmaceuticals  ', N'Chai 100 viên', N'Viên', 89);
-INSERT INTO THUOC VALUES ('T0092', N'Lupin  ', N'Hộp 10 vỉ x 10 viên', N'Viên', 96);
-INSERT INTO THUOC VALUES ('T0093', N'Cadila Healthcare  ', N'Hộp 20 gói x 15g', N'Gói', 205);
-INSERT INTO THUOC VALUES ('T0094', N'Abbott India  ', N'Hộp 1 vỉ x 7 viên', N'Hộp', 194);
-INSERT INTO THUOC VALUES ('T0095', N'Alkem Laboratories  ', N'Hộp 1 cái', N'Que', 33);
-INSERT INTO THUOC VALUES ('T0096', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 20 miếng', N'Hộp', 84);
-INSERT INTO THUOC VALUES ('T0097', N'Ipca Laboratories  ', N'Túi 25g', N'Túi', 161);
-INSERT INTO THUOC VALUES ('T0098', N'Alembic Pharmaceuticals  ', N'Gói 5 cái', N'Gói', 38);
-INSERT INTO THUOC VALUES ('T0099', N'Glenmark Pharmaceuticals  ', N'Hộp 20 ống x 10ml', N'Hộp', 264);
-INSERT INTO THUOC VALUES ('T0100', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 261);
-INSERT INTO THUOC VALUES ('T0101', N'Sun Pharmaceutical Industries  ', N'Hộp 60 viên', N'Hộp', 137);
-INSERT INTO THUOC VALUES ('T0102', N'Dr. Reddys Laboratories  ', N'Hộp 60 viên', N'Viên', 236);
-INSERT INTO THUOC VALUES ('T0103', N'Divis Laboratories  ', N'Hộp 60 viên', N'Hộp', 205);
-INSERT INTO THUOC VALUES ('T0104', N'Cipla  ', N'Hộp 1 máy', N'Máy', 200);
-INSERT INTO THUOC VALUES ('T0105', N'Biocon  ', N'Hộp 1 cái', N'Cái', 243);
-INSERT INTO THUOC VALUES ('T0106', N'Aurobindo Pharma  ', N'Hộp 100 chiếc', N'Cái', 441);
-INSERT INTO THUOC VALUES ('T0107', N'Torrent Pharmaceuticals  ', N'Hộp 100 cái', N'Cái', 383);
-INSERT INTO THUOC VALUES ('T0108', N'Sun Pharmaceutical Industries  ', N'Vỉ 10 viên', N'Viên', 334);
-INSERT INTO THUOC VALUES ('T0109', N'Dr. Reddys Laboratories  ', N'Hộp 1 tuýp 5g', N'Tuýp', 272);
-INSERT INTO THUOC VALUES ('T0110', N'Divis Laboratories  ', N'hộp 1 bao x 5 miếng', N'Hộp', 21);
-INSERT INTO THUOC VALUES ('T0111', N'Cipla  ', N'Chai 500ml', N'Chai', 19);
-INSERT INTO THUOC VALUES ('T0112', N'Biocon  ', N'Lọ 100 viên', N'Lọ', 249);
-INSERT INTO THUOC VALUES ('T0113', N'Aurobindo Pharma  ', N'Hộp 26 gói', N'Gói', 3);
-INSERT INTO THUOC VALUES ('T0114', N'Torrent Pharmaceuticals  ', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 104);
-INSERT INTO THUOC VALUES ('T0115', N'Lupin  ', N'Hộp 1 lọ 5ml', N'Lọ', 147);
-INSERT INTO THUOC VALUES ('T0116', N'Cadila Healthcare  ', N'Chai 100 viên', N'Viên', 46);
-INSERT INTO THUOC VALUES ('T0117', N'Abbott India  ', N'Hộp 3 vỉ x 10 viên', N'Viên', 255);
-INSERT INTO THUOC VALUES ('T0118', N'Alkem Laboratories  ', N'Hộp 2 vỉ x 10 viên', N'Viên', 147);
-INSERT INTO THUOC VALUES ('T0119', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 1 lọ', N'Lọ', 89);
-INSERT INTO THUOC VALUES ('T0120', N'Ipca Laboratories  ', N'Tuýp 5g', N'Tuýp', 96);
-INSERT INTO THUOC VALUES ('T0121', N'Alembic Pharmaceuticals  ', N'Chai 100 viên', N'Viên', 205);
-INSERT INTO THUOC VALUES ('T0122', N'Glenmark Pharmaceuticals  ', N'Hộp 10 vỉ x 10 viên', N'Viên', 194);
-INSERT INTO THUOC VALUES ('T0123', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 20 gói x 15g', N'Gói', 33);
-INSERT INTO THUOC VALUES ('T0124', N'Sun Pharmaceutical Industries  ', N'Hộp 1 vỉ x 7 viên', N'Hộp', 84);
-INSERT INTO THUOC VALUES ('T0125', N'Dr. Reddys Laboratories  ', N'Hộp 1 cái', N'Que', 161);
-INSERT INTO THUOC VALUES ('T0126', N'Divis Laboratories  ', N'Hộp 20 miếng', N'Hộp', 38);
-INSERT INTO THUOC VALUES ('T0127', N'Cipla  ', N'Túi 25g', N'Túi', 264);
-INSERT INTO THUOC VALUES ('T0128', N'Biocon  ', N'Gói 5 cái', N'Gói', 261);
-INSERT INTO THUOC VALUES ('T0129', N'Aurobindo Pharma  ', N'Hộp 20 ống x 10ml', N'Hộp', 137);
-INSERT INTO THUOC VALUES ('T0130', N'Torrent Pharmaceuticals  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 236);
-INSERT INTO THUOC VALUES ('T0131', N'Lupin  ', N'Hộp 60 viên', N'Hộp', 205);
-INSERT INTO THUOC VALUES ('T0132', N'Cadila Healthcare  ', N'Hộp 60 viên', N'Viên', 200);
-INSERT INTO THUOC VALUES ('T0133', N'Abbott India  ', N'Hộp 60 viên', N'Hộp', 243);
-INSERT INTO THUOC VALUES ('T0134', N'Alkem Laboratories  ', N'Hộp 1 máy', N'Máy', 441);
-INSERT INTO THUOC VALUES ('T0135', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 1 cái', N'Cái', 383);
-INSERT INTO THUOC VALUES ('T0136', N'Ipca Laboratories  ', N'Hộp 100 chiếc', N'Cái', 334);
-INSERT INTO THUOC VALUES ('T0137', N'Alembic Pharmaceuticals  ', N'Hộp 100 cái', N'Cái', 272);
-INSERT INTO THUOC VALUES ('T0138', N'Glenmark Pharmaceuticals  ', N'Vỉ 10 viên', N'Viên', 21);
-INSERT INTO THUOC VALUES ('T0139', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 1 tuýp 5g', N'Tuýp', 19);
-INSERT INTO THUOC VALUES ('T0140', N'Sun Pharmaceutical Industries  ', N'hộp 1 bao x 5 miếng', N'Hộp', 249);
-INSERT INTO THUOC VALUES ('T0141', N'Dr. Reddys Laboratories  ', N'Chai 500ml', N'Chai', 3);
-INSERT INTO THUOC VALUES ('T0142', N'Divis Laboratories  ', N'Lọ 100 viên', N'Lọ', 104);
-INSERT INTO THUOC VALUES ('T0143', N'Cipla  ', N'Hộp 26 gói', N'Gói', 147);
-INSERT INTO THUOC VALUES ('T0144', N'Biocon  ', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 46);
-INSERT INTO THUOC VALUES ('T0145', N'Aurobindo Pharma  ', N'Hộp 1 lọ 5ml', N'Lọ', 255);
-INSERT INTO THUOC VALUES ('T0146', N'Torrent Pharmaceuticals  ', N'Chai 100 viên', N'Viên', 147);
-INSERT INTO THUOC VALUES ('T0147', N'Lupin  ', N'Hộp 3 vỉ x 10 viên', N'Viên', 89);
-INSERT INTO THUOC VALUES ('T0148', N'Cadila Healthcare  ', N'Hộp 2 vỉ x 10 viên', N'Viên', 96);
-INSERT INTO THUOC VALUES ('T0149', N'Abbott India  ', N'Hộp 1 lọ', N'Lọ', 205);
-INSERT INTO THUOC VALUES ('T0150', N'Alkem Laboratories  ', N'Tuýp 5g', N'Tuýp', 194);
-INSERT INTO THUOC VALUES ('T0151', N'Glaxosmithkline Pharmaceuticals  ', N'Chai 100 viên', N'Viên', 33);
-INSERT INTO THUOC VALUES ('T0152', N'Ipca Laboratories  ', N'Hộp 10 vỉ x 10 viên', N'Viên', 84);
-INSERT INTO THUOC VALUES ('T0153', N'Alembic Pharmaceuticals  ', N'Hộp 20 gói x 15g', N'Gói', 161);
-INSERT INTO THUOC VALUES ('T0154', N'Glenmark Pharmaceuticals  ', N'Hộp 1 vỉ x 7 viên', N'Hộp', 38);
-INSERT INTO THUOC VALUES ('T0155', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 1 cái', N'Que', 264);
-INSERT INTO THUOC VALUES ('T0156', N'Sun Pharmaceutical Industries  ', N'Hộp 20 miếng', N'Hộp', 261);
-INSERT INTO THUOC VALUES ('T0157', N'Dr. Reddys Laboratories  ', N'Túi 25g', N'Túi', 137);
-INSERT INTO THUOC VALUES ('T0158', N'Divis Laboratories  ', N'Gói 5 cái', N'Gói', 236);
-INSERT INTO THUOC VALUES ('T0159', N'Cipla  ', N'Hộp 20 ống x 10ml', N'Hộp', 205);
-INSERT INTO THUOC VALUES ('T0160', N'Biocon  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 200);
-INSERT INTO THUOC VALUES ('T0161', N'Aurobindo Pharma  ', N'Hộp 60 viên', N'Hộp', 243);
-INSERT INTO THUOC VALUES ('T0162', N'Torrent Pharmaceuticals  ', N'Hộp 60 viên', N'Viên', 441);
-INSERT INTO THUOC VALUES ('T0163', N'Lupin  ', N'Hộp 60 viên', N'Hộp', 383);
-INSERT INTO THUOC VALUES ('T0164', N'Cadila Healthcare  ', N'Hộp 1 máy', N'Máy', 334);
-INSERT INTO THUOC VALUES ('T0165', N'Abbott India  ', N'Hộp 1 cái', N'Cái', 272);
-INSERT INTO THUOC VALUES ('T0166', N'Alkem Laboratories  ', N'Hộp 100 chiếc', N'Cái', 21);
-INSERT INTO THUOC VALUES ('T0167', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 100 cái', N'Cái', 19);
-INSERT INTO THUOC VALUES ('T0168', N'Ipca Laboratories  ', N'Vỉ 10 viên', N'Viên', 249);
-INSERT INTO THUOC VALUES ('T0169', N'Alembic Pharmaceuticals  ', N'Hộp 1 tuýp 5g', N'Tuýp', 3);
-INSERT INTO THUOC VALUES ('T0170', N'Glenmark Pharmaceuticals  ', N'hộp 1 bao x 5 miếng', N'Hộp', 104);
-INSERT INTO THUOC VALUES ('T0171', N'JB Chemicals & Pharmaceuticals  ', N'Chai 500ml', N'Chai', 147);
-INSERT INTO THUOC VALUES ('T0172', N'Sun Pharmaceutical Industries  ', N'Lọ 100 viên', N'Lọ', 46);
-INSERT INTO THUOC VALUES ('T0173', N'Dr. Reddys Laboratories  ', N'Hộp 26 gói', N'Gói', 255);
-INSERT INTO THUOC VALUES ('T0174', N'Divis Laboratories  ', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 147);
-INSERT INTO THUOC VALUES ('T0175', N'Cipla  ', N'Hộp 1 lọ 5ml', N'Lọ', 89);
-INSERT INTO THUOC VALUES ('T0176', N'Biocon  ', N'Chai 100 viên', N'Viên', 96);
-INSERT INTO THUOC VALUES ('T0177', N'Aurobindo Pharma  ', N'Hộp 3 vỉ x 10 viên', N'Viên', 205);
-INSERT INTO THUOC VALUES ('T0178', N'Torrent Pharmaceuticals  ', N'Hộp 2 vỉ x 10 viên', N'Viên', 194);
-INSERT INTO THUOC VALUES ('T0179', N'Sun Pharmaceutical Industries  ', N'Hộp 1 lọ', N'Lọ', 33);
-INSERT INTO THUOC VALUES ('T0180', N'Dr. Reddys Laboratories  ', N'Tuýp 5g', N'Tuýp', 84);
-INSERT INTO THUOC VALUES ('T0181', N'Divis Laboratories  ', N'Chai 100 viên', N'Viên', 161);
-INSERT INTO THUOC VALUES ('T0182', N'Cipla  ', N'Hộp 10 vỉ x 10 viên', N'Viên', 38);
-INSERT INTO THUOC VALUES ('T0183', N'Biocon  ', N'Hộp 20 gói x 15g', N'Gói', 264);
-INSERT INTO THUOC VALUES ('T0184', N'Aurobindo Pharma  ', N'Hộp 1 vỉ x 7 viên', N'Hộp', 261);
-INSERT INTO THUOC VALUES ('T0185', N'Torrent Pharmaceuticals  ', N'Hộp 1 cái', N'Que', 137);
-INSERT INTO THUOC VALUES ('T0186', N'Lupin  ', N'Hộp 20 miếng', N'Hộp', 236);
-INSERT INTO THUOC VALUES ('T0187', N'Cadila Healthcare  ', N'Túi 25g', N'Túi', 205);
-INSERT INTO THUOC VALUES ('T0188', N'Abbott India  ', N'Gói 5 cái', N'Gói', 200);
-INSERT INTO THUOC VALUES ('T0189', N'Alkem Laboratories  ', N'Hộp 20 ống x 10ml', N'Hộp', 243);
-INSERT INTO THUOC VALUES ('T0190', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 441);
-INSERT INTO THUOC VALUES ('T0191', N'Ipca Laboratories  ', N'Hộp 60 viên', N'Hộp', 383);
-INSERT INTO THUOC VALUES ('T0192', N'Alembic Pharmaceuticals  ', N'Hộp 60 viên', N'Viên', 334);
-INSERT INTO THUOC VALUES ('T0193', N'Glenmark Pharmaceuticals  ', N'Hộp 60 viên', N'Hộp', 272);
-INSERT INTO THUOC VALUES ('T0194', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 1 máy', N'Máy', 21);
-INSERT INTO THUOC VALUES ('T0195', N'Sun Pharmaceutical Industries  ', N'Hộp 1 cái', N'Cái', 19);
-INSERT INTO THUOC VALUES ('T0196', N'Dr. Reddys Laboratories  ', N'Hộp 100 chiếc', N'Cái', 249);
-INSERT INTO THUOC VALUES ('T0197', N'Divis Laboratories  ', N'Hộp 100 cái', N'Cái', 3);
-INSERT INTO THUOC VALUES ('T0198', N'Cipla  ', N'Lọ 100 viên', N'Viên', 104);
-INSERT INTO THUOC VALUES ('T0199', N'Biocon  ', N'Hộp 26 gói', N'Tuýp', 20);
-INSERT INTO THUOC VALUES ('T0200', N'Aurobindo Pharma  ', N'Hộp 3 vỉ x 10 viên', N'Hộp', 15);
+INSERT INTO THUOC VALUES ('T0001', N'Acetylcystein', N'Vỉ 10 viên', N'Viên', 50000, 26);
+INSERT INTO THUOC VALUES ('T0002', N'Avircrem', N'Hộp 1 tuýp 5g', N'Tuýp', 7000, 131);
+INSERT INTO THUOC VALUES ('T0003', N'Salonpas pain relief patch', N'hộp 1 bao x 5 miếng', N'Hộp', 49000, 147);
+INSERT INTO THUOC VALUES ('T0004', N'Dung dịch Natri clorid 0,9%', N'Chai 500ml', N'Chai', 25000, 46);
+INSERT INTO THUOC VALUES ('T0005', N'Farzincol', N'Lọ 100 viên', N'Lọ', 11000, 255);
+INSERT INTO THUOC VALUES ('T0006', N'Phosphalugel', N'Hộp 26 gói', N'Gói', 56000, 147);
+INSERT INTO THUOC VALUES ('T0007', N'Eszopiclone', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 120000, 89);
+INSERT INTO THUOC VALUES ('T0008', N'5-Fluorouracil Ebewe', N'Hộp 1 lọ 5ml', N'Lọ', 21800, 96);
+INSERT INTO THUOC VALUES ('T0009', N'Aecysmux', N'Chai 100 viên', N'Viên', 30000, 205);
+INSERT INTO THUOC VALUES ('T0010', N'Isotretinoin', N'Hộp 3 vỉ x 10 viên', N'Viên', 12000, 194);
+INSERT INTO THUOC VALUES ('T0011', N'Chymotrypsin', N'Hộp 2 vỉ x 10 viên', N'Viên', 158000, 33);
+INSERT INTO THUOC VALUES ('T0012', N'Aradine', N'Hộp 1 lọ', N'Lọ', 12000, 84);
+INSERT INTO THUOC VALUES ('T0013', N'Bactronil', N'Tuýp 5g', N'Tuýp', 1526000, 161);
+INSERT INTO THUOC VALUES ('T0014', N'Beratan', N'Chai 100 viên', N'Viên', 12000, 38);
+INSERT INTO THUOC VALUES ('T0015', N'Cadipiride', N'Hộp 10 vỉ x 10 viên', N'Viên', 150000, 264);
+INSERT INTO THUOC VALUES ('T0016', N'Paracetamol', N'Hộp 20 gói x 15g', N'Gói', 599000, 261);
+INSERT INTO THUOC VALUES ('T0017', N'AB-Intimus', N'Hộp 1 vỉ x 7 viên', N'Hộp', 811000, 137);
+INSERT INTO THUOC VALUES ('T0018', N'Pravastatin Dwp', N'Vỉ 10 viên', N'Viên', 389000, 236);
+INSERT INTO THUOC VALUES ('T0019', N'Perindopril Plus Dwp', N'Hộp 1 tuýp 5g', N'Tuýp', 369000, 205);
+INSERT INTO THUOC VALUES ('T0020', N'Nebivolol Plus', N'hộp 1 bao x 5 miếng', N'Hộp', 189000, 200);
+INSERT INTO THUOC VALUES ('T0021', N'Irbesartan Dwp', N'Chai 500ml', N'Chai', 789000, 243);
+INSERT INTO THUOC VALUES ('T0022', N'Calcivin', N'Lọ 100 viên', N'Lọ', 559000, 441);
+INSERT INTO THUOC VALUES ('T0023', N'Saxagliptin', N'Hộp 26 gói', N'Gói', 484000, 383);
+INSERT INTO THUOC VALUES ('T0024', N'Mebizemib', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 639000, 334);
+INSERT INTO THUOC VALUES ('T0025', N'Toduet', N'Hộp 1 lọ 5ml', N'Lọ', 439000, 272);
+INSERT INTO THUOC VALUES ('T0026', N'Methylprednisolon', N'Chai 100 viên', N'Viên', 490000, 21);
+INSERT INTO THUOC VALUES ('T0027', N'Lazimidin', N'Hộp 3 vỉ x 10 viên', N'Viên', 239000, 19);
+INSERT INTO THUOC VALUES ('T0028', N'Infloxin', N'Hộp 2 vỉ x 10 viên', N'Viên', 369000, 249);
+INSERT INTO THUOC VALUES ('T0029', N'Glutathion', N'Hộp 1 lọ', N'Lọ', 169000, 3);
+INSERT INTO THUOC VALUES ('T0030', N'Gliglutin', N'Tuýp 5g', N'Tuýp', 569000, 104);
+INSERT INTO THUOC VALUES ('T0031', N'Colistimethate sodium', N'Chai 100 viên', N'Viên', 399000, 147);
+INSERT INTO THUOC VALUES ('T0032', N'Bimesta', N'Hộp 10 vỉ x 10 viên', N'Viên', 169000, 46);
+INSERT INTO THUOC VALUES ('T0033', N'Aciste', N'Hộp 20 gói x 15g', N'Gói', 16900, 255);
+INSERT INTO THUOC VALUES ('T0034', N'Bfavits', N'Hộp 1 vỉ x 7 viên', N'Hộp', 169000, 147);
+INSERT INTO THUOC VALUES ('T0035', N'Aciste 2 MIU', N'Hộp 1 cái', N'Que', 169000, 89);
+INSERT INTO THUOC VALUES ('T0036', N'Methobam', N'Hộp 20 miếng', N'Hộp', 769000, 96);
+INSERT INTO THUOC VALUES ('T0037', N'Sun Pharmaceutical Industries  ', N'Túi 25g', N'Túi', 169000, 205);
+INSERT INTO THUOC VALUES ('T0038', N'Dr. Reddys Laboratories  ', N'Gói 5 cái', N'Gói', 869000, 194);
+INSERT INTO THUOC VALUES ('T0039', N'Divis Laboratories  ', N'Hộp 20 ống x 10ml', N'Hộp', 1569000, 33);
+INSERT INTO THUOC VALUES ('T0040', N'Cipla  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 899000, 84);
+INSERT INTO THUOC VALUES ('T0041', N'Biocon  ', N'Hộp 60 viên', N'Hộp', 1629000, 161);
+INSERT INTO THUOC VALUES ('T0042', N'Aurobindo Pharma  ', N'Hộp 60 viên', N'Viên', 169000, 38);
+INSERT INTO THUOC VALUES ('T0043', N'Torrent Pharmaceuticals  ', N'Hộp 60 viên', N'Hộp', 499000, 264);
+INSERT INTO THUOC VALUES ('T0044', N'Lupin  ', N'Hộp 1 máy', N'Máy', 279000, 261);
+INSERT INTO THUOC VALUES ('T0045', N'Cadila Healthcare  ', N'Hộp 1 cái', N'Cái', 169000, 137);
+INSERT INTO THUOC VALUES ('T0046', N'Abbott India  ', N'Hộp 100 chiếc', N'Cái', 99000, 236);
+INSERT INTO THUOC VALUES ('T0047', N'Alkem Laboratories  ', N'Hộp 100 cái', N'Cái', 399000, 205);
+INSERT INTO THUOC VALUES ('T0048', N'Glaxosmithkline Pharmaceuticals  ', N'Vỉ 10 viên', N'Viên', 830000, 200);
+INSERT INTO THUOC VALUES ('T0049', N'Ipca Laboratories  ', N'Hộp 1 tuýp 5g', N'Tuýp', 222000, 243);
+INSERT INTO THUOC VALUES ('T0050', N'Alembic Pharmaceuticals  ', N'hộp 1 bao x 5 miếng', N'Hộp', 569000, 441);
+INSERT INTO THUOC VALUES ('T0051', N'Glenmark Pharmaceuticals  ', N'Chai 500ml', N'Chai', 769000, 383);
+INSERT INTO THUOC VALUES ('T0052', N'JB Chemicals & Pharmaceuticals  ', N'Lọ 100 viên', N'Lọ', 869000, 334);
+INSERT INTO THUOC VALUES ('T0053', N'Sun Pharmaceutical Industries  ', N'Hộp 26 gói', N'Gói', 129000, 272);
+INSERT INTO THUOC VALUES ('T0054', N'Dr. Reddys Laboratories  ', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 269000, 21);
+INSERT INTO THUOC VALUES ('T0055', N'Divis Laboratories  ', N'Hộp 1 lọ 5ml', N'Lọ', 45000, 19);
+INSERT INTO THUOC VALUES ('T0056', N'Cipla  ', N'Chai 100 viên', N'Viên', 669000, 249);
+INSERT INTO THUOC VALUES ('T0057', N'Biocon  ', N'Hộp 3 vỉ x 10 viên', N'Viên', 559000, 3);
+INSERT INTO THUOC VALUES ('T0058', N'Aurobindo Pharma  ', N'Hộp 2 vỉ x 10 viên', N'Viên', 369000, 104);
+INSERT INTO THUOC VALUES ('T0059', N'Torrent Pharmaceuticals  ', N'Hộp 1 lọ', N'Lọ', 69000, 147);
+INSERT INTO THUOC VALUES ('T0060', N'Lupin  ', N'Tuýp 5g', N'Tuýp', 1690000, 46);
+INSERT INTO THUOC VALUES ('T0061', N'Cadila Healthcare  ', N'Chai 100 viên', N'Viên', 369000, 255);
+INSERT INTO THUOC VALUES ('T0062', N'Abbott India  ', N'Hộp 10 vỉ x 10 viên', N'Viên', 269000, 147);
+INSERT INTO THUOC VALUES ('T0063', N'Alkem Laboratories  ', N'Hộp 20 gói x 15g', N'Gói', 69000, 89);
+INSERT INTO THUOC VALUES ('T0064', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 1 vỉ x 7 viên', N'Hộp', 169000, 96);
+INSERT INTO THUOC VALUES ('T0065', N'Ipca Laboratories  ', N'Hộp 1 cái', N'Que', 169000, 205);
+INSERT INTO THUOC VALUES ('T0066', N'Alembic Pharmaceuticals  ', N'Hộp 20 miếng', N'Hộp', 550000, 194);
+INSERT INTO THUOC VALUES ('T0067', N'Glenmark Pharmaceuticals  ', N'Túi 25g', N'Túi', 750000, 33);
+INSERT INTO THUOC VALUES ('T0068', N'JB Chemicals & Pharmaceuticals  ', N'Gói 5 cái', N'Gói', 300000, 84);
+INSERT INTO THUOC VALUES ('T0069', N'Sun Pharmaceutical Industries  ', N'Hộp 20 ống x 10ml', N'Hộp', 299000, 161);
+INSERT INTO THUOC VALUES ('T0070', N'Dr. Reddys Laboratories  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 140000, 38);
+INSERT INTO THUOC VALUES ('T0071', N'Divis Laboratories  ', N'Hộp 60 viên', N'Hộp', 700000, 264);
+INSERT INTO THUOC VALUES ('T0072', N'Cipla  ', N'Hộp 60 viên', N'Viên', 500000, 261);
+INSERT INTO THUOC VALUES ('T0073', N'Biocon  ', N'Hộp 60 viên', N'Hộp', 404000, 137);
+INSERT INTO THUOC VALUES ('T0074', N'Aurobindo Pharma  ', N'Hộp 1 máy', N'Máy', 600000, 236);
+INSERT INTO THUOC VALUES ('T0075', N'Torrent Pharmaceuticals  ', N'Hộp 1 cái', N'Cái', 400000, 205);
+INSERT INTO THUOC VALUES ('T0076', N'Lupin  ', N'Hộp 100 chiếc', N'Cái', 450000, 200);
+INSERT INTO THUOC VALUES ('T0077', N'Cadila Healthcare  ', N'Hộp 100 cái', N'Cái', 200000, 243);
+INSERT INTO THUOC VALUES ('T0078', N'Abbott India  ', N'Vỉ 10 viên', N'Viên', 360000, 441);
+INSERT INTO THUOC VALUES ('T0079', N'Alkem Laboratories  ', N'Hộp 1 tuýp 5g', N'Tuýp', 160000, 383);
+INSERT INTO THUOC VALUES ('T0080', N'Glaxosmithkline Pharmaceuticals  ', N'hộp 1 bao x 5 miếng', N'Hộp', 560000, 334);
+INSERT INTO THUOC VALUES ('T0081', N'Ipca Laboratories  ', N'Chai 500ml', N'Chai', 389000, 272);
+INSERT INTO THUOC VALUES ('T0082', N'Alembic Pharmaceuticals  ', N'Lọ 100 viên', N'Lọ', 160000, 21);
+INSERT INTO THUOC VALUES ('T0083', N'Glenmark Pharmaceuticals  ', N'Hộp 26 gói', N'Gói', 15000, 19);
+INSERT INTO THUOC VALUES ('T0084', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 160000, 249);
+INSERT INTO THUOC VALUES ('T0085', N'Sun Pharmaceutical Industries  ', N'Hộp 1 lọ 5ml', N'Lọ', 160000, 3);
+INSERT INTO THUOC VALUES ('T0086', N'Dr. Reddys Laboratories  ', N'Chai 100 viên', N'Viên', 760000, 104);
+INSERT INTO THUOC VALUES ('T0087', N'Divis Laboratories  ', N'Hộp 3 vỉ x 10 viên', N'Viên', 160000, 147);
+INSERT INTO THUOC VALUES ('T0088', N'Cipla  ', N'Hộp 2 vỉ x 10 viên', N'Viên', 760000, 46);
+INSERT INTO THUOC VALUES ('T0089', N'Biocon  ', N'Hộp 1 lọ', N'Lọ', 1460000, 255);
+INSERT INTO THUOC VALUES ('T0090', N'Aurobindo Pharma  ', N'Tuýp 5g', N'Tuýp', 860000, 147);
+INSERT INTO THUOC VALUES ('T0091', N'Torrent Pharmaceuticals  ', N'Chai 100 viên', N'Viên', 1600000, 89);
+INSERT INTO THUOC VALUES ('T0092', N'Lupin  ', N'Hộp 10 vỉ x 10 viên', N'Viên', 160000, 96);
+INSERT INTO THUOC VALUES ('T0093', N'Cadila Healthcare  ', N'Hộp 20 gói x 15g', N'Gói', 400000, 205);
+INSERT INTO THUOC VALUES ('T0094', N'Abbott India  ', N'Hộp 1 vỉ x 7 viên', N'Hộp', 250000, 194);
+INSERT INTO THUOC VALUES ('T0095', N'Alkem Laboratories  ', N'Hộp 1 cái', N'Que', 160000, 33);
+INSERT INTO THUOC VALUES ('T0096', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 20 miếng', N'Hộp', 90000, 84);
+INSERT INTO THUOC VALUES ('T0097', N'Ipca Laboratories  ', N'Túi 25g', N'Túi', 390000, 161);
+INSERT INTO THUOC VALUES ('T0098', N'Alembic Pharmaceuticals  ', N'Gói 5 cái', N'Gói', 760000, 38);
+INSERT INTO THUOC VALUES ('T0099', N'Glenmark Pharmaceuticals  ', N'Hộp 20 ống x 10ml', N'Hộp', 160000, 264);
+INSERT INTO THUOC VALUES ('T0100', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 560000, 261);
+INSERT INTO THUOC VALUES ('T0101', N'Sun Pharmaceutical Industries  ', N'Hộp 60 viên', N'Hộp', 760000, 137);
+INSERT INTO THUOC VALUES ('T0102', N'Dr. Reddys Laboratories  ', N'Hộp 60 viên', N'Viên', 860000, 236);
+INSERT INTO THUOC VALUES ('T0103', N'Divis Laboratories  ', N'Hộp 60 viên', N'Hộp', 120000, 205);
+INSERT INTO THUOC VALUES ('T0104', N'Cipla  ', N'Hộp 1 máy', N'Máy', 260000, 200);
+INSERT INTO THUOC VALUES ('T0105', N'Biocon  ', N'Hộp 1 cái', N'Cái', 30000, 243);
+INSERT INTO THUOC VALUES ('T0106', N'Aurobindo Pharma  ', N'Hộp 100 chiếc', N'Cái', 650000, 441);
+INSERT INTO THUOC VALUES ('T0107', N'Torrent Pharmaceuticals  ', N'Hộp 100 cái', N'Cái', 540000, 383);
+INSERT INTO THUOC VALUES ('T0108', N'Sun Pharmaceutical Industries  ', N'Vỉ 10 viên', N'Viên', 360000, 334);
+INSERT INTO THUOC VALUES ('T0109', N'Dr. Reddys Laboratories  ', N'Hộp 1 tuýp 5g', N'Tuýp', 60000, 272);
+INSERT INTO THUOC VALUES ('T0110', N'Divis Laboratories  ', N'hộp 1 bao x 5 miếng', N'Hộp', 1600000, 21);
+INSERT INTO THUOC VALUES ('T0111', N'Cipla  ', N'Chai 500ml', N'Chai', 360000, 19);
+INSERT INTO THUOC VALUES ('T0112', N'Biocon  ', N'Lọ 100 viên', N'Lọ', 160000, 249);
+INSERT INTO THUOC VALUES ('T0113', N'Aurobindo Pharma  ', N'Hộp 26 gói', N'Gói', 60000, 3);
+INSERT INTO THUOC VALUES ('T0114', N'Torrent Pharmaceuticals  ', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 160000, 104);
+INSERT INTO THUOC VALUES ('T0115', N'Lupin  ', N'Hộp 1 lọ 5ml', N'Lọ', 160000, 147);
+INSERT INTO THUOC VALUES ('T0116', N'Cadila Healthcare  ', N'Chai 100 viên', N'Viên', 499000, 46);
+INSERT INTO THUOC VALUES ('T0117', N'Abbott India  ', N'Hộp 3 vỉ x 10 viên', N'Viên', 279000, 255);
+INSERT INTO THUOC VALUES ('T0118', N'Alkem Laboratories  ', N'Hộp 2 vỉ x 10 viên', N'Viên', 169000, 147);
+INSERT INTO THUOC VALUES ('T0119', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 1 lọ', N'Lọ', 99000, 89);
+INSERT INTO THUOC VALUES ('T0120', N'Ipca Laboratories  ', N'Tuýp 5g', N'Tuýp', 399000, 96);
+INSERT INTO THUOC VALUES ('T0121', N'Alembic Pharmaceuticals  ', N'Chai 100 viên', N'Viên', 830000, 205);
+INSERT INTO THUOC VALUES ('T0122', N'Glenmark Pharmaceuticals  ', N'Hộp 10 vỉ x 10 viên', N'Viên', 222000, 194);
+INSERT INTO THUOC VALUES ('T0123', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 20 gói x 15g', N'Gói', 569000, 33);
+INSERT INTO THUOC VALUES ('T0124', N'Sun Pharmaceutical Industries  ', N'Hộp 1 vỉ x 7 viên', N'Hộp', 769000, 84);
+INSERT INTO THUOC VALUES ('T0125', N'Dr. Reddys Laboratories  ', N'Hộp 1 cái', N'Que', 50000, 161);
+INSERT INTO THUOC VALUES ('T0126', N'Divis Laboratories  ', N'Hộp 20 miếng', N'Hộp', 7000, 38);
+INSERT INTO THUOC VALUES ('T0127', N'Cipla  ', N'Túi 25g', N'Túi', 49000, 264);
+INSERT INTO THUOC VALUES ('T0128', N'Biocon  ', N'Gói 5 cái', N'Gói', 25000, 261);
+INSERT INTO THUOC VALUES ('T0129', N'Aurobindo Pharma  ', N'Hộp 20 ống x 10ml', N'Hộp', 11000, 137);
+INSERT INTO THUOC VALUES ('T0130', N'Torrent Pharmaceuticals  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 56000, 236);
+INSERT INTO THUOC VALUES ('T0131', N'Lupin  ', N'Hộp 60 viên', N'Hộp', 120000, 205);
+INSERT INTO THUOC VALUES ('T0132', N'Cadila Healthcare  ', N'Hộp 60 viên', N'Viên', 21800, 200);
+INSERT INTO THUOC VALUES ('T0133', N'Abbott India  ', N'Hộp 60 viên', N'Hộp', 30000, 243);
+INSERT INTO THUOC VALUES ('T0134', N'Alkem Laboratories  ', N'Hộp 1 máy', N'Máy', 12000, 441);
+INSERT INTO THUOC VALUES ('T0135', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 1 cái', N'Cái', 158000, 383);
+INSERT INTO THUOC VALUES ('T0136', N'Ipca Laboratories  ', N'Hộp 100 chiếc', N'Cái', 12000, 334);
+INSERT INTO THUOC VALUES ('T0137', N'Alembic Pharmaceuticals  ', N'Hộp 100 cái', N'Cái', 1526000, 272);
+INSERT INTO THUOC VALUES ('T0138', N'Glenmark Pharmaceuticals  ', N'Vỉ 10 viên', N'Viên', 12000, 21);
+INSERT INTO THUOC VALUES ('T0139', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 1 tuýp 5g', N'Tuýp', 150000, 19);
+INSERT INTO THUOC VALUES ('T0140', N'Sun Pharmaceutical Industries  ', N'hộp 1 bao x 5 miếng', N'Hộp', 599000, 249);
+INSERT INTO THUOC VALUES ('T0141', N'Dr. Reddys Laboratories  ', N'Chai 500ml', N'Chai', 811000, 3);
+INSERT INTO THUOC VALUES ('T0142', N'Divis Laboratories  ', N'Lọ 100 viên', N'Lọ', 389000, 104);
+INSERT INTO THUOC VALUES ('T0143', N'Cipla  ', N'Hộp 26 gói', N'Gói', 369000, 147);
+INSERT INTO THUOC VALUES ('T0144', N'Biocon  ', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 189000, 46);
+INSERT INTO THUOC VALUES ('T0145', N'Aurobindo Pharma  ', N'Hộp 1 lọ 5ml', N'Lọ', 789000, 255);
+INSERT INTO THUOC VALUES ('T0146', N'Torrent Pharmaceuticals  ', N'Chai 100 viên', N'Viên', 559000, 147);
+INSERT INTO THUOC VALUES ('T0147', N'Lupin  ', N'Hộp 3 vỉ x 10 viên', N'Viên', 484000, 89);
+INSERT INTO THUOC VALUES ('T0148', N'Cadila Healthcare  ', N'Hộp 2 vỉ x 10 viên', N'Viên', 639000, 96);
+INSERT INTO THUOC VALUES ('T0149', N'Abbott India  ', N'Hộp 1 lọ', N'Lọ', 439000, 205);
+INSERT INTO THUOC VALUES ('T0150', N'Alkem Laboratories  ', N'Tuýp 5g', N'Tuýp', 490000, 194);
+INSERT INTO THUOC VALUES ('T0151', N'Glaxosmithkline Pharmaceuticals  ', N'Chai 100 viên', N'Viên', 239000, 33);
+INSERT INTO THUOC VALUES ('T0152', N'Ipca Laboratories  ', N'Hộp 10 vỉ x 10 viên', N'Viên', 369000, 84);
+INSERT INTO THUOC VALUES ('T0153', N'Alembic Pharmaceuticals  ', N'Hộp 20 gói x 15g', N'Gói', 169000, 161);
+INSERT INTO THUOC VALUES ('T0154', N'Glenmark Pharmaceuticals  ', N'Hộp 1 vỉ x 7 viên', N'Hộp', 569000, 38);
+INSERT INTO THUOC VALUES ('T0155', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 1 cái', N'Que', 399000, 264);
+INSERT INTO THUOC VALUES ('T0156', N'Sun Pharmaceutical Industries  ', N'Hộp 20 miếng', N'Hộp', 169000, 261);
+INSERT INTO THUOC VALUES ('T0157', N'Dr. Reddys Laboratories  ', N'Túi 25g', N'Túi', 16900, 137);
+INSERT INTO THUOC VALUES ('T0158', N'Divis Laboratories  ', N'Gói 5 cái', N'Gói', 169000, 236);
+INSERT INTO THUOC VALUES ('T0159', N'Cipla  ', N'Hộp 20 ống x 10ml', N'Hộp', 169000, 205);
+INSERT INTO THUOC VALUES ('T0160', N'Biocon  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 769000, 200);
+INSERT INTO THUOC VALUES ('T0161', N'Aurobindo Pharma  ', N'Hộp 60 viên', N'Hộp', 169000, 243);
+INSERT INTO THUOC VALUES ('T0162', N'Torrent Pharmaceuticals  ', N'Hộp 60 viên', N'Viên', 869000, 441);
+INSERT INTO THUOC VALUES ('T0163', N'Lupin  ', N'Hộp 60 viên', N'Hộp', 1569000, 383);
+INSERT INTO THUOC VALUES ('T0164', N'Cadila Healthcare  ', N'Hộp 1 máy', N'Máy', 899000, 334);
+INSERT INTO THUOC VALUES ('T0165', N'Abbott India  ', N'Hộp 1 cái', N'Cái', 1629000, 272);
+INSERT INTO THUOC VALUES ('T0166', N'Alkem Laboratories  ', N'Hộp 100 chiếc', N'Cái', 169000, 21);
+INSERT INTO THUOC VALUES ('T0167', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 100 cái', N'Cái', 499000, 19);
+INSERT INTO THUOC VALUES ('T0168', N'Ipca Laboratories  ', N'Vỉ 10 viên', N'Viên', 279000, 249);
+INSERT INTO THUOC VALUES ('T0169', N'Alembic Pharmaceuticals  ', N'Hộp 1 tuýp 5g', N'Tuýp', 169000, 3);
+INSERT INTO THUOC VALUES ('T0170', N'Glenmark Pharmaceuticals  ', N'hộp 1 bao x 5 miếng', N'Hộp', 99000, 104);
+INSERT INTO THUOC VALUES ('T0171', N'JB Chemicals & Pharmaceuticals  ', N'Chai 500ml', N'Chai', 399000, 147);
+INSERT INTO THUOC VALUES ('T0172', N'Sun Pharmaceutical Industries  ', N'Lọ 100 viên', N'Lọ', 830000, 46);
+INSERT INTO THUOC VALUES ('T0173', N'Dr. Reddys Laboratories  ', N'Hộp 26 gói', N'Gói', 222000, 255);
+INSERT INTO THUOC VALUES ('T0174', N'Divis Laboratories  ', N'Hộp 3 vỉ x 10 viên', N'Vỉ', 569000, 147);
+INSERT INTO THUOC VALUES ('T0175', N'Cipla  ', N'Hộp 1 lọ 5ml', N'Lọ', 769000, 89);
+INSERT INTO THUOC VALUES ('T0176', N'Biocon  ', N'Chai 100 viên', N'Viên', 869000, 96);
+INSERT INTO THUOC VALUES ('T0177', N'Aurobindo Pharma  ', N'Hộp 3 vỉ x 10 viên', N'Viên', 129000, 205);
+INSERT INTO THUOC VALUES ('T0178', N'Torrent Pharmaceuticals  ', N'Hộp 2 vỉ x 10 viên', N'Viên', 269000, 194);
+INSERT INTO THUOC VALUES ('T0179', N'Sun Pharmaceutical Industries  ', N'Hộp 1 lọ', N'Lọ', 45000, 33);
+INSERT INTO THUOC VALUES ('T0180', N'Dr. Reddys Laboratories  ', N'Tuýp 5g', N'Tuýp', 669000, 84);
+INSERT INTO THUOC VALUES ('T0181', N'Divis Laboratories  ', N'Chai 100 viên', N'Viên', 559000, 161);
+INSERT INTO THUOC VALUES ('T0182', N'Cipla  ', N'Hộp 10 vỉ x 10 viên', N'Viên', 369000, 38);
+INSERT INTO THUOC VALUES ('T0183', N'Biocon  ', N'Hộp 20 gói x 15g', N'Gói', 69000, 264);
+INSERT INTO THUOC VALUES ('T0184', N'Aurobindo Pharma  ', N'Hộp 1 vỉ x 7 viên', N'Hộp', 1690000, 261);
+INSERT INTO THUOC VALUES ('T0185', N'Torrent Pharmaceuticals  ', N'Hộp 1 cái', N'Que', 369000, 137);
+INSERT INTO THUOC VALUES ('T0186', N'Lupin  ', N'Hộp 20 miếng', N'Hộp', 269000, 236);
+INSERT INTO THUOC VALUES ('T0187', N'Cadila Healthcare  ', N'Túi 25g', N'Túi', 69000, 205);
+INSERT INTO THUOC VALUES ('T0188', N'Abbott India  ', N'Gói 5 cái', N'Gói', 169000, 200);
+INSERT INTO THUOC VALUES ('T0189', N'Alkem Laboratories  ', N'Hộp 20 ống x 10ml', N'Hộp', 169000, 243);
+INSERT INTO THUOC VALUES ('T0190', N'Glaxosmithkline Pharmaceuticals  ', N'Hộp 2 vỉ x 15 viên', N'Hộp', 550000, 441);
+INSERT INTO THUOC VALUES ('T0191', N'Ipca Laboratories  ', N'Hộp 60 viên', N'Hộp', 750000, 383);
+INSERT INTO THUOC VALUES ('T0192', N'Alembic Pharmaceuticals  ', N'Hộp 60 viên', N'Viên', 300000, 334);
+INSERT INTO THUOC VALUES ('T0193', N'Glenmark Pharmaceuticals  ', N'Hộp 60 viên', N'Hộp', 299000, 272);
+INSERT INTO THUOC VALUES ('T0194', N'JB Chemicals & Pharmaceuticals  ', N'Hộp 1 máy', N'Máy', 140000, 21);
+INSERT INTO THUOC VALUES ('T0195', N'Sun Pharmaceutical Industries  ', N'Hộp 1 cái', N'Cái', 700000, 19);
+INSERT INTO THUOC VALUES ('T0196', N'Dr. Reddys Laboratories  ', N'Hộp 100 chiếc', N'Cái', 500000, 249);
+INSERT INTO THUOC VALUES ('T0197', N'Divis Laboratories  ', N'Hộp 100 cái', N'Cái', 404000, 3);
+INSERT INTO THUOC VALUES ('T0198', N'Cipla  ', N'Lọ 100 viên', N'Viên', 600000, 104);
+INSERT INTO THUOC VALUES ('T0199', N'Biocon  ', N'Hộp 26 gói', N'Tuýp', 400000, 20);
+INSERT INTO THUOC VALUES ('T0200', N'Aurobindo Pharma  ', N'Hộp 3 vỉ x 10 viên', N'Hộp', 450000, 15);
+
 
 INSERT INTO PHONGKHAM VALUES ('A31', N'Phòng khám chuyên khoa ký sinh trùng', N'Tầng 3 khu A');						
 INSERT INTO PHONGKHAM VALUES ('A42', N'Phòng khám hậu Covid-19', N'Tầng 4 khu A');						
