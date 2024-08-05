@@ -1,0 +1,77 @@
+  <p class="textcolor text-lg font-medium title-font mb-5">Lịch làm việc:</p>
+  <div class="">
+      <div class="calendar-container">
+        <div class="calendar-container__header">
+          <button class="calendar-container__btn calendar-container__btn--left" title="Previous">
+            <i class="icon ion-ios-arrow-back"></i>
+          </button>
+          <h2 class="textcolor text-lg font-medium title-font">Tháng hiện tại</h2>
+          <button class="calendar-container__btn calendar-container__btn--right" title="Next">
+            <i class="icon ion-ios-arrow-forward"></i>
+          </button>
+        </div>
+        <div class="calendar-container__body">
+          <div class="calendar-table">
+            <div class="calendar-table__header">
+              <div class="calendar-table__row">
+                <div class="calendar-table__col">S</div>
+                <div class="calendar-table__col">M</div>
+                <div class="calendar-table__col">T</div>
+                <div class="calendar-table__col">W</div>
+                <div class="calendar-table__col">T</div>
+                <div class="calendar-table__col">F</div>
+                <div class="calendar-table__col">S</div>
+              </div>
+            </div>
+            <div class="calendar-table__body">
+              <div class="calendar-table__row">
+                @for(item of week1; track $index){
+                    <div class="calendar-table__col"  [class.calendar-table__event]="workdays.includes(item)">
+                        <div class="calendar-table__item">
+                          <span>{{item}}</span>
+                        </div>
+                      </div>
+                }
+              </div>
+              <div class="calendar-table__row">
+                @for(item of week2; track $index){
+                  <div class="calendar-table__col" [class.calendar-table__event]="workdays.includes(item)">
+                    <div class="calendar-table__item">
+                      <span>{{item}}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+              
+              <div class="calendar-table__row">
+                @for(item of week3; track $index){
+                    <div class="calendar-table__col" [class.calendar-table__event]="workdays.includes(item)">
+                        <div class="calendar-table__item">
+                          <span>{{item}}</span>
+                        </div>
+                    </div>
+                }
+              </div>
+              <div class="calendar-table__row">
+                @for(item of week4; track $index){
+                    <div class="calendar-table__col" [class.calendar-table__event]="workdays.includes(item)">
+                        <div class="calendar-table__item" >
+                          <span>{{item}}</span>
+                        </div>
+                    </div>
+                }
+              </div>
+              <div class="calendar-table__row">
+                @for(item of week5; track $index){
+                    <div class="calendar-table__col" [class.calendar-table__event]="workdays.includes(item)">
+                        <div class="calendar-table__item">
+                          <span>{{item}}</span>
+                        </div>
+                    </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>

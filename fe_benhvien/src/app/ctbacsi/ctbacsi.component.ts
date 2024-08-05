@@ -7,24 +7,19 @@ import { CardDatlichComponent } from '../card-datlich/card-datlich.component';
 import { BacsiService } from '../services/bacsi.service';
 import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
-import { MbscEventcalendarView } from '@mobiscroll/angular';
+import { LichlamviecComponent } from '../lichlamviec/lichlamviec.component';
 
 @Component({
   selector: 'app-ctbacsi',
   standalone: true,
-  imports: [MatCardModule, MatDatepickerModule, CardDatlichComponent],
+  imports: [MatCardModule, MatDatepickerModule, CardDatlichComponent, LichlamviecComponent],
   providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './ctbacsi.component.html',
   styleUrl: './ctbacsi.component.css',
 })
 export class CtbacsiComponent {
-  calView: MbscEventcalendarView = {
-    schedule: {
-      type: 'day'
-    }
-  };
-  
+
   selected = model<Date | null>(null);
 
   constructor(
@@ -47,7 +42,6 @@ export class CtbacsiComponent {
     this.getTTBS();
     this.getListDanhHieu();
     this.getDanhHieuByMaNhanVien();
-    this.getListGioiThieu()
     }
 
   getTTBS(){
@@ -72,12 +66,5 @@ export class CtbacsiComponent {
     }
   }
 
-  getListGioiThieu() {
-    if (this.ttbacsi?.gioiThieu) {
-      this.ListGioiThieu = this.ttbacsi.gioiThieu.split('\n');
-    } else {
-      this.ListGioiThieu = [];
-    }
-  }
   
 }
