@@ -10,17 +10,6 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
-        "assets": [
-          {
-            "glob": "**/*",
-            "input": "public"
-          },
-          {
-            "glob": "**/*",
-            "input": "src/assets",
-            "output": "/assets"
-          }
-        ],
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
@@ -38,7 +27,6 @@
               }
             ],
             "styles": [
-              "./node_modules/@mobiscroll/angular/dist/css/mobiscroll.min.css",
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],

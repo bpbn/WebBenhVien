@@ -2,6 +2,7 @@ package org.example.be_benhvien.controller;
 
 import ch.qos.logback.core.model.Model;
 import org.example.be_benhvien.DAO.BacSiDAO;
+import org.example.be_benhvien.DAO.LichLamViecDAO;
 import org.example.be_benhvien.POJO.BacSiPOJO;
 import org.example.be_benhvien.POJO.DanhHieuPOJO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,6 +24,8 @@ import java.util.List;
 public class BacSiController {
     @Autowired
     private BacSiDAO bacSiDAO;
+    @Autowired
+    private LichLamViecDAO lichLamViecDAO;
 
     @GetMapping("/danhsachbs")
     public ResponseEntity dsBS(Model model) {
@@ -100,5 +106,28 @@ public class BacSiController {
         return new ResponseEntity<>(gt, HttpStatus.OK);
     }
 
+    @GetMapping("/ngayLamViec/{id}")
+    public ResponseEntity layNgayLamViecCuaBacSi(@PathVariable String id) {
+        List<String> gt = lichLamViecDAO.layNgayLamViecCuaBacSi(id);
+        return new ResponseEntity<>(gt, HttpStatus.OK);
+    }
+
+    @GetMapping("/ngayLamViecTrongThang/{id}")
+    public ResponseEntity layNgayLamViecCuaBacSiTrongThang(@PathVariable String id) {
+        Object gt = lichLamViecDAO.layNgayLamViecCuaBacSiTrongThang(id);
+        return new ResponseEntity<>(gt, HttpStatus.OK);
+    }
+
+    @GetMapping("/caLamViec/{id}/{date}")
+    public ResponseEntity layCaLamTheoNgayCuaBacSi(@PathVariable String id, @PathVariable String date) {
+        List<String> gt = lichLamViecDAO.layCaLamTheoNgayCuaBacSi(id, date);
+        return new ResponseEntity<>(gt, HttpStatus.OK);
+    }
+
+    @GetMapping("/tachNgayTheoTuan/{i}")
+    public ResponseEntity tachNgayTheoTuan(@PathVariable int i) {
+        List<Integer> dates = lichLamViecDAO.tachNgayTheoTuan(i);
+        return new ResponseEntity<>(dates, HttpStatus.OK);
+    }
 
 }
