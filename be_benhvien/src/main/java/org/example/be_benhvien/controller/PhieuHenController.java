@@ -42,6 +42,11 @@ public class PhieuHenController {
     public ResponseEntity<List<LichLamViecPOJO>> layBacSiTheoNgayVaCa(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayLam,
             @RequestParam String caLam) {
+        if ("morning".equals(caLam)) {
+            caLam = "Sáng";
+        } else if ("afternoon".equals(caLam)) {
+            caLam = "Chiều";
+        }
         List<LichLamViecPOJO> danhSachBacSi = lichLamViecDAO.layBacSiTheoNgayLamVaCaLam(ngayLam, caLam);
         return new ResponseEntity<>(danhSachBacSi, HttpStatus.OK);
     }

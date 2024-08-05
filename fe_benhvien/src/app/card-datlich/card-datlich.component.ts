@@ -68,13 +68,25 @@ export class CardDatlichComponent implements OnInit {
   // Gọi API lấy bác sĩ theo ngày và khung giờ
   onDateChange() {
     if (this.phObj.appointment_date && this.phObj.time_slot) {
-      this.http.get<any[]>(`${this.doctorsApiUrl}?ngayLam=${this.phObj.appointment_date}&caLam=${this.phObj.time_slot}`)
+      this.getBacSiByDateAndShift();
+    }
+  }
+
+  onShiftChange($event: any) {
+    console.log($event.target.value);
+    console.log(this.phObj.time_slot);
+    if (this.phObj.appointment_date && this.phObj.time_slot) {
+      this.getBacSiByDateAndShift();
+    }
+  }
+
+  getBacSiByDateAndShift() {
+    this.http.get<any[]>(`${this.doctorsApiUrl}?ngayLam=${this.phObj.appointment_date}&caLam=${this.phObj.time_slot}`)
         .subscribe(response => {
           this.doctors = response;
         }, error => {
           console.error('Lỗi khi gọi API lấy bác sĩ:', error);
         });
-    }
   }
 
   // Gọi API lấy ngày làm việc của bác sĩ

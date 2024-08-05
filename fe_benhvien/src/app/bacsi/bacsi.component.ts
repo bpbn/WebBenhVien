@@ -46,7 +46,6 @@ export class BacsiComponent {
     this.getListChucVu();
     this.getListBacSi();
     this.getListDanhHieu();
-    this.originalListBacSi = [...this.ListBacSi]; 
   }
 
   getListHocVi(){
@@ -70,6 +69,7 @@ export class BacsiComponent {
   getListBacSi(){
     this.bacsiService.getAllDoctor().subscribe((res:any)=>{
         this.ListBacSi = res;
+        this.originalListBacSi = [...this.ListBacSi]; 
     })
   }
 
