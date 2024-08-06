@@ -6,7 +6,7 @@ public class PhieuHenPOJO {
     private String MaPhieuHen;
     private Date NgayKham;
     private String KhungGioKham;
-    private BacSiPOJO BacSi;
+    private String BacSi;
     private String VanDeSucKhoe;
     private String TenBenhNhan;
     private Date NgaySinh;
@@ -36,14 +36,6 @@ public class PhieuHenPOJO {
 
     public void setKhungGioKham(String khungGioKham) {
         KhungGioKham = khungGioKham;
-    }
-
-    public BacSiPOJO getBacSi() {
-        return BacSi;
-    }
-
-    public void setBacSi(BacSiPOJO bacSi) {
-        BacSi = bacSi;
     }
 
     public String getVanDeSucKhoe() {
@@ -92,5 +84,13 @@ public class PhieuHenPOJO {
 
     public void setDiaChi(String diaChi) {
         DiaChi = diaChi;
+    }
+
+    public String getBacSi() {
+        return BacSi;
+    }
+
+    public void setBacSi(String bacSi) {
+        BacSi = bacSi;
     }
 }

@@ -1,5 +1,6 @@
 package org.example.be_benhvien.DAO;
 
+import org.example.be_benhvien.POJO.BacSiPOJO;
 import org.example.be_benhvien.POJO.PhieuHenPOJO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,17 +21,13 @@ public class PhieuHenDAO {
         String newMaPhieuHen = generateNewMaPhieuHen();
         phieuHenPOJO.setMaPhieuHen(newMaPhieuHen);
 
-        if (phieuHenPOJO.getBacSi() == null || phieuHenPOJO.getBacSi().getMaNhanVien() == null) {
-            throw new IllegalArgumentException("Bác sĩ không được để trống.");
-        }
-
         String sql = "INSERT INTO PHIEUHEN (MaPhieuHen, NgayKham, KhungGioKham, MaNhanVien, VanDeSucKhoe, TenBenhNhan, NgaySinh, GioiTinh, SDT, DiaChi) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 phieuHenPOJO.getMaPhieuHen(),
                 phieuHenPOJO.getNgayKham(),
                 phieuHenPOJO.getKhungGioKham(),
-                phieuHenPOJO.getBacSi().getMaNhanVien(),
+                phieuHenPOJO.getBacSi(),
                 phieuHenPOJO.getVanDeSucKhoe(),
                 phieuHenPOJO.getTenBenhNhan(),
                 phieuHenPOJO.getNgaySinh(),
