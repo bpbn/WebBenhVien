@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { LichlamviecComponent } from '../lichlamviec/lichlamviec.component';
 
 @Component({
   selector: 'app-card-datlich',
   standalone: true,
   templateUrl: './card-datlich.component.html',
   styleUrls: ['./card-datlich.component.css'],
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule, LichlamviecComponent]
 })
 export class CardDatlichComponent implements OnInit {
   showDoctor: boolean = false;
@@ -35,37 +36,34 @@ export class CardDatlichComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    // Tải danh sách bác sĩ khi component khởi tạo
     this.loadAllDoctors();
   }
 
   showDoctorSection() {
     this.showDoctor = true;
     this.showDate = false;
-    // Nếu cần lấy danh sách bác sĩ toàn bộ
     this.loadAllDoctors();
   }
 
   showDateSection() {
     this.showDoctor = false;
     this.showDate = true;
-    // Xóa lựa chọn trước đó
-    this.phObj.doctor = '';
+    this.phObj.doctor = ''; 
     this.phObj.appointment_date = '';
     this.phObj.time_slot = '';
   }
 
-  // Gọi API để lấy danh sách bác sĩ
   loadAllDoctors() {
     this.http.get<any[]>(this.allDoctorsApiUrl)
       .subscribe(response => {
+        console.log('Danh sách bác sĩ:', response);
         this.doctors = response;
       }, error => {
         console.error('Lỗi khi gọi API lấy danh sách bác sĩ:', error);
       });
   }
+  
 
-  // Gọi API lấy bác sĩ theo ngày và khung giờ
   onDateChange() {
     if (this.phObj.appointment_date && this.phObj.time_slot) {
       this.getBacSiByDateAndShift();
@@ -73,8 +71,6 @@ export class CardDatlichComponent implements OnInit {
   }
 
   onShiftChange($event: any) {
-    console.log($event.target.value);
-    console.log(this.phObj.time_slot);
     if (this.phObj.appointment_date && this.phObj.time_slot) {
       this.getBacSiByDateAndShift();
     }
@@ -82,19 +78,19 @@ export class CardDatlichComponent implements OnInit {
 
   getBacSiByDateAndShift() {
     this.http.get<any[]>(`${this.doctorsApiUrl}?ngayLam=${this.phObj.appointment_date}&caLam=${this.phObj.time_slot}`)
-        .subscribe(response => {
-          this.doctors = response;
-        }, error => {
-          console.error('Lỗi khi gọi API lấy bác sĩ:', error);
-        });
+      .subscribe(response => {
+        console.log('Bác sĩ theo ngày và ca làm:', response);
+        this.doctors = response;
+      }, error => {
+        console.error('Lỗi khi gọi API lấy bác sĩ:', error);
+      });
   }
 
-  // Gọi API lấy ngày làm việc của bác sĩ
   onDoctorChange() {
     if (this.phObj.doctor) {
       this.http.get<any[]>(`${this.datesApiUrl}/${this.phObj.doctor}`)
         .subscribe(response => {
-          // Xử lý phản hồi nếu cần
+          console.log('Ngày làm việc của bác sĩ:', response);
         }, error => {
           console.error('Lỗi khi gọi API lấy ngày làm việc của bác sĩ:', error);
         });
@@ -102,18 +98,63 @@ export class CardDatlichComponent implements OnInit {
   }
 
   themPhieuHen() {
+    // Chuyển đổi giá trị giới tính và ca làm để tương thích với database
+    if (this.phObj.gender === 'Nam') {
+      this.phObj.gender = 'Nam';
+    } else if (this.phObj.gender === 'Nu') {
+      this.phObj.gender = 'Nữ';
+    }
+  
+    if (this.phObj.time_slot === 'morning') {
+      this.phObj.time_slot = 'Sáng';
+    } else if (this.phObj.time_slot === 'afternoon') {
+      this.phObj.time_slot = 'Chiều';
+    }
+
+    const selectedDoctor = this.doctors.find(doctor => doctor.MaNhanVien === this.phObj.doctor);
+    if (selectedDoctor) {
+      this.phObj.doctor = selectedDoctor;
+    } else {
+      console.error('Không tìm thấy bác sĩ với mã:', this.phObj.doctor);
+      return;
+    }
+  
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    console.log('Dữ liệu gửi đến API:', this.phObj);
     this.http.post<string>(this.apiUrl, this.phObj, { headers }).subscribe(
       response => {
         console.log('Phản hồi từ server:', response);
       },
       error => {
         console.error('Lỗi khi gọi API:', error);
+        if (error instanceof HttpErrorResponse) {
+          if (error.error instanceof ErrorEvent) {
+            console.error('Lỗi phía client:', error.error.message);
+          } else {
+            console.error(`Lỗi phía server: ${error.status} - ${error.message}`);
+            if (typeof error.error === 'string') {
+              console.error('Phản hồi lỗi không phải JSON:', error.error);
+            }
+          }
+        } else {
+          console.error('Lỗi không mong đợi:', error);
+        }
       }
     );
   }
+  
+  
 
   onSubmit() {
-    this.themPhieuHen();
+    if (this.isFormValid()) {
+      this.themPhieuHen();
+    } else {
+      console.error('Form không hợp lệ');
+    }
+  }
+  
+  isFormValid(): boolean {
+    return this.phObj.name && this.phObj.dob && this.phObj.gender && this.phObj.phone && 
+           this.phObj.address && this.phObj.doctor && this.phObj.appointment_date && this.phObj.time_slot;
   }
 }

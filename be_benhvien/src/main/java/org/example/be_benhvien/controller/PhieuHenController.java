@@ -4,6 +4,8 @@ import org.example.be_benhvien.DAO.LichLamViecDAO;
 import org.example.be_benhvien.DAO.PhieuHenDAO;
 import org.example.be_benhvien.POJO.LichLamViecPOJO;
 import org.example.be_benhvien.POJO.PhieuHenPOJO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +14,14 @@ import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
 @RequestMapping("/phieuhen")
 public class PhieuHenController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PhieuHenController.class);
     private final PhieuHenDAO phieuHenDAO;
 
     @Autowired
@@ -27,12 +31,14 @@ public class PhieuHenController {
     }
 
     @PostMapping("/themPH")
-    public ResponseEntity<String> themPhieuHen(@RequestBody PhieuHenPOJO phieuHenPOJO) {
+    public ResponseEntity<?> themPhieuHen(@RequestBody PhieuHenPOJO phieuHenPOJO) {
         try {
+            logger.info("Nhận được yêu cầu thêm phiếu hẹn: {}", phieuHenPOJO);
             phieuHenDAO.themPhieuHen(phieuHenPOJO);
             return new ResponseEntity<>("Phiếu hẹn đã được thêm thành công!", HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>("Lỗi khi thêm phiếu hẹn: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.error("Lỗi khi thêm phiếu hẹn: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", "Lỗi khi thêm phiếu hẹn: " + e.getMessage()));
         }
     }
 
@@ -49,6 +55,7 @@ public class PhieuHenController {
         }
         List<LichLamViecPOJO> danhSachBacSi = lichLamViecDAO.layBacSiTheoNgayLamVaCaLam(ngayLam, caLam);
         return new ResponseEntity<>(danhSachBacSi, HttpStatus.OK);
+
     }
 
     @GetMapping("/ngaylamvieccuabs/{maNhanVien}")

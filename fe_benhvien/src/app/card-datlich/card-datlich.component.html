@@ -27,9 +27,8 @@
           <div class="relative">
             <label for="gender" class="leading-7 text-sm text-gray-600">Giới Tính</label>
             <select [(ngModel)]="phObj.gender" id="gender" name="gender" class="w-full border rounded py-1 px-3 text-lg">
-              <option value="male">Nam</option>
-              <option value="female">Nữ</option>
-              <option value="other">Khác</option>
+              <option value="Nam">Nam</option>
+              <option value="Nu">Nữ</option>
             </select>
           </div>
         </div>
@@ -67,9 +66,9 @@
               <div class="relative">
                 <label class="leading-7 text-sm text-gray-600">Chọn khung giờ muốn khám</label>
                 <div class="flex items-center">
-                  <input [(ngModel)]="phObj.time_slot" type="radio" id="morning" name="time_slot" value="morning" class="mr-2">
+                  <input [(ngModel)]="phObj.time_slot" type="radio" id="morning" name="time_slot" value="morning" class="mr-2" (change)="onShiftChange($event)">
                   <label for="morning" class="leading-7 text-sm text-gray-600 mr-4">Sáng</label>
-                  <input [(ngModel)]="phObj.time_slot" type="radio" id="afternoon" name="time_slot" value="afternoon" class="mr-2">
+                  <input [(ngModel)]="phObj.time_slot" type="radio" id="afternoon" name="time_slot" value="afternoon" class="mr-2" (change)="onShiftChange($event)">
                   <label for="afternoon" class="leading-7 text-sm text-gray-600">Chiều</label>
                 </div>
               </div>

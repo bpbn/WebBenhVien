@@ -16,8 +16,16 @@ public class PhieuHenDAO {
     }
 
     public void themPhieuHen(PhieuHenPOJO phieuHenPOJO) {
+        System.out.println("Dữ liệu nhận được: " + phieuHenPOJO);
+        String newMaPhieuHen = generateNewMaPhieuHen();
+        phieuHenPOJO.setMaPhieuHen(newMaPhieuHen);
+
+        if (phieuHenPOJO.getBacSi() == null || phieuHenPOJO.getBacSi().getMaNhanVien() == null) {
+            throw new IllegalArgumentException("Bác sĩ không được để trống.");
+        }
+
         String sql = "INSERT INTO PHIEUHEN (MaPhieuHen, NgayKham, KhungGioKham, MaNhanVien, VanDeSucKhoe, TenBenhNhan, NgaySinh, GioiTinh, SDT, DiaChi) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 phieuHenPOJO.getMaPhieuHen(),
                 phieuHenPOJO.getNgayKham(),
@@ -29,5 +37,21 @@ public class PhieuHenDAO {
                 phieuHenPOJO.getGioiTinh(),
                 phieuHenPOJO.getSDT(),
                 phieuHenPOJO.getDiaChi());
+    }
+
+
+    private String generateNewMaPhieuHen() {
+        String sql = "SELECT MAX(MaPhieuHen) FROM PHIEUHEN";
+        String maxMaPhieuHen = jdbcTemplate.queryForObject(sql, String.class);
+
+        if (maxMaPhieuHen == null) {
+            return "PH0000";
+        }
+
+        int numericPart = Integer.parseInt(maxMaPhieuHen.substring(2));
+
+        int newNumericPart = numericPart + 1;
+
+        return String.format("PH%04d", newNumericPart);
     }
 }

@@ -18,7 +18,7 @@ public class LichLamViecDAO {
     private JdbcTemplate jdbcTemplate;
 
     public List<LichLamViecPOJO> layBacSiTheoNgayLamVaCaLam(LocalDate ngayLam, String caLam) {
-        String sql = "SELECT L.CALAM, L.NGAYLAM, N.TENNHANVIEN " +
+        String sql = "SELECT L.CALAM, L.NGAYLAM, N.TENNHANVIEN, N.MANHANVIEN " +
                 "FROM LICHLAMVIEC L " +
                 "JOIN NHANVIEN N ON L.MANHANVIEN = N.MANHANVIEN " +
                 "WHERE L.NGAYLAM = ? AND L.CALAM = ?";
@@ -30,6 +30,7 @@ public class LichLamViecDAO {
             lichLamViecPOJO.setNgayLam(rs.getDate("NGAYLAM").toLocalDate());
 
             bacSiPOJO.setTenNhanVien(rs.getString("TENNHANVIEN"));
+            bacSiPOJO.setMaNhanVien(rs.getString("MANHANVIEN"));
             lichLamViecPOJO.setBacSi(bacSiPOJO);
 
             return lichLamViecPOJO;
