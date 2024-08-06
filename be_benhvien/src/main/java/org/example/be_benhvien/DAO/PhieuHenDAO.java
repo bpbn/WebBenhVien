@@ -20,7 +20,7 @@ public class PhieuHenDAO {
         String newMaPhieuHen = generateNewMaPhieuHen();
         phieuHenPOJO.setMaPhieuHen(newMaPhieuHen);
 
-        if (phieuHenPOJO.getBacSi() == null || phieuHenPOJO.getBacSi().getMaNhanVien() == null) {
+        if (phieuHenPOJO.getBacSi() == null || phieuHenPOJO.getBacSi() == null) {
             throw new IllegalArgumentException("Bác sĩ không được để trống.");
         }
 
@@ -30,7 +30,7 @@ public class PhieuHenDAO {
                 phieuHenPOJO.getMaPhieuHen(),
                 phieuHenPOJO.getNgayKham(),
                 phieuHenPOJO.getKhungGioKham(),
-                phieuHenPOJO.getBacSi().getMaNhanVien(),
+                phieuHenPOJO.getBacSi(),
                 phieuHenPOJO.getVanDeSucKhoe(),
                 phieuHenPOJO.getTenBenhNhan(),
                 phieuHenPOJO.getNgaySinh(),

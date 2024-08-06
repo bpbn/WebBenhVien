@@ -17,15 +17,16 @@ export class CardDatlichComponent implements OnInit {
   doctors: any[] = [];
 
   phObj: any = {
-    name: '',
-    dob: '',
-    gender: '',
-    phone: '',
-    address: '',
-    doctor: '',
-    appointment_date: '',
-    time_slot: '',
-    description: ''
+    maPhieuHen: '',
+    tenBenhNhan: '',
+    ngaySinh: '',
+    gioiTinh: '',
+    sdt: '',
+    diaChi: '',
+    bacSi: '',
+    ngayKham: '',
+    khungGioKham: '',
+    vanDeSucKhoe: ''
   };
 
   private apiUrl = 'http://localhost:4848/phieuhen/themPH';
@@ -42,15 +43,14 @@ export class CardDatlichComponent implements OnInit {
   showDoctorSection() {
     this.showDoctor = true;
     this.showDate = false;
-    this.loadAllDoctors();
   }
 
   showDateSection() {
     this.showDoctor = false;
     this.showDate = true;
-    this.phObj.doctor = ''; 
-    this.phObj.appointment_date = '';
-    this.phObj.time_slot = '';
+    this.phObj.bacSi = ''; 
+    this.phObj.ngayKham = '';
+    this.phObj.khungGioKham = '';
   }
 
   loadAllDoctors() {
@@ -62,22 +62,21 @@ export class CardDatlichComponent implements OnInit {
         console.error('Lỗi khi gọi API lấy danh sách bác sĩ:', error);
       });
   }
-  
 
   onDateChange() {
-    if (this.phObj.appointment_date && this.phObj.time_slot) {
+    if (this.phObj.ngayKham && this.phObj.khungGioKham) {
       this.getBacSiByDateAndShift();
     }
   }
 
   onShiftChange($event: any) {
-    if (this.phObj.appointment_date && this.phObj.time_slot) {
+    if (this.phObj.ngayKham && this.phObj.khungGioKham) {
       this.getBacSiByDateAndShift();
     }
   }
 
   getBacSiByDateAndShift() {
-    this.http.get<any[]>(`${this.doctorsApiUrl}?ngayLam=${this.phObj.appointment_date}&caLam=${this.phObj.time_slot}`)
+    this.http.get<any[]>(`${this.doctorsApiUrl}?ngayLam=${this.phObj.ngayKham}&caLam=${this.phObj.khungGioKham}`)
       .subscribe(response => {
         console.log('Bác sĩ theo ngày và ca làm:', response);
         this.doctors = response;
@@ -87,8 +86,8 @@ export class CardDatlichComponent implements OnInit {
   }
 
   onDoctorChange() {
-    if (this.phObj.doctor) {
-      this.http.get<any[]>(`${this.datesApiUrl}/${this.phObj.doctor}`)
+    if (this.phObj.bacSi) {
+      this.http.get<any[]>(`${this.datesApiUrl}/${this.phObj.bacSi}`)
         .subscribe(response => {
           console.log('Ngày làm việc của bác sĩ:', response);
         }, error => {
@@ -98,27 +97,6 @@ export class CardDatlichComponent implements OnInit {
   }
 
   themPhieuHen() {
-    // Chuyển đổi giá trị giới tính và ca làm để tương thích với database
-    if (this.phObj.gender === 'Nam') {
-      this.phObj.gender = 'Nam';
-    } else if (this.phObj.gender === 'Nu') {
-      this.phObj.gender = 'Nữ';
-    }
-  
-    if (this.phObj.time_slot === 'morning') {
-      this.phObj.time_slot = 'Sáng';
-    } else if (this.phObj.time_slot === 'afternoon') {
-      this.phObj.time_slot = 'Chiều';
-    }
-
-    const selectedDoctor = this.doctors.find(doctor => doctor.MaNhanVien === this.phObj.doctor);
-    if (selectedDoctor) {
-      this.phObj.doctor = selectedDoctor;
-    } else {
-      console.error('Không tìm thấy bác sĩ với mã:', this.phObj.doctor);
-      return;
-    }
-  
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     console.log('Dữ liệu gửi đến API:', this.phObj);
     this.http.post<string>(this.apiUrl, this.phObj, { headers }).subscribe(
@@ -142,8 +120,6 @@ export class CardDatlichComponent implements OnInit {
       }
     );
   }
-  
-  
 
   onSubmit() {
     if (this.isFormValid()) {
@@ -152,9 +128,9 @@ export class CardDatlichComponent implements OnInit {
       console.error('Form không hợp lệ');
     }
   }
-  
+
   isFormValid(): boolean {
-    return this.phObj.name && this.phObj.dob && this.phObj.gender && this.phObj.phone && 
-           this.phObj.address && this.phObj.doctor && this.phObj.appointment_date && this.phObj.time_slot;
+    return this.phObj.tenBenhNhan && this.phObj.ngaySinh && this.phObj.gioiTinh && this.phObj.sdt && 
+           this.phObj.diaChi && this.phObj.bacSi && this.phObj.ngayKham && this.phObj.khungGioKham;
   }
 }

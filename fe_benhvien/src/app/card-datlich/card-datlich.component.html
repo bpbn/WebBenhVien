@@ -13,35 +13,35 @@
         <!-- Thông tin bệnh nhân -->
         <div class="p-2 w-full">
           <div class="relative">
-            <label for="name" class="leading-7 text-sm text-gray-600">Tên Bệnh Nhân</label>
-            <input [(ngModel)]="phObj.name" type="text" id="name" name="name" class="w-full border rounded py-1 px-3 text-lg">
+            <label for="tenBenhNhan" class="leading-7 text-sm text-gray-600">Tên Bệnh Nhân</label>
+            <input [(ngModel)]="phObj.tenBenhNhan" type="text" id="tenBenhNhan" name="tenBenhNhan" class="w-full border rounded py-1 px-3 text-lg">
           </div>
         </div>
         <div class="p-2 w-1/2">
           <div class="relative">
-            <label for="dob" class="leading-7 text-sm text-gray-600">Ngày Sinh</label>
-            <input [(ngModel)]="phObj.dob" type="date" id="dob" name="dob" class="w-full border rounded py-1 px-3 text-lg">
+            <label for="ngaySinh" class="leading-7 text-sm text-gray-600">Ngày Sinh</label>
+            <input [(ngModel)]="phObj.ngaySinh" type="date" id="ngaySinh" name="ngaySinh" class="w-full border rounded py-1 px-3 text-lg">
           </div>
         </div>
         <div class="p-2 w-1/2">
           <div class="relative">
-            <label for="gender" class="leading-7 text-sm text-gray-600">Giới Tính</label>
-            <select [(ngModel)]="phObj.gender" id="gender" name="gender" class="w-full border rounded py-1 px-3 text-lg">
+            <label for="gioiTinh" class="leading-7 text-sm text-gray-600">Giới Tính</label>
+            <select [(ngModel)]="phObj.gioiTinh" id="gioiTinh" name="gioiTinh" class="w-full border rounded py-1 px-3 text-lg">
               <option value="Nam">Nam</option>
-              <option value="Nu">Nữ</option>
+              <option value="Nữ">Nữ</option>
             </select>
           </div>
         </div>
         <div class="p-2 w-1/2">
           <div class="relative">
-            <label for="phone" class="leading-7 text-sm text-gray-600">Số Điện Thoại</label>
-            <input [(ngModel)]="phObj.phone" type="tel" id="phone" name="phone" class="w-full border rounded py-1 px-3 text-lg">
+            <label for="sdt" class="leading-7 text-sm text-gray-600">Số Điện Thoại</label>
+            <input [(ngModel)]="phObj.sdt" type="tel" id="sdt" name="sdt" class="w-full border rounded py-1 px-3 text-lg">
           </div>
         </div>
         <div class="p-2 w-full">
           <div class="relative">
-            <label for="address" class="leading-7 text-sm text-gray-600">Địa Chỉ</label>
-            <input [(ngModel)]="phObj.address" type="text" id="address" name="address" class="w-full border rounded py-1 px-3 text-lg">
+            <label for="diaChi" class="leading-7 text-sm text-gray-600">Địa Chỉ</label>
+            <input [(ngModel)]="phObj.diaChi" type="text" id="diaChi" name="diaChi" class="w-full border rounded py-1 px-3 text-lg">
           </div>
         </div>
         
@@ -49,8 +49,8 @@
         <div *ngIf="showDoctor" class="w-full flex flex-wrap -m-2">
           <div class="p-2 w-1/3">
             <div class="relative">
-              <label for="doctor" class="leading-7 text-sm text-gray-600">Chọn bác sĩ</label>
-              <select [(ngModel)]="phObj.doctor" id="doctor" name="doctor" class="w-full border rounded py-1 px-3 text-lg" (change)="onDoctorChange()">
+              <label for="bacSi" class="leading-7 text-sm text-gray-600">Chọn bác sĩ</label>
+              <select [(ngModel)]="phObj.bacSi" id="bacSi" name="bacSi" class="w-full border rounded py-1 px-3 text-lg" (change)="onDoctorChange()">
                 <option *ngFor="let doctor of doctors" [value]="doctor.maNhanVien">{{ doctor.tenNhanVien }}</option>
               </select>
             </div>
@@ -58,17 +58,17 @@
           <div class="p-2 w-2/3 flex flex-wrap -m-2">
             <div class="p-2 w-1/2">
               <div class="relative">
-                <label for="appointment_date" class="leading-7 text-sm text-gray-600">Chọn ngày muốn khám</label>
-                <input [(ngModel)]="phObj.appointment_date" type="date" id="appointment_date" name="appointment_date" class="w-full border rounded py-1 px-3 text-lg" (change)="onDateChange()">
+                <label for="ngayKham" class="leading-7 text-sm text-gray-600">Chọn ngày muốn khám</label>
+                <input [(ngModel)]="phObj.ngayKham" type="date" id="ngayKham" name="ngayKham" class="w-full border rounded py-1 px-3 text-lg" (change)="onDateChange()">
               </div>
             </div>
             <div class="p-2 w-1/2">
               <div class="relative">
                 <label class="leading-7 text-sm text-gray-600">Chọn khung giờ muốn khám</label>
                 <div class="flex items-center">
-                  <input [(ngModel)]="phObj.time_slot" type="radio" id="morning" name="time_slot" value="morning" class="mr-2" (change)="onShiftChange($event)">
+                  <input [(ngModel)]="phObj.khungGioKham" type="radio" id="morning" name="khungGioKham" value="Sáng" class="mr-2" (change)="onShiftChange($event)">
                   <label for="morning" class="leading-7 text-sm text-gray-600 mr-4">Sáng</label>
-                  <input [(ngModel)]="phObj.time_slot" type="radio" id="afternoon" name="time_slot" value="afternoon" class="mr-2" (change)="onShiftChange($event)">
+                  <input [(ngModel)]="phObj.khungGioKham" type="radio" id="afternoon" name="khungGioKham" value="Chiều" class="mr-2" (change)="onShiftChange($event)">
                   <label for="afternoon" class="leading-7 text-sm text-gray-600">Chiều</label>
                 </div>
               </div>
@@ -80,17 +80,17 @@
           <div class="p-2 w-2/3 flex flex-wrap -m-2">
             <div class="p-2 w-1/2">
               <div class="relative">
-                <label for="appointment_date" class="leading-7 text-sm text-gray-600">Chọn ngày muốn khám</label>
-                <input [(ngModel)]="phObj.appointment_date" type="date" id="appointment_date" name="appointment_date" class="w-full border rounded py-1 px-3 text-lg" (change)="onDateChange()">
+                <label for="ngayKham" class="leading-7 text-sm text-gray-600">Chọn ngày muốn khám</label>
+                <input [(ngModel)]="phObj.ngayKham" type="date" id="ngayKham" name="ngayKham" class="w-full border rounded py-1 px-3 text-lg" (change)="onDateChange()">
               </div>
             </div>
             <div class="p-2 w-1/2">
               <div class="relative">
                 <label class="leading-7 text-sm text-gray-600">Chọn khung giờ muốn khám</label>
                 <div class="flex items-center">
-                  <input [(ngModel)]="phObj.time_slot" type="radio" id="morning" name="time_slot" value="morning" class="mr-2" (change)="onShiftChange($event)">
+                  <input [(ngModel)]="phObj.khungGioKham" type="radio" id="morning" name="khungGioKham" value="Sáng" class="mr-2" (change)="onShiftChange($event)">
                   <label for="morning" class="leading-7 text-sm text-gray-600 mr-4">Sáng</label>
-                  <input [(ngModel)]="phObj.time_slot" type="radio" id="afternoon" name="time_slot" value="afternoon" class="mr-2" (change)="onShiftChange($event)">
+                  <input [(ngModel)]="phObj.khungGioKham" type="radio" id="afternoon" name="khungGioKham" value="Chiều" class="mr-2" (change)="onShiftChange($event)">
                   <label for="afternoon" class="leading-7 text-sm text-gray-600">Chiều</label>
                 </div>
               </div>
@@ -98,8 +98,8 @@
           </div>
           <div class="p-2 w-1/3">
             <div class="relative">
-              <label for="doctor" class="leading-7 text-sm text-gray-600">Chọn bác sĩ</label>
-              <select [(ngModel)]="phObj.doctor" id="doctor" name="doctor" class="w-full border rounded py-1 px-3 text-lg">
+              <label for="bacSi" class="leading-7 text-sm text-gray-600">Chọn bác sĩ</label>
+              <select [(ngModel)]="phObj.bacSi" id="bacSi" name="bacSi" class="w-full border rounded py-1 px-3 text-lg">
                 <option *ngFor="let doctor of doctors" [value]="doctor?.bacSi?.maNhanVien">{{ doctor?.bacSi?.tenNhanVien }}</option>
               </select>
             </div>
@@ -109,12 +109,12 @@
         <!-- Mô tả bệnh và nút submit -->
         <div class="p-2 w-full">
           <div class="relative">
-            <label for="description" class="leading-7 text-sm text-gray-600">Mô Tả Bệnh</label>
-            <textarea [(ngModel)]="phObj.description" id="description" name="description" class="w-full border rounded py-1 px-3 text-lg"></textarea>
+            <label for="vanDeSucKhoe" class="leading-7 text-sm text-gray-600">Mô Tả Bệnh</label>
+            <textarea [(ngModel)]="phObj.vanDeSucKhoe" id="vanDeSucKhoe" name="vanDeSucKhoe" class="w-full border rounded py-1 px-3 text-lg"></textarea>
           </div>
         </div>
         <div class="p-2 w-full">
-          <button type="submit" class="flex mx-auto text-white bg-[#148068] border-0 py-2 px-8 focus:outline-none hover:bg-[#106a57] rounded text-lg">Đặt Lịch</button>
+          <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded">Đặt lịch</button>
         </div>
       </div>
     </form>
