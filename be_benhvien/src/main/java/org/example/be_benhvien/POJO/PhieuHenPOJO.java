@@ -38,7 +38,6 @@ public class PhieuHenPOJO {
         KhungGioKham = khungGioKham;
     }
 
-
     public String getVanDeSucKhoe() {
         return VanDeSucKhoe;
     }
@@ -86,6 +85,7 @@ public class PhieuHenPOJO {
     public void setDiaChi(String diaChi) {
         DiaChi = diaChi;
     }
+
 
     public String getBacSi() {
         return BacSi;
