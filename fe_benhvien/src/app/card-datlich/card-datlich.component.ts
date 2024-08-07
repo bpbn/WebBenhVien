@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -35,13 +35,18 @@ export class CardDatlichComponent implements OnInit {
   private dateApiUrl = 'http://localhost:4848/phieuhen/ngaylamvieccuabs';
   private shiftApiUrl = 'http://localhost:4848/phieuhen/caLamViec';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private cdRef: ChangeDetectorRef ,
+
+  ) {}
 
   ngOnInit() {
-    this.loadAllDoctors();
+    
   }
 
   showDoctorSection() {
+    this.loadAllDoctors();
     this.showDoctor = true;
     this.showDate = false;
   }
@@ -96,22 +101,6 @@ export class CardDatlichComponent implements OnInit {
         });
     }
   }
-
-  getShiftByDateAndDoctor() {
-    this.http.get<any[]>(`${this.shiftApiUrl}?maNhanVien=${this.phObj.bacSi}&ngayLam=${this.phObj.ngayKham}`)
-      .subscribe(response => {
-        console.log('Ca làm theo bác sĩ và ngày làm:', response);
-        this.doctors = response;
-      }, error => {
-        console.error('Lỗi khi gọi API lấy bác sĩ:', error);
-      });
-  }
-
-  onShiftChange2() {
-    if (this.phObj.bacSi && this.phObj.ngayKham) {
-      this.getShiftByDateAndDoctor();
-    }
-  }
   
 
   themPhieuHen() {
@@ -119,8 +108,7 @@ export class CardDatlichComponent implements OnInit {
     console.log('Dữ liệu gửi đến API:', this.phObj);
     this.http.post<string>(this.apiUrl, this.phObj, { headers }).subscribe(
       response => {
-        console.log('Phản hồi từ server:', response);
-        
+        console.log('Phản hồi từ server:', response) 
       },
       error => {
         console.error('Lỗi khi gọi API:', error);
