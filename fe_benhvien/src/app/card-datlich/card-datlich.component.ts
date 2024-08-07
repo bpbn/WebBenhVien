@@ -96,6 +96,7 @@ export class CardDatlichComponent implements OnInit {
       });
   }
 
+
   onDoctorChange() {
     if (this.phObj.bacSi) {
       this.http.get<any[]>(`${this.dateApiUrl}?maNhanVien=${this.phObj.bacSi}`)
@@ -106,7 +107,23 @@ export class CardDatlichComponent implements OnInit {
         });
     }
   }
-  
+
+  getShiftByDateAndDoctor() {
+    const currentDoctor = this.phObj.bacSi; 
+    this.http.get<any[]>(`${this.shiftApiUrl}?maNhanVien=${currentDoctor}&ngayLam=${this.phObj.ngayKham}`)
+      .subscribe(response => {
+        console.log('Ca làm theo bác sĩ và ngày làm:', response);
+        this.phObj.bacSi = currentDoctor; 
+      }, error => {
+        console.error('Lỗi khi gọi API lấy bác sĩ:', error);
+      });
+  }
+
+  onShiftChange2() {
+    if (this.phObj.bacSi && this.phObj.ngayKham) {
+      this.getShiftByDateAndDoctor();
+    }
+  }
 
   themPhieuHen() {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
