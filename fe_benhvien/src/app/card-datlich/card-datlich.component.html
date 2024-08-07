@@ -58,21 +58,29 @@
           <div class="p-2 w-1/2">
             <div class="relative">
               <label for="ngayKham" class="leading-7 text-sm text-gray-600">Chọn ngày muốn khám</label>
-              <input [(ngModel)]="phObj.ngayKham" type="date" id="ngayKham" name="ngayKham" class="w-full border rounded py-1 px-3 text-lg" (change)="onShiftChange2()">
+              <mat-form-field>
+                <input matInput [matDatepickerFilter]="myFilter" [(ngModel)]="phObj.ngayKham" [matDatepicker]="picker" (dateChange)="onShiftChange2($event)">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>              
             </div>
           </div>
-          <div class="p-2 w-1/2">
+          <div class="p-2 w-1/2" *ngIf="availableShifts.length > 0">
             <div class="relative">
               <label class="leading-7 text-sm text-gray-600">Chọn khung giờ muốn khám</label>
-              <div class="flex items-center">
-                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="morning" name="khungGioKham" value="Sáng" class="mr-2">
-                <label for="morning" class="leading-7 text-sm text-gray-600 mr-4">Sáng</label>
-                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="afternoon" name="khungGioKham" value="Chiều" class="mr-2">
-                <label for="afternoon" class="leading-7 text-sm text-gray-600">Chiều</label>
-              </div>
+              <mat-radio-group [(ngModel)]="phObj.khungGioKham" class="flex flex-wrap">
+                <mat-radio-button *ngFor="let khungGioKham of availableShifts" [value]="khungGioKham" class="mr-4">
+                  {{ khungGioKham  }}
+                </mat-radio-button>
+              </mat-radio-group>
             </div>
           </div>
+          
+          
         </div>
+        
+        
+        
 
         <div *ngIf="showDate" class="w-full flex flex-wrap -m-2">
           <div class="p-2 w-1/2">
