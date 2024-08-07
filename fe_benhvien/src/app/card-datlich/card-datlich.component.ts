@@ -124,18 +124,6 @@ export class CardDatlichComponent implements OnInit {
       },
       error => {
         console.error('Lỗi khi gọi API:', error);
-        if (error instanceof HttpErrorResponse) {
-          if (error.error instanceof ErrorEvent) {
-            console.error('Lỗi phía client:', error.error.message);
-          } else {
-            console.error(`Lỗi phía server: ${error.status} - ${error.message}`);
-            if (typeof error.error === 'string') {
-              console.error('Phản hồi lỗi không phải JSON:', error.error);
-            }
-          }
-        } else {
-          console.error('Lỗi không mong đợi:', error);
-        }
       }
     );
   }

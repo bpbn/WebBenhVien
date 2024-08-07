@@ -65,9 +65,9 @@
             <div class="relative">
               <label class="leading-7 text-sm text-gray-600">Chọn khung giờ muốn khám</label>
               <div class="flex items-center">
-                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="morning" name="khungGioKham" value="morning" class="mr-2">
+                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="morning" name="khungGioKham" value="Sáng" class="mr-2">
                 <label for="morning" class="leading-7 text-sm text-gray-600 mr-4">Sáng</label>
-                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="afternoon" name="khungGioKham" value="afternoon" class="mr-2">
+                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="afternoon" name="khungGioKham" value="Chiều" class="mr-2">
                 <label for="afternoon" class="leading-7 text-sm text-gray-600">Chiều</label>
               </div>
             </div>
@@ -85,9 +85,9 @@
             <div class="relative">
               <label class="leading-7 text-sm text-gray-600">Chọn khung giờ muốn khám</label>
               <div class="flex items-center">
-                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="morning" name="khungGioKham" value="morning" class="mr-2" (change)="onShiftChange($event)">
+                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="morning" name="khungGioKham" value="Sáng" class="mr-2" (change)="onShiftChange($event)">
                 <label for="morning" class="leading-7 text-sm text-gray-600 mr-4">Sáng</label>
-                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="afternoon" name="khungGioKham" value="afternoon" class="mr-2" (change)="onShiftChange($event)">
+                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="afternoon" name="khungGioKham" value="Chiều" class="mr-2" (change)="onShiftChange($event)">
                 <label for="afternoon" class="leading-7 text-sm text-gray-600">Chiều</label>
               </div>
             </div>
