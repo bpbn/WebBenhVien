@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LichlamviecComponent } from '../lichlamviec/lichlamviec.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card-datlich',
@@ -37,14 +39,17 @@ export class CardDatlichComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private cdRef: ChangeDetectorRef ,
-
+    private _snackBar: MatSnackBar,
+    private router: Router,
   ) {}
 
   ngOnInit() {
-    
   }
 
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
+  
   showDoctorSection() {
     this.loadAllDoctors();
     this.showDoctor = true;
@@ -120,7 +125,10 @@ export class CardDatlichComponent implements OnInit {
   onSubmit() {
     if (this.isFormValid()) {
       this.themPhieuHen();
+      this.openSnackBar('Đặt lịch hẹn thành công', 'OK');
+      this.router.navigate(['/']); 
     } else {
+      this.openSnackBar('Đặt lịch hẹn thất bại', 'OK');
       console.error('Form không hợp lệ');
     }
   }
