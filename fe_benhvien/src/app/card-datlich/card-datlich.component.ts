@@ -107,7 +107,7 @@ export class CardDatlichComponent implements OnInit {
       });
   }
 
-  onShiftChange2($event: any) {
+  onShiftChange2() {
     if (this.phObj.bacSi && this.phObj.ngayKham) {
       this.getShiftByDateAndDoctor();
     }
