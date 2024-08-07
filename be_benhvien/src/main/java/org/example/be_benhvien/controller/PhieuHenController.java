@@ -58,10 +58,16 @@ public class PhieuHenController {
 
     }
 
-    @GetMapping("/ngaylamvieccuabs/{maNhanVien}")
+    @GetMapping("/ngaylamvieccuabs")
     public ResponseEntity<List<LichLamViecPOJO>> layNgayVaCaTheoMaNhanVien(
-            @PathVariable String maNhanVien) {
+            @RequestParam String maNhanVien) {
         List<LichLamViecPOJO> danhSachNgayVaCa = lichLamViecDAO.layNgayLamViecTheoMaNhanVien(maNhanVien);
         return new ResponseEntity<>(danhSachNgayVaCa, HttpStatus.OK);
+    }
+
+    @GetMapping("/caLamViec")
+    public ResponseEntity layCaLamTheoNgayCuaBacSi(@RequestParam String maNhanVien, @RequestParam String ngayLam) {
+        List<String> gt = lichLamViecDAO.layCaLamTheoNgayCuaBacSi(maNhanVien, ngayLam);
+        return new ResponseEntity<>(gt, HttpStatus.OK);
     }
 }

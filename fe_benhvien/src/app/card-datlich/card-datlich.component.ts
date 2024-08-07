@@ -31,8 +31,9 @@ export class CardDatlichComponent implements OnInit {
 
   private apiUrl = 'http://localhost:4848/phieuhen/themPH';
   private doctorsApiUrl = 'http://localhost:4848/phieuhen/bstheongaylam';
-  private datesApiUrl = 'http://localhost:4848/phieuhen/ngaylamvieccuabs';
   private allDoctorsApiUrl = 'http://localhost:4848/bacsi/danhsachbs';
+  private dateApiUrl = 'http://localhost:4848/phieuhen/ngaylamvieccuabs';
+  private shiftApiUrl = 'http://localhost:4848/phieuhen/caLamViec';
 
   constructor(private http: HttpClient) {}
 
@@ -87,7 +88,7 @@ export class CardDatlichComponent implements OnInit {
 
   onDoctorChange() {
     if (this.phObj.bacSi) {
-      this.http.get<any[]>(`${this.datesApiUrl}/${this.phObj.bacSi}`)
+      this.http.get<any[]>(`${this.dateApiUrl}?maNhanVien=${this.phObj.bacSi}`)
         .subscribe(response => {
           console.log('Ngày làm việc của bác sĩ:', response);
         }, error => {
@@ -96,12 +97,30 @@ export class CardDatlichComponent implements OnInit {
     }
   }
 
+  getShiftByDateAndDoctor() {
+    this.http.get<any[]>(`${this.shiftApiUrl}?maNhanVien=${this.phObj.bacSi}&ngayLam=${this.phObj.ngayKham}`)
+      .subscribe(response => {
+        console.log('Ca làm theo bác sĩ và ngày làm:', response);
+        this.doctors = response;
+      }, error => {
+        console.error('Lỗi khi gọi API lấy bác sĩ:', error);
+      });
+  }
+
+  onShiftChange2($event: any) {
+    if (this.phObj.bacSi && this.phObj.ngayKham) {
+      this.getShiftByDateAndDoctor();
+    }
+  }
+  
+
   themPhieuHen() {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     console.log('Dữ liệu gửi đến API:', this.phObj);
     this.http.post<string>(this.apiUrl, this.phObj, { headers }).subscribe(
       response => {
         console.log('Phản hồi từ server:', response);
+        
       },
       error => {
         console.error('Lỗi khi gọi API:', error);
@@ -120,6 +139,7 @@ export class CardDatlichComponent implements OnInit {
       }
     );
   }
+  
 
   onSubmit() {
     if (this.isFormValid()) {

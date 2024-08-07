@@ -39,14 +39,13 @@ public class LichLamViecDAO {
 
 
     public List<LichLamViecPOJO> layNgayLamViecTheoMaNhanVien(String maNhanVien) {
-        String sql = "SELECT NGAYLAM, CALAM " +
+        String sql = "SELECT NGAYLAM " +
                 "FROM LICHLAMVIEC " +
                 "WHERE MANHANVIEN = ?";
         return jdbcTemplate.query(sql, new Object[]{maNhanVien}, (rs, rowNum) -> {
             LichLamViecPOJO lichLamViecPOJO = new LichLamViecPOJO();
 
             lichLamViecPOJO.setNgayLam(rs.getDate("NGAYLAM").toLocalDate());
-            lichLamViecPOJO.setCaLam(rs.getString("CALAM"));
 
             return lichLamViecPOJO;
         });

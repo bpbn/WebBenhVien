@@ -11,16 +11,10 @@
       </div>
       <div class="flex flex-wrap -m-2">
         <!-- Thông tin bệnh nhân -->
-        <div class="p-2 w-full">
+        <div class="p-2 w-1/2">
           <div class="relative">
             <label for="tenBenhNhan" class="leading-7 text-sm text-gray-600">Tên Bệnh Nhân</label>
             <input [(ngModel)]="phObj.tenBenhNhan" type="text" id="tenBenhNhan" name="tenBenhNhan" class="w-full border rounded py-1 px-3 text-lg">
-          </div>
-        </div>
-        <div class="p-2 w-1/2">
-          <div class="relative">
-            <label for="ngaySinh" class="leading-7 text-sm text-gray-600">Ngày Sinh</label>
-            <input [(ngModel)]="phObj.ngaySinh" type="date" id="ngaySinh" name="ngaySinh" class="w-full border rounded py-1 px-3 text-lg">
           </div>
         </div>
         <div class="p-2 w-1/2">
@@ -30,6 +24,12 @@
               <option value="Nam">Nam</option>
               <option value="Nữ">Nữ</option>
             </select>
+          </div>
+        </div>
+        <div class="p-2 w-1/2">
+          <div class="relative">
+            <label for="ngaySinh" class="leading-7 text-sm text-gray-600">Ngày Sinh</label>
+            <input [(ngModel)]="phObj.ngaySinh" type="date" id="ngaySinh" name="ngaySinh" class="w-full border rounded py-1 px-3 text-lg">
           </div>
         </div>
         <div class="p-2 w-1/2">
@@ -44,10 +44,10 @@
             <input [(ngModel)]="phObj.diaChi" type="text" id="diaChi" name="diaChi" class="w-full border rounded py-1 px-3 text-lg">
           </div>
         </div>
-        
+
         <!-- Phần chọn bác sĩ hoặc ngày -->
         <div *ngIf="showDoctor" class="w-full flex flex-wrap -m-2">
-          <div class="p-2 w-1/3">
+          <div class="p-2 w-full">
             <div class="relative">
               <label for="bacSi" class="leading-7 text-sm text-gray-600">Chọn bác sĩ</label>
               <select [(ngModel)]="phObj.bacSi" id="bacSi" name="bacSi" class="w-full border rounded py-1 px-3 text-lg" (change)="onDoctorChange()">
@@ -55,48 +55,44 @@
               </select>
             </div>
           </div>
-          <div class="p-2 w-2/3 flex flex-wrap -m-2">
-            <div class="p-2 w-1/2">
-              <div class="relative">
-                <label for="ngayKham" class="leading-7 text-sm text-gray-600">Chọn ngày muốn khám</label>
-                <input [(ngModel)]="phObj.ngayKham" type="date" id="ngayKham" name="ngayKham" class="w-full border rounded py-1 px-3 text-lg" (change)="onDateChange()">
-              </div>
+          <div class="p-2 w-1/2">
+            <div class="relative">
+              <label for="ngayKham" class="leading-7 text-sm text-gray-600">Chọn ngày muốn khám</label>
+              <input [(ngModel)]="phObj.ngayKham" type="date" id="ngayKham" name="ngayKham" class="w-full border rounded py-1 px-3 text-lg" (change)="onShiftChange2($event)">
             </div>
-            <div class="p-2 w-1/2">
-              <div class="relative">
-                <label class="leading-7 text-sm text-gray-600">Chọn khung giờ muốn khám</label>
-                <div class="flex items-center">
-                  <input [(ngModel)]="phObj.khungGioKham" type="radio" id="morning" name="khungGioKham" value="Sáng" class="mr-2" (change)="onShiftChange($event)">
-                  <label for="morning" class="leading-7 text-sm text-gray-600 mr-4">Sáng</label>
-                  <input [(ngModel)]="phObj.khungGioKham" type="radio" id="afternoon" name="khungGioKham" value="Chiều" class="mr-2" (change)="onShiftChange($event)">
-                  <label for="afternoon" class="leading-7 text-sm text-gray-600">Chiều</label>
-                </div>
+          </div>
+          <div class="p-2 w-1/2">
+            <div class="relative">
+              <label class="leading-7 text-sm text-gray-600">Chọn khung giờ muốn khám</label>
+              <div class="flex items-center">
+                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="morning" name="khungGioKham" value="morning" class="mr-2">
+                <label for="morning" class="leading-7 text-sm text-gray-600 mr-4">Sáng</label>
+                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="afternoon" name="khungGioKham" value="afternoon" class="mr-2">
+                <label for="afternoon" class="leading-7 text-sm text-gray-600">Chiều</label>
               </div>
             </div>
           </div>
         </div>
-        
+
         <div *ngIf="showDate" class="w-full flex flex-wrap -m-2">
-          <div class="p-2 w-2/3 flex flex-wrap -m-2">
-            <div class="p-2 w-1/2">
-              <div class="relative">
-                <label for="ngayKham" class="leading-7 text-sm text-gray-600">Chọn ngày muốn khám</label>
-                <input [(ngModel)]="phObj.ngayKham" type="date" id="ngayKham" name="ngayKham" class="w-full border rounded py-1 px-3 text-lg" (change)="onDateChange()">
-              </div>
+          <div class="p-2 w-1/2">
+            <div class="relative">
+              <label for="ngayKham" class="leading-7 text-sm text-gray-600">Chọn ngày muốn khám</label>
+              <input [(ngModel)]="phObj.ngayKham" type="date" id="ngayKham" name="ngayKham" class="w-full border rounded py-1 px-3 text-lg" (change)="onDateChange()">
             </div>
-            <div class="p-2 w-1/2">
-              <div class="relative">
-                <label class="leading-7 text-sm text-gray-600">Chọn khung giờ muốn khám</label>
-                <div class="flex items-center">
-                  <input [(ngModel)]="phObj.khungGioKham" type="radio" id="morning" name="khungGioKham" value="Sáng" class="mr-2" (change)="onShiftChange($event)">
-                  <label for="morning" class="leading-7 text-sm text-gray-600 mr-4">Sáng</label>
-                  <input [(ngModel)]="phObj.khungGioKham" type="radio" id="afternoon" name="khungGioKham" value="Chiều" class="mr-2" (change)="onShiftChange($event)">
-                  <label for="afternoon" class="leading-7 text-sm text-gray-600">Chiều</label>
-                </div>
+          </div>
+          <div class="p-2 w-1/2">
+            <div class="relative">
+              <label class="leading-7 text-sm text-gray-600">Chọn khung giờ muốn khám</label>
+              <div class="flex items-center">
+                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="morning" name="khungGioKham" value="morning" class="mr-2" (change)="onShiftChange($event)">
+                <label for="morning" class="leading-7 text-sm text-gray-600 mr-4">Sáng</label>
+                <input [(ngModel)]="phObj.khungGioKham" type="radio" id="afternoon" name="khungGioKham" value="afternoon" class="mr-2" (change)="onShiftChange($event)">
+                <label for="afternoon" class="leading-7 text-sm text-gray-600">Chiều</label>
               </div>
             </div>
           </div>
-          <div class="p-2 w-1/3">
+          <div class="p-2 w-full ">
             <div class="relative">
               <label for="bacSi" class="leading-7 text-sm text-gray-600">Chọn bác sĩ</label>
               <select [(ngModel)]="phObj.bacSi" id="bacSi" name="bacSi" class="w-full border rounded py-1 px-3 text-lg">
@@ -105,7 +101,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Mô tả bệnh và nút submit -->
         <div class="p-2 w-full">
           <div class="relative">

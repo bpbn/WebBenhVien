@@ -66,8 +66,6 @@ export class BacsiService {
     return this.http.get(this.apiURL2 + "/ngaylamvieccuabs/" + maBacSi);
   }
 
-  
-  
   getNgayLamCuaBacSi(id: string){
     return this.http.get(this.apiURL + "/ngayLamViec/" + id);
   }
@@ -75,7 +73,6 @@ export class BacsiService {
   getNgayLamCuaBacSiTrongThang(id: string){
     return this.http.get(this.apiURL + "/ngayLamViecTrongThang/" + id);
   }
-
 
   getCaLamCuaBacSi(id: string, date: string){
     return this.http.get(this.apiURL + "/caLamViec/" + id + "/" + date);
